@@ -1,4 +1,4 @@
-export class Rect{
+class Rect{
 	constructor(x, y, potencdialRadius){
 		this.X = x;
 		this.Y = y;

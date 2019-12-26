@@ -20,7 +20,8 @@ export default class Ball{
 		this.Velocity = vel;
 		this.Angle = rad;
 		this.BestFunctionValue = { X: randX, Y: randY} 
-		this.ConnectRadius = 600; 
+		this.ConnectRadius = 600;
+		this.isPotencial = false;
 	}
 
 }

@@ -1,4 +1,4 @@
-import BallAnimation from "../src/js/animation/animation"
+
 import Ball from "../src/js/model/ball"	
 import AlgotithmAnimation from "./js/animation/algoritm";
 import {Circle} from "../src/js/model/figures/circle"
@@ -13,7 +13,10 @@ var animation;
 var StopX, StopY, currentFigure;
 var smashKoef = enviroment.SmashKoef;
 var figureIndex = 0;
-for( var i = 0; i < 60; ++i )
+var countInPotencial = 0;
+var BallCount = 60;
+var workers = [];
+for( var i = 0; i < BallCount; ++i )
    balls.push(new Ball(20, i));
 
 window.onload = function(){
@@ -26,9 +29,8 @@ window.onload = function(){
 function mainAnim() {
     var parallerForEach = require('async-foreach').forEach;
     var drawer = new Drawer(c);
-    var workers = [];
     balls.forEach(ball => {
-        var blob = new Blob(["(" + animationParaller.toString()+")()"], {type: 'text/javascript'})
+        var blob = new Blob(["(" + animationParaller.toString() +")()"], {type: 'text/javascript'})
         var url = window.URL || window.webkitURL;
         var blobUrl = url.createObjectURL(blob);
         let worker = new Worker(blobUrl);
@@ -43,7 +45,11 @@ function mainAnim() {
                     drawer.StepDraw(model.ball);
                     drawer.NewBallDraw(model.ball);
                     let ballsModel = getNearestBalls(model.ball);
-                    let post = {status: "old", nearsBalls: ballsModel.nearsBalls, ballsInRadius: ballsModel.ballsInRadius};
+                    let post = {status: "old", nearsBalls: ballsModel.nearsBalls, ballsInRadius: ballsModel.ballsInRadius, ball: model.ball};
+                    balls[model.ball.id].inPotencial = model.isPotencial;
+                    if(checkAllInPotencial()){
+                        stopWorkers();
+                    }
                     worker.postMessage(JSON.stringify(post));
                     break;
                 case "reDraw":
@@ -54,14 +60,26 @@ function mainAnim() {
                     break;
             }
         };
-        let postModel = {ball: ball, enviroment: enviroment, nearest: [], ballsInRadisu: [], status: "new"}
+    
+        let postModel = {ball: ball, enviroment: enviroment, nearest: [], ballsInRadisu: [], status: "new"};
         let saveObj = {worker: worker, postModel: postModel};
         workers.push(saveObj);
     });
-
     parallerForEach(workers, (obj, index) => {
         obj.worker.postMessage(JSON.stringify(obj.postModel));
     });
+}
+
+function checkAllInPotencial() {
+    return balls.every(ball => {
+        return ball.inPotencial == true;
+    })
+}
+
+function stopWorkers() {
+    workers.forEach(obj =>{
+        obj.worker.terminate();
+    })
 }
 
 function getNearestBalls(executedBall){

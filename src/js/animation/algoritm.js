@@ -1,46 +1,44 @@
-import BallAnimation from "../animation/animation"
-import { enviroment } from "../../enviroment/enviroment";
-
-export default class AlgotithmAnimation extends BallAnimation{
-    constructor(balls, stopX, stopY, currentFigure){
-        super(balls);
+class AlgotithmAnimation{
+    constructor(ball, stopX, stopY, currentFigure, enviroment, ballanimation){
+        this.ball = ball;
         this.StopX = stopX;
         this.StopY = stopY;
         this.CurrentFigure = currentFigure;
         this.destation = enviroment.destation;
+        this.ballanimation = ballanimation;
+        this.count = 2;
     }
 
     Anim(){
-         let randomX = Math.random();
-         let randomY = Math.random();
-         this.ctx.translate( randomX, randomY );
-         this.ctx.clearRect(0, 0, c.width, c.height);
-         this.balls.forEach(ball => this.Step(ball));
-         this.Smash();
-         this.balls.forEach(ball => {
-             ball = this.BestFromAllInRadius(ball);
-             ball = this.SetBestValue(ball);
-             ball = this.CorrectSpeed(ball);
-             let inPotencial = this.CurrentFigure.GetPotencial(ball.Position.X, ball.Position.Y);
+        var postModel = {status: "start",ball: this.ball, additionalBall: null, isPotencial: false};
+		postMessage(JSON.stringify(postModel));
+		setInterval(() => {
+            this.ball = this.ballanimation.Step(this.ball);
+            this.ball = this.ballanimation.Smash(this.ball);
+            this.ball = this.BestFromAllInRadius(this.ball);
+            this.ball = this.SetBestValue(this.ball);
+            this.ball = this.CorrectSpeed(this.ball);
+            this.ball = this.ballanimation.Smash(this.ball);
+            var inPotencial = this.CurrentFigure.GetPotencial(this.ball.Position.X, this.ball.Position.Y);
              if(inPotencial){
-                 ball.Speed.X = 0;
-                 ball.Speed.Y = 0;
-                 ball.Velocity = 0;
-                 ball.Angle = 0;
+                 //this.count--;
+                 this.ball.Speed.X /= 10;
+                 this.ball.Speed.Y /= 10;
+                 this.ball.Velocity /= 10;
+                 //if(this.count == 0){
+                    this.ball.Speed.X = 0;
+                    this.ball.Speed.Y = 0;
+                    this.ball.Velocity = 0;
+                    this.ball.Angle = 0;
+                 //}
+                
              }
-         });
-         var allInPotencial = this.balls.every(ball => this.CurrentFigure.GetPotencial(ball.Position.X, ball.Position.Y));
-         var allInPotencialWithDev = this.balls.every(ball => this.CurrentFigure.GetPotencial(ball.Position.X, ball.Position.Y, this.destation));
-         if(allInPotencial){
-             this.balls.forEach(ball => {
-                     ball.Speed.X = 0;
-                     ball.Speed.Y = 0;
-                     ball.Velocity = 0;
-                     ball.Angle = 0;
-             });
-         }
-         this.Smash();
-         this.ctx.translate( -randomX, -randomY );
+            this.ball = this.ballanimation.Smash(this.ball);
+			postModel.status = "step";
+            postModel.ball = this.ball;
+            postModel.isPotencial = inPotencial;
+			postMessage(JSON.stringify(postModel));
+		}, 50);
      }
 
     CorrectSpeed(ball) {
@@ -58,12 +56,9 @@ export default class AlgotithmAnimation extends BallAnimation{
     
     BestFromAllInRadius(currentBall) {
         var bestValue = currentBall.BestFunctionValue;
-        this.balls.forEach(ball => {
-                if (Math.sqrt((Math.pow(Math.abs(ball.Position.X - currentBall.Position.X), 2) +
-                    Math.pow(Math.abs(ball.Position.Y - currentBall.Position.Y), 2))) <= currentBall.ConnectRadius) {
-                if (this.OurFunction(ball.BestFunctionValue.X, ball.BestFunctionValue.Y) > this.OurFunction(currentBall.BestFunctionValue.X, currentBall.BestFunctionValue.Y)) {
-                    bestValue = ball.BestFunctionValue;
-                }
+        this.ballanimation.ballsInRadius.forEach(ball => {
+            if (this.OurFunction(ball.BestFunctionValue.X, ball.BestFunctionValue.Y) > this.OurFunction(currentBall.BestFunctionValue.X, currentBall.BestFunctionValue.Y)) {
+                bestValue = ball.BestFunctionValue;
             }
         });
         currentBall.BestFromAll = bestValue;
@@ -79,8 +74,8 @@ export default class AlgotithmAnimation extends BallAnimation{
     }
    
     OurFunction(x, y) {
-        let pathX = this.StopY - Math.abs(x - this.StopX);
-        let pathY = this.StopX - Math.abs(y - this.StopY);
+        let pathX = this.CurrentFigure.X - Math.abs(x - this.CurrentFigure.X);
+        let pathY = this.CurrentFigure.Y - Math.abs(y - this.CurrentFigure.Y);
         return pathY + pathX;
     }
 }
