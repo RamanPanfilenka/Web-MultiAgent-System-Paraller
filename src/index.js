@@ -1,10 +1,11 @@
-
-import Ball from "../src/js/model/ball"	
-import AlgotithmAnimation from "./js/animation/algoritm";
-import {Circle} from "../src/js/model/figures/circle"
-import {Rect} from "../src/js/model/figures/rect"
-import {enviroment} from "./enviroment/enviroment";
-import { Drawer } from "./paraller/drawer";
+import forEach from "async-foreach";
+import Ball from "js/model/ball";
+import AlgotithmAnimation from "js/animation/algoritm";
+import { Circle } from "js/model/figures/circle"
+import { Rect } from "js/model/figures/rect"
+import { enviroment } from "enviroment/enviroment";
+import { Drawer } from "paraller/drawer";
+import animationParaller from 'paraller/animationParaller';
 
 
 var figures = ["1", "0"]
@@ -27,10 +28,14 @@ window.onload = function(){
 }
 
 function mainAnim() {
-    var parallerForEach = require('async-foreach').forEach;
     var drawer = new Drawer(c);
     balls.forEach(ball => {
-        var blob = new Blob(["(" + animationParaller.toString() +")()"], {type: 'text/javascript'})
+        var blob = new Blob(
+            [`(${animationParaller.toString()})()`],
+            {
+                type: 'text/javascript'
+            },
+        );
         var url = window.URL || window.webkitURL;
         var blobUrl = url.createObjectURL(blob);
         let worker = new Worker(blobUrl);
@@ -65,7 +70,7 @@ function mainAnim() {
         let saveObj = {worker: worker, postModel: postModel};
         workers.push(saveObj);
     });
-    parallerForEach(workers, (obj, index) => {
+    forEach(workers, (obj, index) => {
         obj.worker.postMessage(JSON.stringify(obj.postModel));
     });
 }
@@ -83,14 +88,12 @@ function stopWorkers() {
 }
 
 function getNearestBalls(executedBall){
-        var parallerForEach = require('async-foreach').forEach;
         var neearsBalls = [];
         var ballsInRadius = [];
-        parallerForEach(balls, function(ball, index, balls) {
+        forEach(balls, function(ball, index, balls) {
             let dx = executedBall.Position.X - ball.Position.X;
             let dy = executedBall.Position.Y - ball.Position.Y;
             let distance = dx*dx + dy*dy;
-            
             if (Math.sqrt((Math.pow(Math.abs(ball.Position.X - executedBall.Position.X), 2) +
                 Math.pow(Math.abs(ball.Position.Y - executedBall.Position.Y), 2))) <= executedBall.ConnectRadius) {
                     ballsInRadius.push(ball);

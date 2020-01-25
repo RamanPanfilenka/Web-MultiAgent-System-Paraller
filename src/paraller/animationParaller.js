@@ -1,4 +1,4 @@
-function animationParaller(){
+export default function animationParaller(){
     var nearest = [];
     var ballsInRadisu = [];
     var ballAnimation;
