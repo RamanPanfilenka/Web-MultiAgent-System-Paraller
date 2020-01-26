@@ -1,25 +1,25 @@
-class Rect{
-	constructor(x, y, potencdialRadius){
+class Rect {
+	constructor(x, y, potencialRadius) {
 		this.X = x;
 		this.Y = y;
-		this.PotencdialRadius = potencdialRadius;
+		this.PotencialRadius = potencialRadius;
 	}
 
-	GetPotencial(x, y, deviation = 0){
+	GetPotencial(x, y, deviation = 0) {
 		let inPotencial = false;
 		let pathX = Math.abs(x - this.X);
-    	let pathY = Math.abs(y - this.Y);
-		if(pathX < this.PotencdialRadius + deviation && pathY < this.PotencdialRadius + deviation){
+		let pathY = Math.abs(y - this.Y);
+		if (pathX < this.PotencialRadius + deviation && pathY < this.PotencialRadius + deviation) {
 			inPotencial = true;
 		}
 
 		return inPotencial;
 	}
 
-	DrawPotencial(ctx){
+	DrawPotencial(ctx) {
 		ctx.beginPath();
-		ctx.rect(this.X-this.PotencdialRadius, this.Y-this.PotencdialRadius, 2*this.PotencdialRadius,2*this.PotencdialRadius);
-		var old = ctx.lineWidth;
+		ctx.rect(this.X-this.PotencialRadius, this.Y-this.PotencialRadius, 2*this.PotencialRadius,2*this.PotencialRadius);
+		let old = ctx.lineWidth;
 		ctx.lineWidth = 2;
 		ctx.stroke();
 		ctx.lineWidth = old;

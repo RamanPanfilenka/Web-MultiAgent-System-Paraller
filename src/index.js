@@ -1,109 +1,132 @@
-import forEach from "async-foreach";
-import Ball from "js/model/ball";
-import AlgotithmAnimation from "js/animation/algoritm";
-import { Circle } from "js/model/figures/circle"
-import { Rect } from "js/model/figures/rect"
-import { enviroment } from "enviroment/enviroment";
-import { Drawer } from "paraller/drawer";
+import $ from 'jquery';
+import forEach from 'async-foreach';
+import Ball from 'js/model/ball';
+import { enviroment } from 'enviroment/enviroment';
+import { Drawer } from 'paraller/drawer';
 import animationParaller from 'paraller/animationParaller';
 
 
-var figures = ["1", "0"]
-var balls = [];
-var animation;
-var StopX, StopY, currentFigure;
-var smashKoef = enviroment.SmashKoef;
-var figureIndex = 0;
-var countInPotencial = 0;
-var BallCount = 60;
-var workers = [];
-for( var i = 0; i < BallCount; ++i )
-   balls.push(new Ball(20, i));
+const balls = [...new Array(60)].map((a, index) => new Ball(20, index));
+const workers = [];
 
-window.onload = function(){
-    let index = 0;
-    this.document.getElementById("c").width = window.innerWidth;
-    this.document.getElementById("c").height = window.innerHeight;
-    mainAnim();
-}
+function getNearestBalls(currentBall) {
+	const ballsInRadius = [];
+	const nearestBalls = [];
 
-function mainAnim() {
-    var drawer = new Drawer(c);
-    balls.forEach(ball => {
-        var blob = new Blob(
-            [`(${animationParaller.toString()})()`],
-            {
-                type: 'text/javascript'
-            },
-        );
-        var url = window.URL || window.webkitURL;
-        var blobUrl = url.createObjectURL(blob);
-        let worker = new Worker(blobUrl);
-        worker.onmessage = msg => {
-            let model = JSON.parse(msg.data);
-            balls[model.ball.id] = model.ball;
-            switch(model.status){
-                case "start":
-                    drawer.StartDraw(ball);
-                    break;
-                case "step":
-                    drawer.StepDraw(model.ball);
-                    drawer.NewBallDraw(model.ball);
-                    let ballsModel = getNearestBalls(model.ball);
-                    let post = {status: "old", nearsBalls: ballsModel.nearsBalls, ballsInRadius: ballsModel.ballsInRadius, ball: model.ball};
-                    balls[model.ball.id].inPotencial = model.isPotencial;
-                    if(checkAllInPotencial()){
-                        stopWorkers();
-                    }
-                    worker.postMessage(JSON.stringify(post));
-                    break;
-                case "reDraw":
-                   drawer.ReDraw(model.ball, model.additionalBall);
-                    break;
-                case "stop":
-                    drawer.StopDraw();
-                    break;
-            }
-        };
-    
-        let postModel = {ball: ball, enviroment: enviroment, nearest: [], ballsInRadisu: [], status: "new"};
-        let saveObj = {worker: worker, postModel: postModel};
-        workers.push(saveObj);
-    });
-    forEach(workers, (obj, index) => {
-        obj.worker.postMessage(JSON.stringify(obj.postModel));
-    });
+	forEach(balls, (ball) => {
+		const gap = {
+			dx: currentBall.Position.X - ball.Position.X,
+			dy: currentBall.Position.Y - ball.Position.Y,
+		};
+		const distance = (gap.dx ** 2) + (gap.dy ** 2);
+
+		if (Math.sqrt(distance) <= currentBall.ConnectRadius) {
+			ballsInRadius.push(ball);
+
+			if (distance <= enviroment.SmashKoef * (ball.Radius * 2)) {
+				const ballInfo = { ball, ...gap };
+				nearestBalls.push(ballInfo);
+			}
+		}
+	});
+
+	const responseObject = {
+		nearestBalls,
+		ballsInRadius,
+	};
+
+	return responseObject;
 }
 
 function checkAllInPotencial() {
-    return balls.every(ball => {
-        return ball.inPotencial == true;
-    })
+	return balls.every(ball => ball.inPotencial);
 }
 
 function stopWorkers() {
-    workers.forEach(obj =>{
-        obj.worker.terminate();
-    })
+	workers.forEach(obj => {
+		obj.worker.terminate();
+	});
 }
 
-function getNearestBalls(executedBall){
-        var neearsBalls = [];
-        var ballsInRadius = [];
-        forEach(balls, function(ball, index, balls) {
-            let dx = executedBall.Position.X - ball.Position.X;
-            let dy = executedBall.Position.Y - ball.Position.Y;
-            let distance = dx*dx + dy*dy;
-            if (Math.sqrt((Math.pow(Math.abs(ball.Position.X - executedBall.Position.X), 2) +
-                Math.pow(Math.abs(ball.Position.Y - executedBall.Position.Y), 2))) <= executedBall.ConnectRadius) {
-                    ballsInRadius.push(ball);
-                    if(distance <= enviroment.SmashKoef * ( 2*ball.Radius)){
-                        var sameObject = {ball: ball, dx: dx, dy: dy};
-                        neearsBalls.push(sameObject);
-                    }   
-            }
-        })
-    
-        var responseObject = {nearsBalls: neearsBalls, ballsInRadius: ballsInRadius};
-        return responseObject;
+
+function mainAnim() {
+	const drawer = new Drawer($('#c'));
+
+	balls.forEach(ball => {
+		const blob = new Blob(
+			[`(${animationParaller.toString()})()`],
+			{
+				type: 'text/javascript',
+			}
+		);
+		const url = window.URL || window.webkitURL;
+		const blobUrl = url.createObjectURL(blob);
+		const worker = new Worker(blobUrl);
+
+		worker.onmessage = message => {
+			const model = JSON.parse(message.data);
+			balls[model.ball.id] = model.ball;
+
+			switch (model.status) {
+				case 'start': {
+					drawer.StartDraw(ball);
+					break;
+				}
+
+				case 'step': {
+					drawer.StepDraw(model.ball);
+					drawer.NewBallDraw(model.ball);
+					const ballsModel = getNearestBalls(model.ball);
+					const postModel = {
+						status: 'old',
+						nearestBalls: ballsModel.nearestBalls,
+						ballsInRadius: ballsModel.ballsInRadius,
+						ball: model.ball,
+					};
+					balls[model.ball.id].inPotencial = model.isPotencial;
+					if (checkAllInPotencial()) {
+						stopWorkers();
+					}
+					worker.postMessage(JSON.stringify(postModel));
+					break;
+				}
+
+				case 'reDraw': {
+					drawer.ReDraw(model.ball, model.additionalBall);
+					break;
+				}
+
+				case 'stop': {
+					drawer.StopDraw();
+					break;
+				}
+			}
+		};
+
+		const postModel = {
+			status: 'new',
+			nearestBalls: [],
+			ballsInRadius: [],
+			enviroment,
+			ball,
+		};
+		const saveObject = {
+			worker,
+			postModel,
+		};
+		workers.push(saveObject);
+	});
+
+	forEach(workers, (obj) => {
+		obj.worker.postMessage(JSON.stringify(obj.postModel));
+	});
 }
+
+window.onload = () => {
+	$('#c').css({
+		'width': window.innerWidth,
+		'height': window.innerHeight,
+	});
+	mainAnim();
+};
+

@@ -1,25 +1,25 @@
-class Circle{
-	constructor(x, y, potencdialRadius){
+class Circle {
+	constructor(x, y, potencialRadius) {
 		this.X = x;
 		this.Y = y;
-		this.PotencdialRadius = potencdialRadius;
+		this.PotencialRadius = potencialRadius;
 	}
 
-	GetPotencial(x, y, deviation = 0){
+	GetPotencial(x, y, deviation = 0) {
 		let inPotencial = false;
 		let pathX = Math.abs(x - this.X);
 		let pathY = Math.abs(y - this.Y);
-		if(Math.sqrt(pathX*pathX+pathY*pathY) < this.PotencdialRadius + deviation){
+		if (Math.sqrt(pathX ** 2 + pathY ** 2) < this.PotencialRadius + deviation) {
 			inPotencial = true;
 		}
-	
+
 		return inPotencial;
 	}
 
-	DrawPotencial(ctx){
+	DrawPotencial(ctx) {
 		ctx.beginPath();
-		ctx.arc(this.X, this.Y, this.PotencdialRadius, 0, Math.PI*2, false);
-		var old = ctx.lineWidth;
+		ctx.arc(this.X, this.Y, this.PotencialRadius, 0, Math.PI*2, false);
+		let old = ctx.lineWidth;
 		ctx.lineWidth = 2;
 		ctx.stroke();
 		ctx.lineWidth = old;
