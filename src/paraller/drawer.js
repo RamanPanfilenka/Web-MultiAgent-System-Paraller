@@ -51,6 +51,6 @@ export class Drawer {
 	}
 
 	StopDraw() {
-		this.ctx.translate( -randomX, -randomY );
+		this.ctx.translate( -this.randomX, -this.randomY );
 	}
 }

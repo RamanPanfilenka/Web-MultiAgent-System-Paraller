@@ -1,4 +1,4 @@
-class BallAnimation {
+export default class BallAnimation {
 	constructor(ball, nearest, ballsInRadius, enviroment) {
 		this.ball = ball;
 		this.nearest = nearest;

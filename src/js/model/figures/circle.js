@@ -1,4 +1,4 @@
-class Circle {
+export default class Circle {
 	constructor(x, y, potencialRadius) {
 		this.X = x;
 		this.Y = y;

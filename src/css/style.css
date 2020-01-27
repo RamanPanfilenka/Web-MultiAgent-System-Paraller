@@ -1,7 +1,9 @@
-canvas {
+canvas
+{
     position: absolute;
     top: 0;
     left: 0;
+
     width: -webkit-fill-available;
     height: -webkit-fill-available;
 }
