@@ -6,7 +6,6 @@ class AlgotithmAnimation{
         this.CurrentFigure = currentFigure;
         this.destation = enviroment.destation;
         this.ballanimation = ballanimation;
-        this.count = 2;
     }
 
     Anim(){
@@ -21,17 +20,13 @@ class AlgotithmAnimation{
             this.ball = this.ballanimation.Smash(this.ball);
             var inPotencial = this.CurrentFigure.GetPotencial(this.ball.Position.X, this.ball.Position.Y);
              if(inPotencial){
-                 //this.count--;
-                 this.ball.Speed.X /= 10;
-                 this.ball.Speed.Y /= 10;
-                 this.ball.Velocity /= 10;
-                 //if(this.count == 0){
-                    this.ball.Speed.X = 0;
-                    this.ball.Speed.Y = 0;
-                    this.ball.Velocity = 0;
-                    this.ball.Angle = 0;
-                 //}
-                
+                this.ball.Speed.X /= 10;
+                this.ball.Speed.Y /= 10;
+                this.ball.Velocity /= 10;
+                this.ball.Speed.X = 0;
+                this.ball.Speed.Y = 0;
+                this.ball.Velocity = 0;
+                this.ball.Angle = 0;
              }
             this.ball = this.ballanimation.Smash(this.ball);
 			postModel.status = "step";
@@ -43,11 +38,17 @@ class AlgotithmAnimation{
 
     CorrectSpeed(ball) {
         if (ball.BestFromAll != undefined) {
-            ball.Speed.X = ball.Speed.X * 0.03 + 0.2 * Math.random() * (ball.BestFunctionValue.X - ball.Position.X) + 0.5 * Math.random() * (ball.BestFromAll.X - ball.Position.X);
-            ball.Speed.Y = ball.Speed.Y * 0.03 + 0.2 * Math.random() * (ball.BestFunctionValue.Y - ball.Position.Y) + 0.5 * Math.random() * (ball.BestFromAll.Y - ball.Position.Y);
+            ball.Speed.X = ball.Speed.X * 0.03 
+                            + 0.2 * Math.random() * (ball.BestFunctionValue.X - ball.Position.X) 
+                            + 0.5 * Math.random() * (ball.BestFromAll.X - ball.Position.X);
+            ball.Speed.Y = ball.Speed.Y * 0.03 
+                            + 0.2 * Math.random() * (ball.BestFunctionValue.Y - ball.Position.Y) 
+                            + 0.5 * Math.random() * (ball.BestFromAll.Y - ball.Position.Y);
         } else {
-            ball.Speed.X = ball.Speed.X * 0.3 + Math.random() * (ball.BestFunctionValue.X - ball.Position.X);
-            ball.Speed.Y = ball.Speed.Y * 0.3 + Math.random() * (ball.BestFunctionValue.Y - ball.Position.Y);
+            ball.Speed.X = ball.Speed.X * 0.3 
+                            + Math.random() * (ball.BestFunctionValue.X - ball.Position.X);
+            ball.Speed.Y = ball.Speed.Y * 0.3 
+                            + Math.random() * (ball.BestFunctionValue.Y - ball.Position.Y);
         }
         ball.Speed.X /= 10;
         ball.Speed.Y /= 10 
@@ -57,7 +58,7 @@ class AlgotithmAnimation{
     BestFromAllInRadius(currentBall) {
         var bestValue = currentBall.BestFunctionValue;
         this.ballanimation.ballsInRadius.forEach(ball => {
-            if (this.OurFunction(ball.BestFunctionValue.X, ball.BestFunctionValue.Y) > this.OurFunction(currentBall.BestFunctionValue.X, currentBall.BestFunctionValue.Y)) {
+            if (this.StopPointFunction(ball.BestFunctionValue.X, ball.BestFunctionValue.Y) > this.StopPointFunction(currentBall.BestFunctionValue.X, currentBall.BestFunctionValue.Y)) {
                 bestValue = ball.BestFunctionValue;
             }
         });
@@ -66,14 +67,14 @@ class AlgotithmAnimation{
     }
     
     SetBestValue(ball) {
-        if (this.OurFunction(ball.Position.X, ball.Position.Y) > this.OurFunction(ball.BestFunctionValue.X, ball.BestFunctionValue.Y)) {
+        if (this.StopPointFunction(ball.Position.X, ball.Position.Y) > this.StopPointFunction(ball.BestFunctionValue.X, ball.BestFunctionValue.Y)) {
             ball.BestFunctionValue.X = ball.Position.X;
             ball.BestFunctionValue.Y = ball.Position.Y;
         }
         return ball;
     }
    
-    OurFunction(x, y) {
+    StopPointFunction(x, y) {
         let pathX = this.CurrentFigure.X - Math.abs(x - this.CurrentFigure.X);
         let pathY = this.CurrentFigure.Y - Math.abs(y - this.CurrentFigure.Y);
         return pathY + pathX;

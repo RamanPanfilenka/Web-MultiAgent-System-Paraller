@@ -8,10 +8,10 @@ function animationParaller(){
     self.onmessage = function (msg) {
         var model = JSON.parse(msg.data);
         if(!mainAnimationLoad){
-            self.importScripts("http://10.10.224.229:8887/src/js/animation/animation.js");
-            self.importScripts("http://10.10.224.229:8887/src/js/model/figures/circle.js");
-            self.importScripts("http://10.10.224.229:8887/src/js/model/figures/rect.js");
-            self.importScripts("http://10.10.224.229:8887/src/js/animation/algoritm.js");
+            self.importScripts("http://127.0.0.1:8887/src/js/animation/animation.js");
+            self.importScripts("http://127.0.0.1:8887/src/js/model/figures/circle.js");
+            self.importScripts("http://127.0.0.1:8887/src/js/model/figures/rect.js");
+            self.importScripts("http://127.0.0.1:8887/src/js/animation/algoritm.js");
             ballAnimation = new BallAnimation(model.ball, [], [], model.enviroment);
             mainAnimationLoad = !mainAnimationLoad;
         }
