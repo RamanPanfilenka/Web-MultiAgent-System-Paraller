@@ -1,6 +1,6 @@
-import Ball from '../src/js/model/ball';
-import { Drawer } from './paraller/drawer';
-import WorkerController from './js/workerController';
+import Ball from 'js/model/ball';
+import { Drawer } from 'paraller/drawer';
+import WorkerController from 'js/workerController';
 
 
 const BallCount = 60;

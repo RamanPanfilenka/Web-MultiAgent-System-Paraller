@@ -1,4 +1,4 @@
-import AlgotithmAnimation from 'js/animation/algorithm';
+import AlgotithmAnimation from 'js/animation/algoritm';
 import BallAnimation from 'js/animation/animation';
 import Circle from 'js/model/figures/circle';
 

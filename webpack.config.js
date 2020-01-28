@@ -24,6 +24,13 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.worker\.js$/,
+                exclude: /node_modules/,
+                use: [
+                    'worker-loader',
+                ],
+            },
+            {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: [

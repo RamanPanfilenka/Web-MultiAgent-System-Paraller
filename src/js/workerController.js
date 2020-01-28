@@ -1,13 +1,20 @@
-import { parallerForEach } from 'async-foreach';
-import { enviroment } from '../enviroment/enviroment';
-
+import { forEach } from 'async-foreach';
+import { enviroment } from 'enviroment/enviroment';
+import Worker from 'paraller/animationParaller.worker.js';
 
 export default class WorkerController {
 	constructor(drawer, balls) {
 		this.workers = [];
 		this.balls = balls;
 		this.drawer = drawer;
-		this.modelStatus = Object.freeze({new: 'new', start: 'start', step: 'step', reDraw: 'reDraw', stop: 'stop', old: 'old'});
+		this.modelStatus = Object.freeze({
+			new: 'new',
+			start: 'start',
+			step: 'step',
+			reDraw: 'reDraw',
+			stop: 'stop',
+			old: 'old'
+		});
 	}
 
 	CheckAllInPotencial() {
@@ -25,7 +32,7 @@ export default class WorkerController {
 	GetNearestBalls(currentBall) {
 		const neearsBalls = [];
 		const ballsInRadius = [];
-		parallerForEach(this.balls, (ball) => {
+		forEach(this.balls, (ball) => {
 			const dx = currentBall.Position.X - ball.Position.X;
 			const dy = currentBall.Position.Y - ball.Position.Y;
 			const distance = dx*dx + dy*dy;
@@ -53,7 +60,7 @@ export default class WorkerController {
 				ballsInRadisu: [],
 				status: this.modelStatus.new,
 			};
-			const worker = new Worker('worker.js');
+			const worker = new Worker();
 
 			worker.onmessage = (msg) => {
 				const model = JSON.parse(msg.data);
@@ -98,14 +105,17 @@ export default class WorkerController {
 				}
 			};
 
-			const workerStartObject = {worker: worker, postModel: postModel};
+			const workerStartObject = {
+				worker,
+				postModel,
+			};
 			this.workers.push(workerStartObject);
 		});
 	}
 
 	RunWorkers() {
-		parallerForEach(this.workers, obj => {
-			obj.worker.postMessage(JSON.stringify(obj.postModel));
+		forEach(this.workers, obj => {
+		 	obj.worker.postMessage(JSON.stringify(obj.postModel));
 		});
 	}
 }
