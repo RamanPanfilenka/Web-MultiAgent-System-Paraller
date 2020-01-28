@@ -11,7 +11,6 @@ export default class Ball {
 
 		this.Position = { X:  randX, Y:  randY};
 		this.PreviousPosition = { X: randX, Y: randY };
-		this.BestFunctionValue = { X: randX, Y: randY };
 		this.Speed = {
 			X: Math.cos( rad ) * vel*5,
 			Y: Math.sin( rad ) * vel*5,

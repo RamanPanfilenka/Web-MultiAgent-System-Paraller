@@ -53,4 +53,8 @@ export class Drawer {
 	StopDraw() {
 		this.ctx.translate( -this.randomX, -this.randomY );
 	}
+
+	DrawFigure(figure){
+		figure.DrawPotencial(this.ctx);
+	}
 }

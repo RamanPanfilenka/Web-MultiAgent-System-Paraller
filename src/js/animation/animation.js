@@ -1,29 +1,19 @@
+import { modelStatusEnum } from "../modelStatusEnum";
+
 export default class BallAnimation {
-	constructor(ball, nearest, ballsInRadius, enviroment) {
+	constructor(ball, enviroment) {
 		this.ball = ball;
-		this.nearest = nearest;
-		this.ballsInRadius = ballsInRadius;
 		this.enviroment = enviroment;
 	}
 
-	Smash(ball) {
-		this.nearest.forEach(nearestObject => {
-			ball.Speed.X += nearestObject.dx * ball.Radius / 80;
-			ball.Speed.Y += nearestObject.dy * ball.Radius / 80;
-		});
-
-		return ball;
-	}
-
 	Anim() {
-		let postModel = {status: 'start',ball: this.ball, additionalBall: null};
+		let postModel = {status: modelStatusEnum.start,ball: this.ball, additionalBall: null};
 		postMessage(JSON.stringify(postModel));
 		setInterval(() => {
 			this.ball = this.Step(this.ball);
-			postModel.status = 'step';
+			postModel.status = modelStatusEnum.step;
 			postModel.ball = this.ball;
 			postMessage(JSON.stringify(postModel));
-			this.ball = this.Smash(this.ball);
 		}, 50);
 	}
 

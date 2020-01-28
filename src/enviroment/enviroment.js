@@ -1,8 +1,8 @@
 export const enviroment = {
-	BallRadius: 20,
+	BallRadius: 22,
 	width: window.innerWidth,
 	height: window.innerHeight,
-	SmashKoef: 20,
-	PotencialRadius: 200,
+	SmashKoef: 18,
+	PotencialRadius: 600,
 	destation: 20,
 };
