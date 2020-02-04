@@ -1,26 +1,48 @@
-import {enviroment} from '../../enviroment/enviroment';
+import { actionEnum } from '../helpers/actionListEnum';
 
 export default class Ball {
-	constructor(radius, id) {
-		this.id = id;
-		this.Radius = enviroment.BallRadius;
-		let randX = Math.random() * enviroment.width;
-		let randY = Math.random() * enviroment.height;
-		let vel = 1 + 2 * Math.random();
-		let rad = Math.random() * Math.PI * 2;
+    constructor(id, enviroment) {
+        this.id = id;
+        this.Radius = enviroment.BallRadius;
+        let randX = Math.random() * enviroment.width;
+        let randY = Math.random() * enviroment.height;
+        let vel = 1 + 2 * Math.random();
+        let rad = Math.random() * Math.PI * 2;
 
-		this.Position = { X:  randX, Y:  randY};
-		this.PreviousPosition = { X: randX, Y: randY };
-		this.Speed = {
-			X: Math.cos( rad ) * vel*5,
-			Y: Math.sin( rad ) * vel*5,
-		};
+        this.Position = { X: randX, Y: randY };
+        this.PreviousPosition = { X: randX, Y: randY };
+        this.Speed = {
+            X: Math.cos(rad) * vel * 5,
+            Y: Math.sin(rad) * vel * 5,
+        };
 
-		this.Velocity = vel;
-		this.Angle = rad;
-		this.BestFunctionValue = { X: randX, Y: randY};
-		this.ConnectRadius = 600;
-		this.isPotencial = false;
-	}
+        this.Velocity = vel;
+        this.Angle = rad;
+        this.BestFunctionValue = { X: randX, Y: randY };
+        this.ConnectRadius = 600;
+        this.isPotencial = false;
+    }
+
+    CopyBall(ball) {
+        this.Position = ball.Position;
+        this.PreviousPosition = ball.PreviousPosition;
+        this.Speed = ball.Speed;
+        this.Velocity = ball.Velocity;
+        this.Angle = ball.Angle;
+        this.BestFunctionValue = ball.BestFunctionValue;
+        this.BestFromAll = ball.BestFromAll;
+        this.isPotencial = ball.isPotencial;
+    }
+
+    Sensive(worker) {
+        const postMessage = {
+            ball: this
+        };
+        worker.postMessage(JSON.stringify(postMessage));
+    }
+
+    Pondering(nearestBalls) {
+        this.currentAction = actionEnum.moveToPotencialBase;
+    }
 
 }

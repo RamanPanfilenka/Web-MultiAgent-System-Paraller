@@ -1,19 +1,20 @@
 import AlgotithmAnimation from 'js/animation/algoritm';
 import { modelStatusEnum } from '../js/modelStatusEnum';
+import Ball from '../js/model/ball';
+import { enviroment } from '../enviroment/enviroment';
 
 let algorithmAnimation;
 
 onmessage = function(msg) {
-	const model = JSON.parse(msg.data);
-	switch (model.status) {
-		case modelStatusEnum.new:
-			algorithmAnimation = new AlgotithmAnimation(
-				model.ball,
-				model.enviroment
-			);
-			algorithmAnimation.Anim();
-			break;
-	}
-	algorithmAnimation.ball = model.ball;
+    const model = JSON.parse(msg.data);
+    if (!algorithmAnimation) {
+        algorithmAnimation = new AlgotithmAnimation(
+            model.ball,
+            model.enviroment
+        );
+    }
+    const ball = new Ball(model.ball.id, enviroment);
+    ball.CopyBall(model.ball);
+    algorithmAnimation.ball = ball;
+    algorithmAnimation.Anim();
 };
-
