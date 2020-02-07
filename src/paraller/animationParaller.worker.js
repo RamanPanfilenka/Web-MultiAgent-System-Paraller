@@ -13,6 +13,7 @@ onmessage = function(msg) {
             model.enviroment
         );
     }
+    
     const ball = new Ball(model.ball.id, enviroment);
     ball.CopyBall(model.ball);
     algorithmAnimation.ball = ball;

@@ -9,7 +9,7 @@ import ActionList from './model/actionList';
 
 export default class WorkerController {
     constructor(drawer, balls, currentFigure) {
-        this.workers = [];
+        this.workersStartObjects = [];
         this.balls = balls;
         this.drawer = drawer;
         this.figure = currentFigure;
@@ -19,6 +19,7 @@ export default class WorkerController {
         this.actionList = new ActionList();
     }
 
+
     /**
      * Check is all balls in figure
      *
@@ -27,23 +28,23 @@ export default class WorkerController {
      */
     CheckAllInPotencial() {
         return this.balls.every(ball => {
-            return this.figure.GetPotencial(ball.Position.X, ball.Position.Y);
+            return this.figure.GetPotencial(ball.Position.X, ball.Position.Y) && this.nearestBalls.length == 0;
         });
     }
 
     StopWorkers() {
         if (this.figure instanceof Circle) {
-            this.balls.forEach(ball => {
-                ball.Speed.X = 0;
-                ball.Speed.Y = 0;
-                ball.Velocity = 0;
-            })
             setTimeout(() => {
-                this.figure = new Rect(1000, 500, 90);
-            }, 2000);
-
+                this.figure = new Rect(1000, 500, 120);
+            }, 1000);
+                this.balls.forEach(ball => {
+                    ball.Speed.X = 0;
+                    ball.Speed.Y = 0;
+                    ball.Velocity = 0;
+                })
+            
         } else {
-            this.workers.forEach(obj => {
+            this.workersStartObjects.forEach(obj => {
                 obj.worker.terminate();
             });
         }
@@ -107,9 +108,11 @@ export default class WorkerController {
      * @returns
      * @memberof WorkerController
      */
-    Smash(ball, dx, dy) {
+    Smash(ball, ball2, dx, dy) {
         ball.Speed.X += dx * ball.Radius / 80;
         ball.Speed.Y += dy * ball.Radius / 80;
+        ball2.Speed.X -= dx * ball.Radius / 80;
+		ball2.Speed.Y -= dy * ball.Radius / 80;
 
         return ball;
     }
@@ -132,7 +135,7 @@ export default class WorkerController {
                 bestFuctionValue = this.CheckBestValue(bestFuctionValue, ball)
                 if (distance <= enviroment.SmashKoef * (ball.Radius * 2)) {
                     this.nearestBalls.push(ball);
-                    currentBall = this.Smash(currentBall, dx, dy);
+                    currentBall = this.Smash(currentBall, ball, dx, dy);
                 }
             }
         });
@@ -187,38 +190,49 @@ export default class WorkerController {
         });
     }
 
-    InitWorkers() {
-        this.balls.forEach(ball => {
-
-            const worker = new Worker();
-            const postModel = this.GetPostModel(ball);
-            worker.onmessage = (msg) => {
+    WorkerAnsverSubscription(worker){
+        worker.onmessage = (msg) => {
                 this.postCount++;
                 const model = JSON.parse(msg.data);
                 this.balls[model.ball.id] = model.ball;
                 this.balls[model.ball.id].worker = worker;
                 if (this.postCount == this.balls.length) {
-                    this.postCount = 0;
-                    this.drawer.Init();
-                    this.balls.forEach((ball) => {
-                        ball = this.GetAction(ball);
-                        ball = this.OperationWithBall(ball);
-                        this.Draw(ball);
-                        ball.nearestBalls = this.nearestBalls;
-                        this.nearestBalls = [];
-                    });
-                    if (this.CheckAllInPotencial()) {
-                        this.StopWorkers();
-                    }
-                    this.SendDataToWorkers();
-                }
-            };
+                        this.postCount = 0;
+                        this.drawer.Init();
+                        this.balls.forEach((ball) => {
+                            if (this.CheckAllInPotencial()) {
+                                ball.Speed.X = 0;
+                                ball.Speed.Y = 0;
+                                ball.Velocity = 0;
+                            }
+                            ball = this.GetAction(ball);
+                            ball = this.OperationWithBall(ball);
+                            ball.nearestBalls = this.nearestBalls;
+                            this.nearestBalls = [];
+                        });
+                        this.balls.forEach(ball => {
+                            this.Draw(ball);
+                        });
+                        if (this.CheckAllInPotencial()) {
+                                this.StopWorkers();
+                        }
+                    
+                this.SendDataToWorkers();
+            }
+        };
 
+    }
+
+    InitWorkers() {
+        this.balls.forEach(ball => {
+            const worker = new Worker();
+            const postModel = this.GetPostModel(ball);
+            this.WorkerAnsverSubscription(worker)
             const workerStartObject = {
                 worker,
                 postModel,
             };
-            this.workers.push(workerStartObject);
+            this.workersStartObjects.push(workerStartObject);
         });
     }
 
@@ -233,7 +247,7 @@ export default class WorkerController {
     }
 
     RunWorkers() {
-        forEach(this.workers, obj => {
+        forEach(this.workersStartObjects, obj => {
             obj.worker.postMessage(JSON.stringify(obj.postModel));
         });
     }

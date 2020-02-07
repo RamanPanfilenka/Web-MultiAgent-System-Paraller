@@ -6,7 +6,6 @@ export default class ActionList {
     }
 
     MoveToPotencialBase(ball) {
-        debugger
         this.Step(ball);
         this.CorrectSpeed(ball);
         return ball;
