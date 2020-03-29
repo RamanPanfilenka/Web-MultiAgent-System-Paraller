@@ -1,5 +1,4 @@
 import AlgotithmAnimation from 'js/animation/algoritm';
-import { modelStatusEnum } from '../js/modelStatusEnum';
 import Ball from '../js/model/ball';
 import { enviroment } from '../enviroment/enviroment';
 

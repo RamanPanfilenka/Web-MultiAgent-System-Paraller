@@ -6,14 +6,13 @@ export default class Rect {
 	}
 
 	GetPotencial(x, y, deviation = 0) {
-		let inPotencial = false;
 		let pathX = Math.abs(x - this.X);
 		let pathY = Math.abs(y - this.Y);
 		if (pathX < this.PotencialRadius + deviation && pathY < this.PotencialRadius + deviation) {
-			inPotencial = true;
+			return true;
 		}
 
-		return inPotencial;
+		return false;
 	}
 
 	DrawPotencial(ctx) {
