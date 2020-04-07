@@ -1,4 +1,4 @@
-export class Drawer {
+export class BallDrawer {
     constructor(canvas) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');

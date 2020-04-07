@@ -43,8 +43,8 @@ export class shapeFillingService{
                 })
             
         } else {
-            this.workersStartObjects.forEach(obj => {
-                obj.worker.terminate();
+            this.balls.forEach(ball => {
+                ball.worker.terminate();
             });
         }
     }

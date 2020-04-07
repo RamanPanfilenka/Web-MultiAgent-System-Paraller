@@ -5,4 +5,6 @@ export const enviroment = {
     SmashKoef: 17,
     PotencialRadius: 600,
     destation: 20,
+    noteWidth: 100,
+    noteHeight: 100
 };
