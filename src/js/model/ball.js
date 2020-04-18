@@ -6,7 +6,7 @@ export default class Ball {
         this.Radius = enviroment.BallRadius;
         let randX = Math.random() * enviroment.width;
         let randY = Math.random() * enviroment.height;
-        let vel = 1 + 2 * Math.random();
+        let vel = 0.5;
         let rad = Math.random() * Math.PI * 2;
 
         this.Position = { X: randX, Y: randY };
@@ -21,6 +21,7 @@ export default class Ball {
         this.BestFunctionValue = { X: randX, Y: randY };
         this.ConnectRadius = 600;
         this.isPotencial = false;
+        this.nearestBalls = [];
     }
 
     CopyBall(ball) {
@@ -32,6 +33,7 @@ export default class Ball {
         this.BestFunctionValue = ball.BestFunctionValue;
         this.BestFromAll = ball.BestFromAll;
         this.isPotencial = ball.isPotencial;
+        this.nearestBalls = ball.nearestBalls;
     }
 
     Sensive(worker) {

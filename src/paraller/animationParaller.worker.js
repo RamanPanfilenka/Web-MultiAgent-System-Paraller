@@ -1,6 +1,7 @@
 import AlgotithmAnimation from 'js/animation/algoritm';
 import Ball from '../js/model/ball';
 import { enviroment } from '../enviroment/enviroment';
+import { MelodyBall } from '../js/model/melodyBall';
 
 let algorithmAnimation;
 
@@ -9,11 +10,11 @@ onmessage = function(msg) {
     if (!algorithmAnimation) {
         algorithmAnimation = new AlgotithmAnimation(
             model.ball,
-            model.enviroment
+            model.enviroment,
         );
     }
-    
-    const ball = new Ball(model.ball.id, enviroment);
+
+    const ball = new MelodyBall(model.ball.id, enviroment, model.ball.melody, model.ball.allNotes);
     ball.CopyBall(model.ball);
     algorithmAnimation.ball = ball;
     algorithmAnimation.Anim();

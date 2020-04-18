@@ -9,5 +9,4 @@ export default class AlgotithmAnimation {
         this.ball.Pondering(this.nearestBalls);
         this.ball.Sensive(self);
     }
-
 }

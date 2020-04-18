@@ -1,26 +1,33 @@
 import { melodyBallStatus } from "../helpers/melodyBallStatus";
+import ActionList from "../model/actionList";
 
 export class compositionService{
-    constructor(balls, melody, drawer){
+    constructor(allnotes, balls, melody, ballDrawer, noteDraver){
         this.balls = balls;
         this.melody = melody;
         this.ansCount = 0;
-        this.drawer = drawer;
+        this.ballDrawer = ballDrawer;
+        this.noteDraver = noteDraver;
+        this.allnotes = allnotes;
+        this.actionList = new ActionList();
+        this.startTime = Date.now();
     }
 
     WorkerAnsverSubscription(worker){
         worker.onmessage = (msg) => {
-            const model = JSON.parse(msg);
-            this.balls[model.ball.Id] = model.ball;
-            this.ball.worker = worker;
+            const model = JSON.parse(msg.data);
+            this.balls[model.ball.id] = model.ball;
+            this.balls[model.ball.id].worker = worker;
             this.ansCount++;
             if(this.ansCount == this.balls.length){
                 if(this.balls.filter(ball => ball.status == melodyBallStatus.InAgreement).length != 0){
-                    SendDataToWorkers();
+                    this.SendDataToWorkers();
+                    return;
                 }
 
                 if(this.balls.filter(ball => ball.status == melodyBallStatus.Draw).length == this.balls.length){
-                    Draw();
+                    this.Draw();
+                    this.SendDataToWorkers();
                 }
             }
         };
@@ -29,20 +36,40 @@ export class compositionService{
 
     SendDataToWorkers() {
         this.balls.forEach((ball) => {
+            ball.nearestBalls = this.balls.filter(fball => fball.id != ball.id);
+            ball.melody = this.melody;
+            ball.currentTime = (Date.now() - this.startTime)/600;
             const postModel = {
-                ball: ball
+                ball: ball,
             };
             const worker = ball.worker;
+           
+            worker.postMessage(JSON.stringify(postModel));
             delete ball.nearestBalls;
             delete ball.worker;
-            worker.postMessage(JSON.stringify(postModel));
         });
+        this.ansCount = 0;
     }
 
     Draw(){
-        this.drawer.Init();
-        this.balls.forEach(ball => {
-            this.drawer.StepDraw(ball);
+        this.ballDrawer.Init();
+        this.noteDraver.DrawNotes(this.allnotes);
+        this.balls.filter(ball => ball.status != melodyBallStatus.Stop).forEach(ball => {
+            const aimNote = this.allnotes.find(note => note.id == ball.note.id);
+            const dx = Math.abs(ball.Position.X - aimNote.position.x);
+            const dy = Math.abs(ball.Position.Y - aimNote.position.y);
+            if(dx == 0 && dy == 0){
+                ball.Speed.X = 0;
+                ball.Speed.Y = 0;
+                ball.Angel = 0;
+            }else{
+                this.actionList.MovaToNote(ball, aimNote);
+            }
+            
+            this.ballDrawer.StepDraw(ball);
+            const noteOrderNumber = ball.noteNumber;
+            this.melody.notes[noteOrderNumber - 1] = undefined;
+            this.melody.times[noteOrderNumber - 1] = undefined;
         });
 
     }

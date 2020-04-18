@@ -19,8 +19,8 @@ export class MelodyDrawer{
         let elementsInRow = 0;
         notes.forEach(note => {
             this.context.rect(startWidhtPosition, startHeightPosition, 100, 100);
-            note.position.x = startWidhtPosition;
-            note.position.y = startHeightPosition;
+            note.position.x = startWidhtPosition + 50;
+            note.position.y = startHeightPosition + 50;
             elementsInRow++;
             if(maxNotesInRow == elementsInRow){
                 elementsInRow = 0;

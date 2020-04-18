@@ -11,6 +11,23 @@ export default class ActionList {
         return ball;
     }
 
+    MovaToNote(ball, note){
+        this.CorrectDirection(ball, note);
+        this.Step(ball);
+    }
+
+    CorrectDirection(ball, note){
+        const notePosition = note.position;
+        const ballPosition = ball.Position;
+        const dx = ballPosition.X - notePosition.x;
+        const dy = ballPosition.Y - notePosition.y;
+        const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+        ball.Angle = angle;
+        
+        ball.Speed.X = ball.Velocity * Math.cos(angle * Math.PI);
+        ball.Speed.Y = ball.Velocity * Math.sin(angle * Math.PI);
+    }
+
     CorrectSpeed(ball) {
         if (ball.BestFromAll != undefined) {
             ball.Speed.X = ball.Speed.X * 0.03 +

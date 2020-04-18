@@ -11,12 +11,14 @@ export class BallDrawer {
     }
 
     StepDraw(ball) {
+        const oldLineWidth = this.ctx.lineWidth;
         this.ctx.lineWidth = ball.Radius;
         this.ctx.beginPath();
         this.ctx.lineCap = 'round';
         this.ctx.moveTo(ball.Position.X, ball.Position.Y);
         this.ctx.lineTo(ball.Position.X, ball.Position.Y);
         this.ctx.stroke();
+        this.ctx.lineWidth = oldLineWidth;
     }
 
     DrawFigure(figure) {
