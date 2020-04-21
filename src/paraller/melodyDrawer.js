@@ -8,8 +8,7 @@ export class MelodyDrawer{
     }
 
     DrawNotes(notes){
-        const body =  document.getElementById("body");
-        const screenWidth = body.clientWidth;
+        const screenWidth = enviroment.width;
         const maxNotesInRow = Math.round(screenWidth / this.enviroment.noteWidth) - 1;
         let startWidhtPosition = this.enviroment.noteWidth / 2 ;
         let startHeightPosition = this.enviroment.noteHeight / 2;
@@ -18,7 +17,7 @@ export class MelodyDrawer{
         this.context.lineWidth = 2;
         let elementsInRow = 0;
         notes.forEach(note => {
-            this.context.rect(startWidhtPosition, startHeightPosition, 100, 100);
+            this.context.rect(startWidhtPosition, startHeightPosition, 200, 200);
             note.position.x = startWidhtPosition + 50;
             note.position.y = startHeightPosition + 50;
             elementsInRow++;

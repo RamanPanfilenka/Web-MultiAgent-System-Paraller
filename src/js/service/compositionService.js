@@ -21,21 +21,22 @@ export class compositionService{
             this.ansCount++;
             if(this.ansCount == this.balls.length){
                 if(this.balls.filter(ball => ball.status == melodyBallStatus.InAgreement).length != 0){
-                    this.SendDataToWorkers();
+                    this.SendDataToWorkers(true);
                     return;
                 }
 
                 if(this.balls.filter(ball => ball.status == melodyBallStatus.Draw).length == this.balls.length){
                     this.Draw();
-                    this.SendDataToWorkers();
+                    this.SendDataToWorkers(false);
                 }
             }
         };
 
     }
 
-    SendDataToWorkers() {
+    SendDataToWorkers(checkNearest) {
         this.balls.forEach((ball) => {
+            ball.checkNearest = checkNearest;
             ball.nearestBalls = this.balls.filter(fball => fball.id != ball.id);
             ball.melody = this.melody;
             ball.currentTime = (Date.now() - this.startTime)/600;
@@ -58,7 +59,7 @@ export class compositionService{
             const aimNote = this.allnotes.find(note => note.id == ball.note.id);
             const dx = Math.abs(ball.Position.X - aimNote.position.x);
             const dy = Math.abs(ball.Position.Y - aimNote.position.y);
-            if(dx == 0 && dy == 0){
+            if(dx < 20 && dy < 20){
                 ball.Speed.X = 0;
                 ball.Speed.Y = 0;
                 ball.Angel = 0;

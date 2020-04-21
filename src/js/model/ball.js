@@ -6,7 +6,7 @@ export default class Ball {
         this.Radius = enviroment.BallRadius;
         let randX = Math.random() * enviroment.width;
         let randY = Math.random() * enviroment.height;
-        let vel = 0.5;
+        let vel = 0.8;
         let rad = Math.random() * Math.PI * 2;
 
         this.Position = { X: randX, Y: randY };

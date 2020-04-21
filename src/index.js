@@ -14,23 +14,23 @@ import { compositionService } from './js/service/compositionService';
 
 const BallCount = 70;
 const melodyBallCount = 3;
-const melodyCount = 144;
+const melodyCount = 36;
 const balls = [...new Array(BallCount)].map((a, index) => new Ball(index, enviroment));
-const melody = new Melody([{orderNumber: 1, noteId: 19}, 
+const melody = new Melody([{orderNumber: 1, noteId: 2}, 
                             {orderNumber: 2, noteId: 20}, 
-                            {orderNumber: 3, noteId: 119},
-                            {orderNumber: 4, noteId: 55},
-                            {orderNumber: 5, noteId: 80},
-                            {orderNumber: 6, noteId: 15}, 
-                            {orderNumber: 7, noteId: 88}, 
-                            {orderNumber: 8, noteId: 73},
-                            {orderNumber: 9, noteId: 115},
-                            {orderNumber: 10, noteId: 28},
-                            {orderNumber: 11, noteId: 37}, 
-                            {orderNumber: 12, noteId: 57}, 
-                            {orderNumber: 13, noteId: 106},
-                            {orderNumber: 14, noteId: 66},
-                            {orderNumber: 15, noteId: 51}], [5, 10, 12, 13, 17,20, 25, 29, 33, 37,41, 45, 49, 54, 59]);
+                            {orderNumber: 3, noteId: 4},
+                            {orderNumber: 4, noteId: 24},
+                            {orderNumber: 5, noteId: 29},
+                            {orderNumber: 6, noteId: 3}, 
+                            {orderNumber: 7, noteId: 17}, 
+                            {orderNumber: 8, noteId: 10},
+                            {orderNumber: 9, noteId: 35},
+                            {orderNumber: 10, noteId: 19},
+                            {orderNumber: 11, noteId: 8}, 
+                            {orderNumber: 12, noteId: 18}, 
+                            {orderNumber: 13, noteId: 3},
+                            {orderNumber: 14, noteId: 1},
+                            {orderNumber: 15, noteId: 9}], [8, 10, 12, 13, 17,20, 25, 29, 33, 37,41, 45, 49, 54, 59]);
 let allNotes = [...new Array(melodyCount)].map((a, index) => new Note(index, 0,0));
 
 window.onload = function() {

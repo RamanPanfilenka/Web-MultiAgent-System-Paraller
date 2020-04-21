@@ -11,6 +11,7 @@ export class MelodyBall extends Ball{
         this.noteNumber = 0;
         this.allNotes = allNotes;
         this.currentTime = 0;
+        this.checkNearest = false;
     }
 
     Sensive(worker) {
@@ -32,18 +33,20 @@ export class MelodyBall extends Ball{
             notes : this.GetFreeNotes(this.nearestBalls),
             times : this.melody.times
         };
-        this.nearestBalls.filter(ball => this.note != null && ball.noteNumber == this.noteNumber).forEach(ball => {
-            const currentdx = this.Position.X - this.note.position.x;
-            const currentdy = this.Position.Y - this.note.position.y;
-            const balldx = ball.Position.X - this.note.position.x;
-            const balldy = ball.Position.Y - this.note.position.y;
-            const curentDistance = Math.sqrt(currentdx ** 2 + currentdy ** 2);
-            const ballDistance = Math.sqrt(balldx ** 2 + balldy ** 2);
-            if(curentDistance/this.Velocity > ballDistance/ball.Velocity){
-                this.note = this.FindNote(freeNotes);
-                this.status = melodyBallStatus.InAgreement;
-            }
-        });
+        if(this.checkNearest){
+            this.nearestBalls.filter(ball => this.note != null && ball.noteNumber == this.noteNumber).forEach(ball => {
+                const currentdx = this.Position.X - this.note.position.x;
+                const currentdy = this.Position.Y - this.note.position.y;
+                const balldx = ball.Position.X - this.note.position.x;
+                const balldy = ball.Position.Y - this.note.position.y;
+                const curentDistance = Math.sqrt(currentdx ** 2 + currentdy ** 2);
+                const ballDistance = Math.sqrt(balldx ** 2 + balldy ** 2);
+                if(curentDistance/this.Velocity > ballDistance/ball.Velocity){
+                    this.note = this.FindNote(freeNotes);
+                    this.status = melodyBallStatus.InAgreement;
+                }
+            });
+        }
         
         if(this.IsInNote(this.note.position) && this.currentTime > this.melody.times[this.noteNumber]){
             this.status = melodyBallStatus.InAgreement;
@@ -68,6 +71,7 @@ export class MelodyBall extends Ball{
         this.status = ball.status;
         this.noteNumber = ball.noteNumber;
         this.currentTime = ball.currentTime;
+        this.checkNearest = ball.checkNearest;
     }
 
     GetFreeNotes(nearestBalls){
