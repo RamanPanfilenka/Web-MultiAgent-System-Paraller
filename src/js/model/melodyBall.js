@@ -1,5 +1,6 @@
 import Ball from "./ball";
 import { melodyBallStatus } from "../helpers/melodyBallStatus";
+import { enviroment } from "../../enviroment/enviroment";
 
 export class MelodyBall extends Ball{
     constructor(id, enviroment, melody, allNotes) {
@@ -12,6 +13,7 @@ export class MelodyBall extends Ball{
         this.allNotes = allNotes;
         this.currentTime = 0;
         this.checkNearest = false;
+        this.notePlayTime = 0;
     }
 
     Sensive(worker) {
@@ -21,9 +23,9 @@ export class MelodyBall extends Ball{
         worker.postMessage(JSON.stringify(postMessage));
     }
 
-    Pondering(nearestBalls) {
+    Pondering() {
         this.status = melodyBallStatus.Draw;
-        if(this.note == null && this.noteNumber == 0){
+        if(this.note == undefined && this.noteNumber == 0){
             this.status = melodyBallStatus.InAgreement;
             this.note = this.FindNote(this.melody);
             return;
@@ -34,21 +36,21 @@ export class MelodyBall extends Ball{
             times : this.melody.times
         };
         if(this.checkNearest){
-            this.nearestBalls.filter(ball => this.note != null && ball.noteNumber == this.noteNumber).forEach(ball => {
+            this.nearestBalls.filter(ball => this.note != undefined && ball.noteNumber == this.noteNumber).forEach(ball => {
                 const currentdx = this.Position.X - this.note.position.x;
                 const currentdy = this.Position.Y - this.note.position.y;
                 const balldx = ball.Position.X - this.note.position.x;
                 const balldy = ball.Position.Y - this.note.position.y;
                 const curentDistance = Math.sqrt(currentdx ** 2 + currentdy ** 2);
                 const ballDistance = Math.sqrt(balldx ** 2 + balldy ** 2);
-                if(curentDistance/this.Velocity > ballDistance/ball.Velocity){
+                if(this.timeToNote > ball.timeToNote){
                     this.note = this.FindNote(freeNotes);
                     this.status = melodyBallStatus.InAgreement;
                 }
             });
         }
         
-        if(this.IsInNote(this.note.position) && this.currentTime > this.melody.times[this.noteNumber]){
+        if(this.IsInNote(this.note.position) && this.currentTime > this.notePlayTime){
             this.status = melodyBallStatus.InAgreement;
             const newNote = this.FindNote(this.melody);
             if(newNote != undefined){
@@ -72,6 +74,7 @@ export class MelodyBall extends Ball{
         this.noteNumber = ball.noteNumber;
         this.currentTime = ball.currentTime;
         this.checkNearest = ball.checkNearest;
+        this.notePlayTime = ball.notePlayTime;
     }
 
     GetFreeNotes(nearestBalls){
@@ -82,6 +85,7 @@ export class MelodyBall extends Ball{
     }
 
     FindNote(melody){
+        this.Velocity = enviroment.defaultVelocity;
         for(let i = 0; i < melody.notes.length; i++){
             if(melody.notes[i]){
                 const noteId = melody.notes[i].noteId;
@@ -91,9 +95,12 @@ export class MelodyBall extends Ball{
                 const distanceY = this.Position.Y - notePosition.y;
                 const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
                 const toNoteTime = distance / this.Velocity/ 1000;
-                if(toNoteTime + this.currentTime < melody.times[melody.notes[i].orderNumber - 1]){
+                if(toNoteTime + this.currentTime < melody.notes[i].time){
+                    this.notePlayTime = melody.notes[i].time;
                     this.timeToNote = toNoteTime;
                     this.noteNumber = melody.notes[i].orderNumber;
+                    const newVelocity = distance/(melody.notes[i].time - this.currentTime);
+                    this.Velocity = newVelocity / 360;
                     return currentNote;
                 }
             }

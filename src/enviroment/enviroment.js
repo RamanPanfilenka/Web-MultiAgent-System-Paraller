@@ -6,5 +6,6 @@ export const enviroment = {
     PotencialRadius: 600,
     destation: 20,
     noteWidth: 200,
-    noteHeight: 200
+    noteHeight: 200,
+    defaultVelocity: 0.8
 };
