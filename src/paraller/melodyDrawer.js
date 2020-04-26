@@ -7,7 +7,7 @@ export class MelodyDrawer {
         this.melody = melody;
     }
 
-    DrawNotes(notes, currentTime){
+    drawNotes(notes, currentTime) {
         this.context.beginPath();
         const old = this.context.lineWidth;
         this.context.lineWidth = 2;
@@ -17,12 +17,20 @@ export class MelodyDrawer {
                     return elem.noteId == note.id;
                 }
             });
-            if(currentTime != undefined && melodyNote != undefined && (currentTime < melodyNote.time + 0.2 && currentTime > melodyNote.time - 0.05)){
-                this.context.fillStyle = `rgb(255,255,204)`;
-                this.context.fillRect(note.position.x - config.noteWidth / 2 , note.position.y - config.noteHeight / 2, config.noteWidth, config.noteHeight);
-                this.context.fillStyle = `black`;
-            }else{
-                this.context.rect(note.position.x - config.noteWidth / 2, note.position.y - config.noteHeight / 2, config.noteWidth, config.noteHeight);
+            if (currentTime != undefined && melodyNote != undefined && (currentTime < melodyNote.time + 0.2 && currentTime > melodyNote.time - 0.05)) {
+                this.context.fillStyle = 'rgb(255,255,204)';
+                this.context.fillRect(
+                    note.position.x - config.noteWidth / 2,
+                    note.position.y - config.noteHeight / 2,
+                    config.noteWidth,
+                    config.noteHeight);
+                this.context.fillStyle = 'black';
+            } else {
+                this.context.rect(
+                    note.position.x - config.noteWidth / 2,
+                    note.position.y - config.noteHeight / 2,
+                    config.noteWidth,
+                    config.noteHeight);
             }
         });
         this.context.lineWidth = old;

@@ -19,7 +19,13 @@
         "prefer-exponentiation-operator": "error",
         "quotes": [ "error", "single" ],
         "comma-dangle": [ "error", "always-multiline" ],
-
+        "camelcase": [
+            "error",
+            {
+                "properties": "always",
+                "ignoreDestructuring": true
+            }
+        ],
         "padding-line-between-statements": [
             "error",
             { "blankLine": "always", "prev": "*", "next": "return" }

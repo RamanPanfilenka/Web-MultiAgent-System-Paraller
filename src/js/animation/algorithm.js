@@ -4,8 +4,8 @@ export default class AlgorithmAnimation {
         this.nearestBalls = [];
     }
 
-    Anim() {
-        this.ball.Pondering(this.nearestBalls);
-        this.ball.Sensive(self);
+    anim() {
+        this.ball.pondering(this.nearestBalls);
+        this.ball.sensive(self);
     }
 }

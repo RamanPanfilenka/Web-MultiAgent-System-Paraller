@@ -8,7 +8,7 @@ import { MelodyBall } from '@/js/model/melodyBall';
 import Melody from '@/js/model/melody/melody';
 import Note from '@/js/model/melody/note';
 import { CompositionService } from '@/js/service/compositionService';
-import { shapeFillingService } from '@/js/service/shapeFillingService';
+import { ShapeFillingService } from '@/js/service/shapeFillingService';
 
 const melodyData = [
     { orderNumber: 1,  noteId: 2,  time: 8 },
@@ -40,22 +40,22 @@ window.onload = function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     const noteDrawer = new MelodyDrawer(canvas, new Melody([...melody.notes]));
-    noteDrawer.DrawNotes(allNotes);
+    noteDrawer.drawNotes(allNotes);
     const melodyBalls = [...new Array(melodyBallCount)].map((a, index) => new MelodyBall(index, melody, allNotes));
     const ballDrawer = new BallDrawer(canvas);
     // const workerController = new WorkerController(new shapeFillingService(balls, ballDrawer, new Rect(1000,500,90)));
     const workerController = new WorkerController(new CompositionService(allNotes, melodyBalls, melody, ballDrawer, noteDrawer));
-    workerController.InitWorkers();
-    workerController.RunWorkers();
+    workerController.initWorkers();
+    workerController.runWorkers();
 };
 
-function GetAllNotes(count){
+function GetAllNotes(count) {
     const screenWidth = config.width;
     const maxNotesInRow = Math.round(screenWidth / config.noteWidth) - 1;
     let startWidthPosition = config.noteWidth / 2;
     let startHeightPosition = config.noteHeight / 2;
     const allNotes = [...new Array(count)].map((a, index) => {
-        if(index != 0 && (index) % maxNotesInRow == 0){
+        if (index != 0 && (index) % maxNotesInRow == 0) {
             startHeightPosition += config.noteHeight;
             startWidthPosition = config.noteWidth / 2;
         }
@@ -63,8 +63,8 @@ function GetAllNotes(count){
         const x = startWidthPosition + config.noteHeight / 2;
         const y = startHeightPosition + config.noteHeight / 2;
         startWidthPosition += config.noteWidth;
-        
-        return new Note(index, x, y)
+
+        return new Note(index, x, y);
     });
 
     return allNotes;

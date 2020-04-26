@@ -5,7 +5,7 @@ export default class BallAnimation {
         this.ball = ball;
     }
 
-    Anim() {
+    anim() {
         let postModel = { status: modelStatusEnum.start, ball: this.ball, additionalBall: null };
         postMessage(JSON.stringify(postModel));
         setInterval(() => {

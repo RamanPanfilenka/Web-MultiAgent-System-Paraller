@@ -1,6 +1,6 @@
-export const melodyBallStatus = Object.freeze({
-    InAgreement: 0,
-    Draw: 1,
-    Agreement: 2,
-    Stop: 3,
-});
+export const melodyBallStatus = {
+    IN_AGREEMENT: 0,
+    DRAW: 1,
+    AGREEMENT: 2,
+    STOP: 3,
+};

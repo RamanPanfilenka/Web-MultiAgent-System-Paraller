@@ -1,5 +1,4 @@
 import AlgorithmAnimation from '@/js/animation/algorithm';
-import config from '@/config';
 import Ball from '@/js/model/ball';
 import { MelodyBall } from '@/js/model/melodyBall';
 
@@ -14,8 +13,8 @@ onmessage = function(msg) {
     }
 
     const ball = new MelodyBall(model.ball.id, model.ball.melody, model.ball.notes);
-    // const ball = new Ball(model.ball.id, config);
-    ball.CopyBall(model.ball);
+    // const ball = new Ball(model.ball.id);
+    ball.copyBall(model.ball);
     algorithmAnimation.ball = ball;
-    algorithmAnimation.Anim();
+    algorithmAnimation.anim();
 };

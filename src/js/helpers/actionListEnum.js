@@ -1,3 +1,3 @@
-export const actionEnum = Object.freeze({
-    moveToPotentialBase: 1,
-});
+export const actionEnum = {
+    MOVE_TO_POTENTIAL_BASE: 1,
+};

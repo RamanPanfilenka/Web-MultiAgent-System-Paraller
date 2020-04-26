@@ -14,7 +14,7 @@ export class CompositionService {
         this.lastMelodyTime = melody.notes[melody.notes.length - 1].time;
     }
 
-    WorkerAnswerSubscription(worker) {
+    workerAnswerSubscription(worker) {
         worker.onmessage = (msg) => {
             const model = JSON.parse(msg.data);
             this.balls[model.ball.id] = model.ball;
@@ -22,22 +22,22 @@ export class CompositionService {
             this.ansCount++;
             if (this.ansCount == this.balls.length) {
                 const currentTime = (Date.now() - this.startTime)/600;
-                if (this.balls.filter(ball => ball.status == melodyBallStatus.InAgreement).length != 0) {
-                    this.SendDataToWorkers(true, currentTime);
+                if (this.balls.filter(ball => ball.status == melodyBallStatus.IN_AGREEMENT).length != 0) {
+                    this.sendDataToWorkers(true, currentTime);
 
                     return;
                 }
 
-                if (this.balls.filter(ball => ball.status == melodyBallStatus.Draw).length == this.balls.length || currentTime < this.lastMelodyTime + 0.5) {
-                    this.Draw(currentTime);
-                    this.SendDataToWorkers(false, currentTime);
+                if (this.balls.filter(ball => ball.status == melodyBallStatus.DRAW).length == this.balls.length || currentTime < this.lastMelodyTime + 0.5) {
+                    this.draw(currentTime);
+                    this.sendDataToWorkers(false, currentTime);
                 }
             }
         };
 
     }
 
-    SendDataToWorkers(checkNearest, currentTime) {
+    sendDataToWorkers(checkNearest, currentTime) {
         this.balls.forEach((ball) => {
             ball.checkNearest = checkNearest;
             ball.nearestBalls = this.balls.filter(fball => fball.id != ball.id);
@@ -55,26 +55,24 @@ export class CompositionService {
         this.ansCount = 0;
     }
 
-    Draw(currentTime) {
-        this.ballDrawer.Init(currentTime);
-        this.noteDrawer.DrawNotes(this.notes, currentTime);
+    draw(currentTime) {
+        this.ballDrawer.init(currentTime);
+        this.noteDrawer.drawNotes(this.notes, currentTime);
         this.balls.forEach(ball => {
             const aimNote = this.notes.find(note => note.id == ball.note.id);
-            const dx = Math.abs(ball.Position.X - aimNote.position.x);
-            const dy = Math.abs(ball.Position.Y - aimNote.position.y);
+            const dx = Math.abs(ball.position.x - aimNote.position.x);
+            const dy = Math.abs(ball.position.y - aimNote.position.y);
             if (dx < 20 && dy < 20) {
-                ball.Speed.X = 0;
-                ball.Speed.Y = 0;
-                ball.Angel = 0;
+                ball.speed.x = 0;
+                ball.speed.y = 0;
+                ball.angel = 0;
             } else {
-                this.actionList.MoveToNote(ball, aimNote);
+                this.actionList.moveToNote(ball, aimNote);
             }
 
             this.ballDrawer.StepDraw(ball);
             const noteOrderNumber = ball.noteNumber;
             delete this.melody.notes[noteOrderNumber - 1];
         });
-
     }
-
 }

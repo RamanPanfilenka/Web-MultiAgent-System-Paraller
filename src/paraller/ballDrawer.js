@@ -1,27 +1,27 @@
 export class BallDrawer {
     constructor(canvas) {
         this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
+        this.context = canvas.getContext('2d');
         this.randomX = Math.random();
         this.randomY = Math.random();
     }
 
-    Init() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    init() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     StepDraw(ball) {
-        const oldLineWidth = this.ctx.lineWidth;
-        this.ctx.lineWidth = ball.Radius;
-        this.ctx.beginPath();
-        this.ctx.lineCap = 'round';
-        this.ctx.moveTo(ball.Position.X, ball.Position.Y);
-        this.ctx.lineTo(ball.Position.X, ball.Position.Y);
-        this.ctx.stroke();
-        this.ctx.lineWidth = oldLineWidth;
+        const oldLineWidth = this.context.lineWidth;
+        this.context.lineWidth = ball.radius;
+        this.context.beginPath();
+        this.context.lineCap = 'round';
+        this.context.moveTo(ball.position.x, ball.position.y);
+        this.context.lineTo(ball.position.x, ball.position.y);
+        this.context.stroke();
+        this.context.lineWidth = oldLineWidth;
     }
 
-    DrawFigure(figure) {
-        figure.DrawPotential(this.ctx);
+    drawFigure(figure) {
+        figure.drawPotential(this.context);
     }
 }

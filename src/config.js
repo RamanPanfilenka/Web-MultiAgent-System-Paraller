@@ -1,9 +1,9 @@
 export default {
-    BallRadius: 17,
+    ballRadius: 17,
     width: 1920,
     height: 900,
-    SmashCoefficient: 17,
-    PotentialRadius: 600,
+    smashCoefficient: 17,
+    potentialRadius: 600,
     destination: 20,
     noteWidth: 200,
     noteHeight: 200,
