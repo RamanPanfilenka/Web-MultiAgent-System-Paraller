@@ -1,7 +1,7 @@
 import { melodyBallStatus } from '../helpers/melodyBallStatus';
 import ActionList from '../model/actionList';
 
-export class compositionService {
+export class CompositionService {
     constructor(notes, balls, melody, ballDrawer, noteDrawer) {
         this.balls = balls;
         this.melody = melody;

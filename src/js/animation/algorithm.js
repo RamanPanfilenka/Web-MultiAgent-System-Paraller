@@ -1,7 +1,6 @@
 export default class AlgorithmAnimation {
-    constructor(ball, environment) {
+    constructor(ball) {
         this.ball = ball;
-        this.environment = environment;
         this.nearestBalls = [];
     }
 

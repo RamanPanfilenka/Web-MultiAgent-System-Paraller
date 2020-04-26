@@ -1,10 +1,6 @@
 import config from '@/config';
 
 export default class ActionList {
-    constructor() {
-        this.environment = config;
-    }
-
     MoveToPotentialBase(ball) {
         this.Step(ball);
         this.CorrectSpeed(ball);
@@ -55,7 +51,7 @@ export default class ActionList {
 
 
         if (ball.Velocity > ball.Radius / 2) {
-            ball.Velocity -= .5;
+            ball.Velocity -= 0.5;
             ball.Speed.X = Math.cos(this, ball.Angle) * ball.Velocity;
             ball.Speed.Y = Math.sin(ball.Angle) * ball.Velocity;
         }
@@ -64,8 +60,8 @@ export default class ActionList {
             ball.Position.X = 0;
             ball.Speed.X *= -1;
             ball = this.ChangeAngle(ball);
-        } else if (ball.Position.X > this.environment.width - 20) {
-            ball.Position.X = this.environment.width - 20;
+        } else if (ball.Position.X > config.width - config.BallRadius) {
+            ball.Position.X = config.width - config.BalBallRadius;
             ball.Speed.X *= -1;
             ball = this.ChangeAngle(ball);
         }
@@ -74,8 +70,8 @@ export default class ActionList {
             ball.Position.Y = 0;
             ball.Speed.Y *= -1;
             ball = this.ChangeAngle(ball);
-        } else if (ball.Position.Y > this.environment.height - 20) {
-            ball.Position.Y = this.environment.height - 20;
+        } else if (ball.Position.Y > config.height - config.BalBallRadius) {
+            ball.Position.Y = config.height - config.BaBallRadius;
             ball.Speed.Y *= -1;
             ball = this.ChangeAngle(ball);
         }

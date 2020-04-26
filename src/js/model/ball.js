@@ -1,13 +1,14 @@
+import config from '@/config';
 import { actionEnum } from '../helpers/actionListEnum';
 
 export default class Ball {
-    constructor(id, environment) {
+    constructor(id) {
         this.id = id;
-        this.Radius = environment.BallRadius;
-        let randX = Math.random() * environment.width;
-        let randY = Math.random() * environment.height;
-        let vel = environment.defaultVelocity;
-        let rad = Math.random() * Math.PI * 2;
+        this.Radius = config.BallRadius;
+        const randX = Math.random() * config.width;
+        const randY = Math.random() * config.height;
+        const vel = config.defaultVelocity;
+        const rad = Math.random() * Math.PI * 2;
 
         this.Position = { X: randX, Y: randY };
         this.PreviousPosition = { X: randX, Y: randY };
@@ -32,7 +33,7 @@ export default class Ball {
         this.Angle = ball.Angle;
         this.BestFunctionValue = ball.BestFunctionValue;
         this.BestFromAll = ball.BestFromAll;
-        this.isPotential = ball.isPotencial;
+        this.isPotential = ball.isPotential;
         this.nearestBalls = ball.nearestBalls;
     }
 

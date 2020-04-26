@@ -10,11 +10,10 @@ onmessage = function(msg) {
     if (!algorithmAnimation) {
         algorithmAnimation = new AlgorithmAnimation(
             model.ball,
-            model.environment,
         );
     }
 
-    const ball = new MelodyBall(model.ball.id, config, model.ball.melody, model.ball.notes);
+    const ball = new MelodyBall(model.ball.id, model.ball.melody, model.ball.notes);
     // const ball = new Ball(model.ball.id, config);
     ball.CopyBall(model.ball);
     algorithmAnimation.ball = ball;

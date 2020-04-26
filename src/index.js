@@ -7,7 +7,7 @@ import WorkerController from '@/js/workerController';
 import { MelodyBall } from '@/js/model/melodyBall';
 import Melody from '@/js/model/melody/melody';
 import Note from '@/js/model/melody/note';
-import { compositionService } from '@/js/service/compositionService';
+import { CompositionService } from '@/js/service/compositionService';
 import { shapeFillingService } from '@/js/service/shapeFillingService';
 
 const melodyData = [
@@ -39,12 +39,12 @@ window.onload = function() {
     const canvas = document.getElementById('canvas');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    const noteDrawer = new MelodyDrawer(canvas, config, new Melody([...melody.notes]));
+    const noteDrawer = new MelodyDrawer(canvas, new Melody([...melody.notes]));
     noteDrawer.DrawNotes(allNotes);
-    const melodyBalls = [...new Array(melodyBallCount)].map((a, index) => new MelodyBall(index, config, melody, allNotes));
+    const melodyBalls = [...new Array(melodyBallCount)].map((a, index) => new MelodyBall(index, melody, allNotes));
     const ballDrawer = new BallDrawer(canvas);
     // const workerController = new WorkerController(new shapeFillingService(balls, ballDrawer, new Rect(1000,500,90)));
-    const workerController = new WorkerController(new compositionService(allNotes, melodyBalls, melody, ballDrawer, noteDrawer));
+    const workerController = new WorkerController(new CompositionService(allNotes, melodyBalls, melody, ballDrawer, noteDrawer));
     workerController.InitWorkers();
     workerController.RunWorkers();
 };

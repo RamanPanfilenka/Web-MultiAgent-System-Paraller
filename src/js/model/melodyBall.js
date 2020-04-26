@@ -1,10 +1,10 @@
+import config from '@/config';
 import Ball from './ball';
 import { melodyBallStatus } from '../helpers/melodyBallStatus';
-import config from '@/config';
 
 export class MelodyBall extends Ball {
-    constructor(id, environment, melody, notes) {
-        super(id, environment);
+    constructor(id, melody, notes) {
+        super(id);
         this.note = null;
         this.timeToNote = 0;
         this.status = 0;

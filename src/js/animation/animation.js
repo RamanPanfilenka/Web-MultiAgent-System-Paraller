@@ -1,9 +1,8 @@
 import { modelStatusEnum } from '../modelStatusEnum';
 
 export default class BallAnimation {
-    constructor(ball, environment) {
+    constructor(ball) {
         this.ball = ball;
-        this.environment = environment;
     }
 
     Anim() {

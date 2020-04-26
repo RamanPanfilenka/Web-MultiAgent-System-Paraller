@@ -1,10 +1,9 @@
 import config from '@/config';
 
 export class MelodyDrawer {
-    constructor(canvas, environment, melody) {
+    constructor(canvas, melody) {
         this.canvas = canvas;
         this.context = canvas.getContext('2d');
-        this.environment = environment;
         this.melody = melody;
     }
 
@@ -20,10 +19,10 @@ export class MelodyDrawer {
             });
             if(currentTime != undefined && melodyNote != undefined && (currentTime < melodyNote.time + 0.2 && currentTime > melodyNote.time - 0.05)){
                 this.context.fillStyle = `rgb(255,255,204)`;
-                this.context.fillRect(note.position.x - this.environment.noteWidth / 2 , note.position.y - this.environment.noteHeight / 2,  this.environment.noteWidth, this.environment.noteHeight);
+                this.context.fillRect(note.position.x - config.noteWidth / 2 , note.position.y - config.noteHeight / 2, config.noteWidth, config.noteHeight);
                 this.context.fillStyle = `black`;
             }else{
-                this.context.rect(note.position.x - this.environment.noteWidth / 2, note.position.y - this.environment.noteHeight / 2,  this.environment.noteWidth, this.environment.noteHeight);
+                this.context.rect(note.position.x - config.noteWidth / 2, note.position.y - config.noteHeight / 2, config.noteWidth, config.noteHeight);
             }
         });
         this.context.lineWidth = old;

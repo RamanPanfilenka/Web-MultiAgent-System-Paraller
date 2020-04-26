@@ -17,12 +17,6 @@ export class shapeFillingService {
         this.smashCoefficient = config.SmashCoefficient;
     }
 
-    /**
-     * Check is all balls in figure
-     *
-     * @returns true or false
-     * @memberof WorkerController
-     */
     CheckAllInPotential() {
         return this.balls.every(ball => {
             return this.figure.GetPotential(ball.Position.X, ball.Position.Y) && this.nearestBalls.length == 0;
@@ -48,13 +42,6 @@ export class shapeFillingService {
         }
     }
 
-    /**
-     * Set best fuction value for new ball's position
-     *
-     * @param {*} ball
-     * @returns ball
-     * @memberof WorkerController
-     */
     SetBestValue(ball) {
         if (this.StopPointFunction(ball.Position.X, ball.Position.Y) > this.StopPointFunction(ball.BestFunctionValue.X, ball.BestFunctionValue.Y)) {
             ball.BestFunctionValue.X = ball.Position.X;
@@ -64,14 +51,6 @@ export class shapeFillingService {
         return ball;
     }
 
-    /**
-     * Get function value of point
-     *
-     * @param {*} x
-     * @param {*} y
-     * @returns function Value
-     * @memberof WorkerController
-     */
     StopPointFunction(x, y) {
         const pathX = this.figure.X - Math.abs(x - this.figure.X);
         const pathY = this.figure.Y - Math.abs(y - this.figure.Y);
@@ -79,14 +58,6 @@ export class shapeFillingService {
         return pathY + pathX;
     }
 
-    /**
-     * Set new best value from nearest ball
-     *
-     * @param {*} bestBallValue
-     * @param {*} currentBall
-     * @returns bestValue
-     * @memberof WorkerController
-     */
     CheckBestValue(bestBallValue, currentBall) {
         const bestFunctionValue = this.StopPointFunction(bestBallValue.X, bestBallValue.Y);
         const currentBallValue = this.StopPointFunction(currentBall.BestFunctionValue.X, currentBall.BestFunctionValue.Y);
@@ -97,15 +68,6 @@ export class shapeFillingService {
         return bestBallValue;
     }
 
-    /**
-     * Change speed of ball if it is smash with another one
-     *
-     * @param {*} ball
-     * @param {*} dx
-     * @param {*} dy
-     * @returns
-     * @memberof WorkerController
-     */
     Smash(ball, ball2, dx, dy) {
         ball.Speed.X += dx * ball.Radius / 80;
         ball.Speed.Y += dy * ball.Radius / 80;
@@ -115,13 +77,6 @@ export class shapeFillingService {
         return ball;
     }
 
-    /**
-     * Communicate with another ball in radius
-     *
-     * @param {*} currentBall
-     * @returns
-     * @memberof WorkerController
-     */
     Communicate(currentBall) {
         let bustFunctionValue = currentBall.BestFunctionValue;
         forEach(this.balls, (ball) => {
@@ -147,13 +102,6 @@ export class shapeFillingService {
         this.drawer.StepDraw(ball);
     }
 
-    /**
-     *Common operations with balls
-     *
-     * @param {*} ball
-     * @returns
-     * @memberof WorkerController
-     */
     OperationWithBall(ball) {
         ball = this.SetBestValue(ball);
         ball = this.Communicate(ball);
@@ -211,7 +159,7 @@ export class shapeFillingService {
     SendDataToWorkers() {
         this.balls.forEach((ball) => {
             const postModel = {
-                ball: ball,
+                ball,
             };
             const worker = ball.worker;
             delete ball.nearestBalls;
@@ -234,8 +182,7 @@ export class shapeFillingService {
 
     GetPostModel(ball) {
         return {
-            ball: ball,
-            environment: config,
+            ball,
         };
     }
 
