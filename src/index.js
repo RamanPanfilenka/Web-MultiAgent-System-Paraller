@@ -1,5 +1,5 @@
-import { BallDrawer } from '@/paraller/ballDrawer';
-import { MelodyDrawer } from '@/paraller/melodyDrawer';
+import { BallDrawer } from '@/js/drawers/ballDrawer';
+import { MelodyDrawer } from '@/js/drawers/melodyDrawer';
 import Ball from '@/js/model/ball';
 import Rect from '@/js/model/figures/rect';
 import config from '@/config';

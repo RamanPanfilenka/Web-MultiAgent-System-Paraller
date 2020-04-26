@@ -3,7 +3,7 @@ import config  from '@/config';
 import ActionList from '../model/actionList';
 import Circle from '../model/figures/circle';
 import Rect from '../model/figures/rect';
-import { actionEnum } from '../helpers/actionListEnum';
+import { actionEnum } from '../enums/actionListEnum';
 
 export class ShapeFillingService {
     constructor(balls, drawer, figure) {

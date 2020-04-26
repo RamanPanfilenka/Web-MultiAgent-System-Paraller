@@ -1,4 +1,4 @@
-import { melodyBallStatus } from '../helpers/melodyBallStatus';
+import { melodyBallStatus } from '../enums/melodyBallStatus';
 import ActionList from '../model/actionList';
 
 export class CompositionService {
@@ -70,7 +70,7 @@ export class CompositionService {
                 this.actionList.moveToNote(ball, aimNote);
             }
 
-            this.ballDrawer.StepDraw(ball);
+            this.ballDrawer.stepDraw(ball);
             const noteOrderNumber = ball.noteNumber;
             delete this.melody.notes[noteOrderNumber - 1];
         });

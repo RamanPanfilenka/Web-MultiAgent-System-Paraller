@@ -1,5 +1,5 @@
 import config from '@/config';
-import { actionEnum } from '../helpers/actionListEnum';
+import { actionEnum } from '../enums/actionListEnum';
 
 export default class Ball {
     constructor(id) {

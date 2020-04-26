@@ -1,6 +1,6 @@
 import { forEach } from 'async-foreach';
 import config from '@/config';
-import Worker from '@/paraller/animationParaller.worker.js';
+import Worker from '@/worker/ball.worker.js';
 
 export default class WorkerController {
     constructor(methodService) {

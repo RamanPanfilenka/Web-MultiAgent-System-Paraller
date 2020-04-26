@@ -1,6 +1,6 @@
 import config from '@/config';
 import Ball from './ball';
-import { melodyBallStatus } from '../helpers/melodyBallStatus';
+import { melodyBallStatus } from '../enums/melodyBallStatus';
 
 export class MelodyBall extends Ball {
     constructor(id, melody, notes) {
@@ -97,6 +97,7 @@ export class MelodyBall extends Ball {
                     this.noteNumber = melody.notes[i].orderNumber;
                     const newVelocity = distance/(melody.notes[i].time - this.currentTime);
                     this.velocity = newVelocity / 400;
+
                     return currentNote;
                 }
             }

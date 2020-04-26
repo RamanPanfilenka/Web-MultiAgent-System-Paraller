@@ -10,7 +10,7 @@ export class BallDrawer {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    StepDraw(ball) {
+    stepDraw(ball) {
         const oldLineWidth = this.context.lineWidth;
         this.context.lineWidth = ball.radius;
         this.context.beginPath();
