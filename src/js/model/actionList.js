@@ -1,18 +1,18 @@
-import { enviroment } from '../../enviroment/enviroment';
+import config from '@/config';
 
 export default class ActionList {
     constructor() {
-        this.enviroment = enviroment;
+        this.environment = config;
     }
 
-    MoveToPotencialBase(ball) {
+    MoveToPotentialBase(ball) {
         this.Step(ball);
         this.CorrectSpeed(ball);
 
         return ball;
     }
 
-    MovaToNote(ball, note) {
+    MoveToNote(ball, note) {
         this.CorrectDirection(ball, note);
         this.Step(ball);
     }
@@ -64,8 +64,8 @@ export default class ActionList {
             ball.Position.X = 0;
             ball.Speed.X *= -1;
             ball = this.ChangeAngle(ball);
-        } else if (ball.Position.X > this.enviroment.width - 20) {
-            ball.Position.X = this.enviroment.width - 20;
+        } else if (ball.Position.X > this.environment.width - 20) {
+            ball.Position.X = this.environment.width - 20;
             ball.Speed.X *= -1;
             ball = this.ChangeAngle(ball);
         }
@@ -74,8 +74,8 @@ export default class ActionList {
             ball.Position.Y = 0;
             ball.Speed.Y *= -1;
             ball = this.ChangeAngle(ball);
-        } else if (ball.Position.Y > this.enviroment.height - 20) {
-            ball.Position.Y = this.enviroment.height - 20;
+        } else if (ball.Position.Y > this.environment.height - 20) {
+            ball.Position.Y = this.environment.height - 20;
             ball.Speed.Y *= -1;
             ball = this.ChangeAngle(ball);
         }

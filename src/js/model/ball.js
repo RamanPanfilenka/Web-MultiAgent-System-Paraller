@@ -1,12 +1,12 @@
 import { actionEnum } from '../helpers/actionListEnum';
 
 export default class Ball {
-    constructor(id, enviroment) {
+    constructor(id, environment) {
         this.id = id;
-        this.Radius = enviroment.BallRadius;
-        let randX = Math.random() * enviroment.width;
-        let randY = Math.random() * enviroment.height;
-        let vel = enviroment.defaultVelocity;
+        this.Radius = environment.BallRadius;
+        let randX = Math.random() * environment.width;
+        let randY = Math.random() * environment.height;
+        let vel = environment.defaultVelocity;
         let rad = Math.random() * Math.PI * 2;
 
         this.Position = { X: randX, Y: randY };
@@ -20,7 +20,7 @@ export default class Ball {
         this.Angle = rad;
         this.BestFunctionValue = { X: randX, Y: randY };
         this.ConnectRadius = 600;
-        this.isPotencial = false;
+        this.isPotential = false;
         this.nearestBalls = [];
     }
 
@@ -32,7 +32,7 @@ export default class Ball {
         this.Angle = ball.Angle;
         this.BestFunctionValue = ball.BestFunctionValue;
         this.BestFromAll = ball.BestFromAll;
-        this.isPotencial = ball.isPotencial;
+        this.isPotential = ball.isPotencial;
         this.nearestBalls = ball.nearestBalls;
     }
 
@@ -44,6 +44,6 @@ export default class Ball {
     }
 
     Pondering(nearestBalls) {
-        this.currentAction = actionEnum.moveToPotencialBase;
+        this.currentAction = actionEnum.moveToPotentialBase;
     }
 }

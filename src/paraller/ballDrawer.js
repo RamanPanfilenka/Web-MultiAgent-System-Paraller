@@ -22,6 +22,6 @@ export class BallDrawer {
     }
 
     DrawFigure(figure) {
-        figure.DrawPotencial(this.ctx);
+        figure.DrawPotential(this.ctx);
     }
 }

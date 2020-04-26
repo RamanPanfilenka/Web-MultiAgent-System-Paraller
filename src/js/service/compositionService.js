@@ -2,19 +2,19 @@ import { melodyBallStatus } from '../helpers/melodyBallStatus';
 import ActionList from '../model/actionList';
 
 export class compositionService {
-    constructor(allnotes, balls, melody, ballDrawer, noteDraver) {
+    constructor(notes, balls, melody, ballDrawer, noteDrawer) {
         this.balls = balls;
         this.melody = melody;
         this.ansCount = 0;
         this.ballDrawer = ballDrawer;
-        this.noteDraver = noteDraver;
-        this.allnotes = allnotes;
+        this.noteDrawer = noteDrawer;
+        this.notes = notes;
         this.actionList = new ActionList();
         this.startTime = Date.now();
         this.lastMelodyTime = melody.notes[melody.notes.length - 1].time;
     }
 
-    WorkerAnsverSubscription(worker) {
+    WorkerAnswerSubscription(worker) {
         worker.onmessage = (msg) => {
             const model = JSON.parse(msg.data);
             this.balls[model.ball.id] = model.ball;
@@ -57,9 +57,9 @@ export class compositionService {
 
     Draw(currentTime) {
         this.ballDrawer.Init(currentTime);
-        this.noteDraver.DrawNotes(this.allnotes, currentTime);
+        this.noteDrawer.DrawNotes(this.notes, currentTime);
         this.balls.forEach(ball => {
-            const aimNote = this.allnotes.find(note => note.id == ball.note.id);
+            const aimNote = this.notes.find(note => note.id == ball.note.id);
             const dx = Math.abs(ball.Position.X - aimNote.position.x);
             const dy = Math.abs(ball.Position.Y - aimNote.position.y);
             if (dx < 20 && dy < 20) {
@@ -67,7 +67,7 @@ export class compositionService {
                 ball.Speed.Y = 0;
                 ball.Angel = 0;
             } else {
-                this.actionList.MovaToNote(ball, aimNote);
+                this.actionList.MoveToNote(ball, aimNote);
             }
 
             this.ballDrawer.StepDraw(ball);

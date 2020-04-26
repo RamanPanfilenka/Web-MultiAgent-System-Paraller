@@ -1,3 +1,3 @@
 export const actionEnum = Object.freeze({
-    moveToPotencialBase: 1,
+    moveToPotentialBase: 1,
 });

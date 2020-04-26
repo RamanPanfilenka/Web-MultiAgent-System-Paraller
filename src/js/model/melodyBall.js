@@ -1,10 +1,10 @@
 import Ball from './ball';
 import { melodyBallStatus } from '../helpers/melodyBallStatus';
-import { enviroment } from '../../enviroment/enviroment';
+import config from '@/config';
 
 export class MelodyBall extends Ball {
-    constructor(id, enviroment, melody, allNotes) {
-        super(id, enviroment);
+    constructor(id, environment, melody, allNotes) {
+        super(id, environment);
         this.note = null;
         this.timeToNote = 0;
         this.status = 0;
@@ -38,12 +38,6 @@ export class MelodyBall extends Ball {
         };
         if (this.checkNearest) {
             this.nearestBalls.filter(ball => this.note != undefined && ball.noteNumber == this.noteNumber).forEach(ball => {
-                // const currentdx = this.Position.X - this.note.position.x;
-                // const currentdy = this.Position.Y - this.note.position.y;
-                // const balldx = ball.Position.X - this.note.position.x;
-                // const balldy = ball.Position.Y - this.note.position.y;
-                // const curentDistance = Math.sqrt(currentdx ** 2 + currentdy ** 2);
-                // const ballDistance = Math.sqrt(balldx ** 2 + balldy ** 2);
                 if (this.timeToNote > ball.timeToNote) {
                     this.note = this.FindNote(freeNotes);
                     this.status = melodyBallStatus.InAgreement;
@@ -87,7 +81,7 @@ export class MelodyBall extends Ball {
     }
 
     FindNote(melody) {
-        this.Velocity = enviroment.defaultVelocity;
+        this.Velocity = config.defaultVelocity;
         for (let i = 0; i < melody.notes.length; i++) {
             if (melody.notes[i]) {
                 const noteId = melody.notes[i].noteId;
