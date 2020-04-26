@@ -1,4 +1,4 @@
-import { modelStatusEnum } from "../modelStatusEnum";
+import { modelStatusEnum } from '../modelStatusEnum';
 
 export default class BallAnimation {
     constructor(ball, enviroment) {

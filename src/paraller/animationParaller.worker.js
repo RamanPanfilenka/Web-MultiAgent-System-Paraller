@@ -1,7 +1,6 @@
-import AlgotithmAnimation from 'js/animation/algoritm';
-import Ball from '../js/model/ball';
-import { enviroment } from '../enviroment/enviroment';
-import { MelodyBall } from '../js/model/melodyBall';
+import AlgotithmAnimation from '@/js/animation/algoritm';
+import { enviroment } from '@/enviroment/enviroment';
+import { MelodyBall } from '@/js/model/melodyBall';
 
 let algorithmAnimation;
 

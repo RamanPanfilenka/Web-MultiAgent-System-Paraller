@@ -1,13 +1,13 @@
-import ActionList from "../model/actionList";
 import { forEach } from 'async-foreach';
-import { enviroment } from '../../enviroment/enviroment';
-import Circle from "../model/figures/circle";
-import Rect from "../model/figures/rect";
-import {actionEnum} from "../helpers/actionListEnum"
+import { enviroment } from '@/enviroment/enviroment';
+import ActionList from '../model/actionList';
+import Circle from '../model/figures/circle';
+import Rect from '../model/figures/rect';
+import {actionEnum} from '../helpers/actionListEnum';
 
-export class shapeFillingService{
+export class shapeFillingService {
 
-    constructor(balls, drawer, figure){
+    constructor(balls, drawer, figure) {
         this.balls = balls;
         this.drawer = drawer;
         this.figure = figure;
@@ -16,8 +16,8 @@ export class shapeFillingService{
         this.workerPostModels = [];
         this.actionList = new ActionList();
         this.smashCoeff = enviroment.SmashKoef;
-    }   
-    
+    }
+
     /**
      * Check is all balls in figure
      *
@@ -36,12 +36,12 @@ export class shapeFillingService{
                 this.figure = new Circle(1000, 500, 95);
                 this.smashCoeff = enviroment.SmashKoef;
             }, 1000);
-                this.balls.forEach(ball => {
-                    ball.Speed.X = 0;
-                    ball.Speed.Y = 0;
-                    ball.Velocity = 0;
-                })
-            
+            this.balls.forEach(ball => {
+                ball.Speed.X = 0;
+                ball.Speed.Y = 0;
+                ball.Velocity = 0;
+            });
+
         } else {
             this.balls.forEach(ball => {
                 ball.worker.terminate();
@@ -51,7 +51,7 @@ export class shapeFillingService{
 
     /**
      * Set best fuction value for new ball's position
-     * 
+     *
      * @param {*} ball
      * @returns ball
      * @memberof WorkerController
@@ -111,7 +111,7 @@ export class shapeFillingService{
         ball.Speed.X += dx * ball.Radius / 80;
         ball.Speed.Y += dy * ball.Radius / 80;
         ball2.Speed.X -= dx * ball.Radius / 80;
-		ball2.Speed.Y -= dy * ball.Radius / 80;
+        ball2.Speed.Y -= dy * ball.Radius / 80;
 
         return ball;
     }
@@ -131,7 +131,7 @@ export class shapeFillingService{
             const distance = dx * dx + dy * dy;
 
             if (Math.sqrt(distance) <= currentBall.ConnectRadius) {
-                bestFuctionValue = this.CheckBestValue(bestFuctionValue, ball)
+                bestFuctionValue = this.CheckBestValue(bestFuctionValue, ball);
                 if (distance <= this.smashCoeff* (ball.Radius * 2)) {
                     this.nearestBalls.push(ball);
                     currentBall = this.Smash(currentBall, ball, dx, dy);
@@ -170,40 +170,40 @@ export class shapeFillingService{
         return ball;
     }
 
-    DecreaseSmash(){
-        if(this.balls.every(ball => this.figure.GetPotencial(ball.Position.X, ball.Position.Y, 20))){
+    DecreaseSmash() {
+        if (this.balls.every(ball => this.figure.GetPotencial(ball.Position.X, ball.Position.Y, 20))) {
             this.smashCoeff -= 0.1;
         }
     }
 
-    WorkerAnsverSubscription(worker){
+    WorkerAnsverSubscription(worker) {
         worker.onmessage = (msg) => {
-                this.postCount++;
-                const model = JSON.parse(msg.data);
-                this.balls[model.ball.id] = model.ball;
-                this.balls[model.ball.id].worker = worker;
-                if (this.postCount == this.balls.length) {
-                        this.postCount = 0;
-                        this.drawer.Init();
-                        this.balls.forEach((ball) => {
-                            if (this.CheckAllInPotencial()) {
-                                ball.Speed.X = 0;
-                                ball.Speed.Y = 0;
-                                ball.Velocity = 0;
-                            }
-                            ball = this.GetAction(ball);
-                            ball = this.OperationWithBall(ball);
-                            ball.nearestBalls = this.nearestBalls;
-                            this.nearestBalls = [];
-                        });
-                        this.balls.forEach(ball => {
-                            this.Draw(ball);
-                        });
-                        this.DecreaseSmash();
-                        if (this.CheckAllInPotencial()) {
-                                this.StopWorkers();
-                        }
-                    
+            this.postCount++;
+            const model = JSON.parse(msg.data);
+            this.balls[model.ball.id] = model.ball;
+            this.balls[model.ball.id].worker = worker;
+            if (this.postCount == this.balls.length) {
+                this.postCount = 0;
+                this.drawer.Init();
+                this.balls.forEach((ball) => {
+                    if (this.CheckAllInPotencial()) {
+                        ball.Speed.X = 0;
+                        ball.Speed.Y = 0;
+                        ball.Velocity = 0;
+                    }
+                    ball = this.GetAction(ball);
+                    ball = this.OperationWithBall(ball);
+                    ball.nearestBalls = this.nearestBalls;
+                    this.nearestBalls = [];
+                });
+                this.balls.forEach(ball => {
+                    this.Draw(ball);
+                });
+                this.DecreaseSmash();
+                if (this.CheckAllInPotencial()) {
+                    this.StopWorkers();
+                }
+
                 this.SendDataToWorkers();
             }
         };
@@ -212,7 +212,7 @@ export class shapeFillingService{
     SendDataToWorkers() {
         this.balls.forEach((ball) => {
             const postModel = {
-                ball: ball
+                ball: ball,
             };
             const worker = ball.worker;
             delete ball.nearestBalls;
@@ -221,7 +221,7 @@ export class shapeFillingService{
         });
     }
 
-    
+
     GetAction(ball) {
         switch (ball.currentAction) {
             case actionEnum.moveToPotencialBase:
@@ -232,7 +232,7 @@ export class shapeFillingService{
         return ball;
     }
 
-    
+
     GetPostModel(ball) {
         return {
             ball: ball,

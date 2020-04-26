@@ -1,8 +1,8 @@
-import { melodyBallStatus } from "../helpers/melodyBallStatus";
-import ActionList from "../model/actionList";
+import { melodyBallStatus } from '../helpers/melodyBallStatus';
+import ActionList from '../model/actionList';
 
-export class compositionService{
-    constructor(allnotes, balls, melody, ballDrawer, noteDraver){
+export class compositionService {
+    constructor(allnotes, balls, melody, ballDrawer, noteDraver) {
         this.balls = balls;
         this.melody = melody;
         this.ansCount = 0;
@@ -14,20 +14,21 @@ export class compositionService{
         this.lastMelodyTime = melody.notes[melody.notes.length - 1].time;
     }
 
-    WorkerAnsverSubscription(worker){
+    WorkerAnsverSubscription(worker) {
         worker.onmessage = (msg) => {
             const model = JSON.parse(msg.data);
             this.balls[model.ball.id] = model.ball;
             this.balls[model.ball.id].worker = worker;
             this.ansCount++;
-            if(this.ansCount == this.balls.length){
+            if (this.ansCount == this.balls.length) {
                 const currentTime = (Date.now() - this.startTime)/600;
-                if(this.balls.filter(ball => ball.status == melodyBallStatus.InAgreement).length != 0){
+                if (this.balls.filter(ball => ball.status == melodyBallStatus.InAgreement).length != 0) {
                     this.SendDataToWorkers(true, currentTime);
+
                     return;
                 }
-               
-                if(this.balls.filter(ball => ball.status == melodyBallStatus.Draw).length == this.balls.length || currentTime < this.lastMelodyTime + 0.5){
+
+                if (this.balls.filter(ball => ball.status == melodyBallStatus.Draw).length == this.balls.length || currentTime < this.lastMelodyTime + 0.5) {
                     this.Draw(currentTime);
                     this.SendDataToWorkers(false, currentTime);
                 }
@@ -46,7 +47,7 @@ export class compositionService{
                 ball: ball,
             };
             const worker = ball.worker;
-           
+
             worker.postMessage(JSON.stringify(postModel));
             delete ball.nearestBalls;
             delete ball.worker;
@@ -54,21 +55,21 @@ export class compositionService{
         this.ansCount = 0;
     }
 
-    Draw(currentTime){
+    Draw(currentTime) {
         this.ballDrawer.Init(currentTime);
         this.noteDraver.DrawNotes(this.allnotes, currentTime);
         this.balls.forEach(ball => {
             const aimNote = this.allnotes.find(note => note.id == ball.note.id);
             const dx = Math.abs(ball.Position.X - aimNote.position.x);
             const dy = Math.abs(ball.Position.Y - aimNote.position.y);
-            if(dx < 20 && dy < 20){
+            if (dx < 20 && dy < 20) {
                 ball.Speed.X = 0;
                 ball.Speed.Y = 0;
                 ball.Angel = 0;
-            }else{
+            } else {
                 this.actionList.MovaToNote(ball, aimNote);
             }
-            
+
             this.ballDrawer.StepDraw(ball);
             const noteOrderNumber = ball.noteNumber;
             delete this.melody.notes[noteOrderNumber - 1];

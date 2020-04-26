@@ -7,5 +7,5 @@ export const enviroment = {
     destation: 20,
     noteWidth: 200,
     noteHeight: 200,
-    defaultVelocity: 0.8
+    defaultVelocity: 0.8,
 };

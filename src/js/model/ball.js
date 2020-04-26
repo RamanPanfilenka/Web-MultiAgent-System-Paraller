@@ -38,7 +38,7 @@ export default class Ball {
 
     Sensive(worker) {
         const postMessage = {
-            ball: this
+            ball: this,
         };
         worker.postMessage(JSON.stringify(postMessage));
     }
@@ -46,5 +46,4 @@ export default class Ball {
     Pondering(nearestBalls) {
         this.currentAction = actionEnum.moveToPotencialBase;
     }
-
 }

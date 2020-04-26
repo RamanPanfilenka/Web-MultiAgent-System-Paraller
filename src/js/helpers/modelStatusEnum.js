@@ -5,5 +5,5 @@ export const modelStatusEnum = Object.freeze({
     reDraw: 'reDraw',
     stop: 'stop',
     old: 'old',
-    ballAnim: 'ballAnim'
-})
+    ballAnim: 'ballAnim',
+});
