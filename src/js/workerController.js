@@ -1,6 +1,6 @@
 import { forEach } from 'async-foreach';
-import { enviroment } from 'enviroment/enviroment';
-import Worker from 'paraller/animationParaller.worker.js';
+import config from '@/config';
+import Worker from '@/worker/ball.worker.js';
 
 export default class WorkerController {
     constructor(methodService) {
@@ -8,18 +8,18 @@ export default class WorkerController {
         this.methodService = methodService;
     }
 
-    GetPostModel(ball) {
+    getPostModel(ball) {
         return {
             ball: ball,
-            enviroment: enviroment,
+            environment: config,
         };
     }
 
-    InitWorkers() {
+    initWorkers() {
         this.methodService.balls.forEach(ball => {
             const worker = new Worker();
-            const postModel = this.GetPostModel(ball);
-            this.methodService.WorkerAnsverSubscription(worker)
+            const postModel = this.getPostModel(ball);
+            this.methodService.workerAnswerSubscription(worker);
             const workerStartObject = {
                 worker,
                 postModel,
@@ -28,7 +28,7 @@ export default class WorkerController {
         });
     }
 
-    RunWorkers() {
+    runWorkers() {
         forEach(this.workersStartObjects, obj => {
             obj.worker.postMessage(JSON.stringify(obj.postModel));
         });

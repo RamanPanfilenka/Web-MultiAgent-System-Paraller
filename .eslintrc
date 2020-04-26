@@ -1,50 +1,55 @@
 {
-	"env": {
-		"es6": true,
-		"browser": true,
-	},
-	"parser": "babel-eslint",
-	"parserOptions": {
-		"sourceType": "module",
-		"ecmaVersion": 6
-	},
-	"extends": [
-		"eslint:recommended",
-	],
-	"rules": {
-		"no-var": "error",
-		"no-unused-vars": "warn",
-		"semi": [ "error", "always" ],
-		"no-trailing-spaces": "error",
-		"prefer-exponentiation-operator": "error",
-		"quotes": [ "error", "single" ],
-		"comma-dangle": [ "error", "always-multiline" ],
-
-		"padding-line-between-statements": [
-			"error",
-			{ "blankLine": "always", "prev": "*", "next": "return" }
-		],
-		"indent": [
-			"error",
-			"tab",
-			{
-				"SwitchCase": 1
-			}
-		],
-		"space-before-blocks": [
-			"error",
-			{
-				"functions": "always",
-				"keywords": "always",
-				"classes": "always"
-			}
-		],
-		"keyword-spacing": [
-			"error",
-			{
-				"before": true,
-				"after": true
-			}
-		]
-	}
+    "env": {
+        "es6": true,
+        "browser": true,
+    },
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaVersion": 11
+    },
+    "extends": [
+        "eslint:recommended",
+    ],
+    "rules": {
+        "no-var": "error",
+        "no-unused-vars": "warn",
+        "semi": [ "error", "always" ],
+        "no-trailing-spaces": "error",
+        "prefer-exponentiation-operator": "error",
+        "quotes": [ "error", "single" ],
+        "comma-dangle": [ "error", "always-multiline" ],
+        "camelcase": [
+            "error",
+            {
+                "properties": "always",
+                "ignoreDestructuring": true
+            }
+        ],
+        "padding-line-between-statements": [
+            "error",
+            { "blankLine": "always", "prev": "*", "next": "return" }
+        ],
+        "indent": [
+            "error", 4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "space-before-blocks": [
+            "error",
+            {
+                "functions": "always",
+                "keywords": "always",
+                "classes": "always"
+            }
+        ],
+        "keyword-spacing": [
+            "error",
+            {
+                "before": true,
+                "after": true
+            }
+        ]
+    }
 }

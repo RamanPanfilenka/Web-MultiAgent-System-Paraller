@@ -1,26 +1,31 @@
 export default class Rect {
-	constructor(x, y, potencialRadius) {
-		this.X = x;
-		this.Y = y;
-		this.PotencialRadius = potencialRadius;
-	}
+    constructor(x, y, potentialRadius) {
+        this.x = x;
+        this.y = y;
+        this.potentialRadius = potentialRadius;
+    }
 
-	GetPotencial(x, y, deviation = 0) {
-		let pathX = Math.abs(x - this.X);
-		let pathY = Math.abs(y - this.Y);
-		if (pathX < this.PotencialRadius + deviation && pathY < this.PotencialRadius + deviation) {
-			return true;
-		}
+    getPotential(x, y, deviation = 0) {
+        let pathX = Math.abs(x - this.x);
+        let pathY = Math.abs(y - this.y);
+        if (pathX < this.potentialRadius + deviation && pathY < this.potentialRadius + deviation) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	DrawPotencial(ctx) {
-		ctx.beginPath();
-		ctx.rect(this.X-this.PotencialRadius, this.Y-this.PotencialRadius, 2*this.PotencialRadius,2*this.PotencialRadius);
-		let old = ctx.lineWidth;
-		ctx.lineWidth = 2;
-		ctx.stroke();
-		ctx.lineWidth = old;
-	}
+    drawPotential(context) {
+        context.beginPath();
+        context.rect(
+            this.x - this.potentialRadius,
+            this.y - this.potentialRadius,
+            2*this.potentialRadius,
+            2*this.potentialRadius,
+        );
+        const oldLineWidth = context.lineWidth;
+        context.lineWidth = 2;
+        context.stroke();
+        context.lineWidth = oldLineWidth;
+    }
 }
