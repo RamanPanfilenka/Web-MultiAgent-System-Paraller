@@ -15,10 +15,10 @@ export class MelodyDrawer{
         notes.forEach(note => {
             const melodyNote = this.melody.notes.find(elem => {
                 if(elem != undefined){
-                    return elem.noteId == note.id
+                    return elem.noteId == note.id && (currentTime < elem.time + 0.2 && currentTime > elem.time - 0.05)
                 }
             });
-            if(currentTime != undefined && melodyNote != undefined && (currentTime < melodyNote.time + 0.2 && currentTime > melodyNote.time - 0.05)){
+            if(currentTime != undefined && melodyNote != undefined){
                 this.context.fillStyle = `rgb(255,255,204)`;
                 this.context.fillRect(note.position.x - this.enviroment.noteWidth / 2 , note.position.y - this.enviroment.noteHeight / 2,  this.enviroment.noteWidth, this.enviroment.noteHeight);
                 this.context.fillStyle = `black`;

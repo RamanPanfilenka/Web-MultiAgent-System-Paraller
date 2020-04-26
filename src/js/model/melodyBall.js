@@ -88,13 +88,13 @@ export class MelodyBall extends Ball{
                 const distanceX = this.Position.X - notePosition.x;
                 const distanceY = this.Position.Y - notePosition.y;
                 const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
-                const toNoteTime = distance / this.Velocity/ 1000;
+                const toNoteTime = distance / this.Velocity/ 3000;
                 if(toNoteTime + this.currentTime < melody.notes[i].time){
                     this.notePlayTime = melody.notes[i].time;
                     this.timeToNote = toNoteTime;
                     this.noteNumber = melody.notes[i].orderNumber;
                     const newVelocity = distance/(melody.notes[i].time - this.currentTime);
-                    this.Velocity = newVelocity / 400;
+                    //this.Velocity = newVelocity / 400;
                     return currentNote;
                 }
             }

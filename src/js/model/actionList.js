@@ -21,11 +21,11 @@ export default class ActionList {
         const ballPosition = ball.Position;
         const dx = ballPosition.X - notePosition.x;
         const dy = ballPosition.Y - notePosition.y;
-        const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+        const angle = Math.atan2(dy, dx);
         ball.Angle = angle;
         
-        ball.Speed.X = ball.Velocity * Math.cos(angle * Math.PI);
-        ball.Speed.Y = ball.Velocity * Math.sin(angle * Math.PI);
+        ball.Speed.X = -ball.Velocity * Math.cos(angle);
+        ball.Speed.Y = -ball.Velocity * Math.sin(angle);
     }
 
     CorrectSpeed(ball) {
