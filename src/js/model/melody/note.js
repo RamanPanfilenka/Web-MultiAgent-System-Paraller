@@ -3,7 +3,7 @@ export default class Note{
         this.id = id;
         this.position = {
             x : x,
-            y : y
+            y : y,
         };
         this.tone = tone;
     }

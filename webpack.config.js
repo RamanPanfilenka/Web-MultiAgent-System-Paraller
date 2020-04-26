@@ -1,6 +1,8 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
+const { HotModuleReplacementPlugin } = require('webpack');
 
 module.exports = {
     entry: './src/index.js',
@@ -12,6 +14,9 @@ module.exports = {
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
         compress: true,
+        overlay: true,
+        stats: 'none',
+        hot: true,
         port: 9000,
     },
     resolve: {
@@ -20,6 +25,9 @@ module.exports = {
             path.resolve(__dirname, 'src'),
             'node_modules',
         ],
+        alias: {
+            "@": path.resolve(__dirname, 'src'),
+        },
     },
     module: {
         rules: [
@@ -47,6 +55,12 @@ module.exports = {
         ],
     },
     plugins: [
+        new HotModuleReplacementPlugin(),
+        new FriendlyErrorsPlugin({
+            compilationSuccessInfo: {
+                messages: ['You application is running here http://localhost:9000\n']
+            }
+        }),
         new MiniCssExtractPlugin({
             filename: 'main.css',
         }),
