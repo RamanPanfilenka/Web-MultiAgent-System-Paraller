@@ -37,12 +37,6 @@ export class MelodyBall extends Ball{
         };
         if(this.checkNearest){
             this.nearestBalls.filter(ball => this.note != undefined && ball.noteNumber == this.noteNumber).forEach(ball => {
-                const currentdx = this.Position.X - this.note.position.x;
-                const currentdy = this.Position.Y - this.note.position.y;
-                const balldx = ball.Position.X - this.note.position.x;
-                const balldy = ball.Position.Y - this.note.position.y;
-                const curentDistance = Math.sqrt(currentdx ** 2 + currentdy ** 2);
-                const ballDistance = Math.sqrt(balldx ** 2 + balldy ** 2);
                 if(this.timeToNote > ball.timeToNote){
                     this.note = this.FindNote(freeNotes);
                     this.status = melodyBallStatus.InAgreement;
@@ -100,7 +94,7 @@ export class MelodyBall extends Ball{
                     this.timeToNote = toNoteTime;
                     this.noteNumber = melody.notes[i].orderNumber;
                     const newVelocity = distance/(melody.notes[i].time - this.currentTime);
-                    this.Velocity = newVelocity / 360;
+                    this.Velocity = newVelocity / 400;
                     return currentNote;
                 }
             }

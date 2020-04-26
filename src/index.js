@@ -16,6 +16,7 @@ const BallCount = 70;
 const melodyBallCount = 3;
 const melodyCount = 36;
 const balls = [...new Array(BallCount)].map((a, index) => new Ball(index, enviroment));
+const allNotes = GetAllNotes(melodyCount);
 const melody = new Melody([{orderNumber: 1, noteId: 2, time: 8}, 
                             {orderNumber: 2, noteId: 20, time: 10}, 
                             {orderNumber: 3, noteId: 4, time: 12},
@@ -31,14 +32,14 @@ const melody = new Melody([{orderNumber: 1, noteId: 2, time: 8},
                             {orderNumber: 13, noteId: 3, time: 49},
                             {orderNumber: 14, noteId: 1, time: 54},
                             {orderNumber: 15, noteId: 9, time: 59}]);
-let allNotes = [...new Array(melodyCount)].map((a, index) => new Note(index, 0,0));
-
+                            
 window.onload = function() {
+    ReadMidi();
     const canvas = document.getElementById('canvas');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     const noteDrawer = new MelodyDrawer(canvas, enviroment, new Melody([...melody.notes]));
-    allNotes = noteDrawer.DrawNotes(allNotes);
+    noteDrawer.DrawNotes(allNotes);
     const melodyBalls = [...new Array(melodyBallCount)].map((a, index) => new MelodyBall(index, enviroment, melody, allNotes));
     const ballDrawer = new BallDrawer(canvas);
     //const workerController = new WorkerController(new shapeFillingService(balls, drawer, new Rect(1000,500,90)));
@@ -46,3 +47,24 @@ window.onload = function() {
     workerController.InitWorkers();
     workerController.RunWorkers();
 };
+
+function GetAllNotes(count){
+    const screenWidth = enviroment.width;
+    const maxNotesInRow = Math.round(screenWidth / enviroment.noteWidth) - 1;
+    let startWidhtPosition = enviroment.noteWidth / 2;
+    let startHeightPosition = enviroment.noteHeight / 2;
+    const allNotes = [...new Array(count)].map((a, index) => {
+        if(index != 0 && (index) % maxNotesInRow == 0){
+            startHeightPosition += enviroment.noteHeight;
+            startWidhtPosition = enviroment.noteWidth / 2;
+        }
+
+        const x = startWidhtPosition + enviroment.noteHeight / 2;
+        const y = startHeightPosition + enviroment.noteHeight / 2;
+        startWidhtPosition += enviroment.noteWidth;
+        
+        return new Note(index, x, y)
+    });
+
+    return allNotes;
+}

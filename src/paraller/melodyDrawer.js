@@ -9,14 +9,9 @@ export class MelodyDrawer{
     }
 
     DrawNotes(notes, currentTime){
-        const screenWidth = enviroment.width;
-        const maxNotesInRow = Math.round(screenWidth / this.enviroment.noteWidth) - 1;
-        let startWidhtPosition = this.enviroment.noteWidth / 2 ;
-        let startHeightPosition = this.enviroment.noteHeight / 2;
         this.context.beginPath();
         const old = this.context.lineWidth;
         this.context.lineWidth = 2;
-        let elementsInRow = 0;
         notes.forEach(note => {
             const melodyNote = this.melody.notes.find(elem => {
                 if(elem != undefined){
@@ -25,23 +20,11 @@ export class MelodyDrawer{
             });
             if(currentTime != undefined && melodyNote != undefined && (currentTime < melodyNote.time + 0.2 && currentTime > melodyNote.time - 0.05)){
                 this.context.fillStyle = `rgb(255,255,204)`;
-                this.context.fillRect(startWidhtPosition, startHeightPosition, 200, 200);
+                this.context.fillRect(note.position.x - this.enviroment.noteWidth / 2 , note.position.y - this.enviroment.noteHeight / 2,  this.enviroment.noteWidth, this.enviroment.noteHeight);
                 this.context.fillStyle = `black`;
             }else{
-                this.context.rect(startWidhtPosition, startHeightPosition, 200, 200);
+                this.context.rect(note.position.x - this.enviroment.noteWidth / 2, note.position.y - this.enviroment.noteHeight / 2,  this.enviroment.noteWidth, this.enviroment.noteHeight);
             }
-            
-            note.position.x = startWidhtPosition + 50;
-            note.position.y = startHeightPosition + 50;
-            elementsInRow++;
-            if(maxNotesInRow == elementsInRow){
-                elementsInRow = 0;
-                startHeightPosition += this.enviroment.noteHeight;
-                startWidhtPosition = this.enviroment.noteWidth / 2;
-                return;
-            }
-            startWidhtPosition += this.enviroment.noteWidth;
-            
         });
         this.context.lineWidth = old;
         this.context.stroke();
