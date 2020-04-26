@@ -1,8 +1,10 @@
 const path = require('path');
+const chalk = require('chalk');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const { HotModuleReplacementPlugin } = require('webpack');
+const ErrorOverlayWebpackPlugin = require('error-overlay-webpack-plugin');
 
 module.exports = {
     entry: './src/index.js',
@@ -14,8 +16,7 @@ module.exports = {
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
         compress: true,
-        overlay: true,
-        stats: 'none',
+        quiet: true,
         hot: true,
         port: 9000,
     },
@@ -56,9 +57,11 @@ module.exports = {
     },
     plugins: [
         new HotModuleReplacementPlugin(),
+        new ErrorOverlayWebpackPlugin(),
         new FriendlyErrorsPlugin({
+            clearConsole: true,
             compilationSuccessInfo: {
-                messages: ['You application is running here http://localhost:9000\n']
+                messages: [`You application is running here ${chalk.blue.bold('http://localhost:9000')}`]
             }
         }),
         new MiniCssExtractPlugin({

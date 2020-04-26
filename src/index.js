@@ -1,23 +1,22 @@
-import { MidiParser } from 'midi-parser-js';
 import { Midi } from '@tonejs/midi';
-import Ball from 'js/model/ball';
-import { BallDrawer } from './js/drawers/ballDrawer';
-import WorkerController from 'js/workerController';
-import Circle from './js/model/figures/circle';
-import Rect from './js/model/figures/rect';
+import Ball from '@/js/model/ball';
+import { BallDrawer } from '@/js/drawers/ballDrawer';
+import WorkerController from '@/js/workerController';
+import Circle from '@/js/model/figures/circle';
+import Rect from '@/js/model/figures/rect';
 import config  from '@/config'
-import { ShapeFillingService } from './js/service/shapeFillingService';
-import Note from './js/model/melody/note';
-import { MelodyDrawer } from '../src/js/drawers/melodyDrawer';
-import { MelodyBall } from './js/model/melodyBall';
-import Melody from './js/model/melody/melody';
-import { CompositionService } from './js/service/compositionService';
+import { ShapeFillingService } from '@/js/service/shapeFillingService';
+import Note from '@/js/model/melody/note';
+import { MelodyDrawer } from '@/js/drawers/melodyDrawer';
+import { MelodyBall } from '@/js/model/melodyBall';
+import Melody from '@/js/model/melody/melody';
+import { CompositionService } from '@/js/service/compositionService';
 
 const BallCount = 70;
 const melodyBallCount = 2;
 const melodyCount = 56;
 const balls = [...new Array(BallCount)].map((a, index) => new Ball(index, config));
-const tonos = ['A','B', 'C', 'D', 'E', 'F', 'G'];
+const tones = ['A','B', 'C', 'D', 'E', 'F', 'G'];
 const allNotes = getAllNotes(melodyCount);
 
 window.onload = function() {
@@ -48,7 +47,7 @@ function getAllNotes(count){
     let toneNumber = -1;
     const allNotes = [...new Array(count)].map((a, index) => {
         toneNumber++;
-        if(toneNumber == tonos.length){
+        if(toneNumber == tones.length){
             toneNumber = 0;
         }
         if(index != 0 && (index) % maxNotesInRow == 0){
@@ -63,7 +62,7 @@ function getAllNotes(count){
         const x = startWidhtPosition + config.noteHeight / 2;
         const y = startHeightPosition + config.noteHeight / 2;
         startWidhtPosition += config.noteWidth;
-        const note = new Note(index, x, y, tonos[toneNumber] + octaves)
+        const note = new Note(index, x, y, tones[toneNumber] + octaves)
         return note;
     });
 
