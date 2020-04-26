@@ -3,14 +3,14 @@ import { melodyBallStatus } from '../helpers/melodyBallStatus';
 import config from '@/config';
 
 export class MelodyBall extends Ball {
-    constructor(id, environment, melody, allNotes) {
+    constructor(id, environment, melody, notes) {
         super(id, environment);
         this.note = null;
         this.timeToNote = 0;
         this.status = 0;
         this.melody = melody;
         this.noteNumber = 0;
-        this.allNotes = allNotes;
+        this.notes = notes;
         this.currentTime = 0;
         this.checkNearest = false;
         this.notePlayTime = 0;
@@ -96,8 +96,7 @@ export class MelodyBall extends Ball {
                     this.timeToNote = toNoteTime;
                     this.noteNumber = melody.notes[i].orderNumber;
                     const newVelocity = distance/(melody.notes[i].time - this.currentTime);
-                    this.Velocity = newVelocity / 360;
-
+                    this.Velocity = newVelocity / 400;
                     return currentNote;
                 }
             }
@@ -105,6 +104,6 @@ export class MelodyBall extends Ball {
     }
 
     GetNoteById(id) {
-        return this.allNotes.find(note => note.id == id);
+        return this.notes.find(note => note.id == id);
     }
 }

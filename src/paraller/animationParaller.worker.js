@@ -14,8 +14,8 @@ onmessage = function(msg) {
         );
     }
 
-    // const ball = new MelodyBall(model.ball.id, config, model.ball.melody, model.ball.allNotes);
-    const ball = new Ball(model.ball.id, config);
+    const ball = new MelodyBall(model.ball.id, config, model.ball.melody, model.ball.notes);
+    // const ball = new Ball(model.ball.id, config);
     ball.CopyBall(model.ball);
     algorithmAnimation.ball = ball;
     algorithmAnimation.Anim();

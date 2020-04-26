@@ -29,25 +29,43 @@ const melodyData = [
 ];
 
 const BallCount = 70;
+const melodyBallCount = 3;
+const melodyCount = 36;
 const balls = [...new Array(BallCount)].map((a, index) => new Ball(index, config));
-
-// const melodyBallCount = 3;
-// const melodyCount = 36;
-// const melody = new Melody(melodyData);
-// let allNotes = [...new Array(melodyCount)].map((a, index) => new Note(index, 0,0));
+const allNotes = GetAllNotes(melodyCount);
+const melody = new Melody(melodyData);
 
 window.onload = function() {
     const canvas = document.getElementById('canvas');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
-    // const noteDrawer = new MelodyDrawer(canvas, config, new Melody([...melody.notes]));
-    // allNotes = noteDrawer.DrawNotes(allNotes);
-    // const melodyBalls = [...new Array(melodyBallCount)].map((a, index) => new MelodyBall(index, config, melody, allNotes));
-
+    const noteDrawer = new MelodyDrawer(canvas, config, new Melody([...melody.notes]));
+    noteDrawer.DrawNotes(allNotes);
+    const melodyBalls = [...new Array(melodyBallCount)].map((a, index) => new MelodyBall(index, config, melody, allNotes));
     const ballDrawer = new BallDrawer(canvas);
-    const workerController = new WorkerController(new shapeFillingService(balls, ballDrawer, new Rect(1000,500,90)));
-    // const workerController = new WorkerController(new compositionService(allNotes, melodyBalls, melody, ballDrawer, noteDrawer));
+    // const workerController = new WorkerController(new shapeFillingService(balls, ballDrawer, new Rect(1000,500,90)));
+    const workerController = new WorkerController(new compositionService(allNotes, melodyBalls, melody, ballDrawer, noteDrawer));
     workerController.InitWorkers();
     workerController.RunWorkers();
 };
+
+function GetAllNotes(count){
+    const screenWidth = config.width;
+    const maxNotesInRow = Math.round(screenWidth / config.noteWidth) - 1;
+    let startWidthPosition = config.noteWidth / 2;
+    let startHeightPosition = config.noteHeight / 2;
+    const allNotes = [...new Array(count)].map((a, index) => {
+        if(index != 0 && (index) % maxNotesInRow == 0){
+            startHeightPosition += config.noteHeight;
+            startWidthPosition = config.noteWidth / 2;
+        }
+
+        const x = startWidthPosition + config.noteHeight / 2;
+        const y = startHeightPosition + config.noteHeight / 2;
+        startWidthPosition += config.noteWidth;
+        
+        return new Note(index, x, y)
+    });
+
+    return allNotes;
+}
