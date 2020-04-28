@@ -1,6 +1,6 @@
 import config from '@/config';
 import Ball from './ball';
-import { melodyBallStatus } from '../enums/melodyBallStatus';
+import { melodyBallStatus } from '@/js/enums/melodyBallStatus';
 
 export class MelodyBall extends Ball {
     constructor(id, melody, notes) {

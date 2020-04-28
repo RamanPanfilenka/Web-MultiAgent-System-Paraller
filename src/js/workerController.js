@@ -11,7 +11,6 @@ export default class WorkerController {
     getPostModel(ball) {
         return {
             ball: ball,
-            environment: config,
         };
     }
 
