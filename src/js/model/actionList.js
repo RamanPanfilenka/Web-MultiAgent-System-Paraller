@@ -44,8 +44,6 @@ export default class ActionList {
     }
 
     step(ball) {
-        ball.previousPosition.x = ball.position.x;
-        ball.previousPosition.y = ball.position.y;
         ball.position.x += ball.speed.x;
         ball.position.y += ball.speed.y;
 

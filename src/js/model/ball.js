@@ -1,5 +1,5 @@
 import config from '@/config';
-import { actionEnum } from '../enums/actionListEnum';
+import { actionEnum } from '@/js/enums/actionListEnum';
 
 export default class Ball {
     constructor(id) {
@@ -11,7 +11,6 @@ export default class Ball {
         const rad = Math.random() * Math.PI * 2;
 
         this.position = { x: randX, y: randY };
-        this.previousPosition = { x: randX, y: randY };
         this.speed = {
             x: Math.cos(rad) * vel * 5,
             y: Math.sin(rad) * vel * 5,
@@ -27,12 +26,10 @@ export default class Ball {
 
     copyBall(ball) {
         this.position = ball.position;
-        this.previousPosition = ball.previousPosition;
         this.speed = ball.speed;
         this.velocity = ball.velocity;
         this.angle = ball.angle;
         this.bestFunctionValue = ball.bestFunctionValue;
-        this.BestFromAll = ball.bestFromAll;
         this.isPotential = ball.isPotential;
         this.nearestBalls = ball.nearestBalls;
     }
