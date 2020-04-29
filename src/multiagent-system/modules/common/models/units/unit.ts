@@ -1,10 +1,10 @@
-import Point from "../point";
-import Speed from "../speed";
+import Point from '../point';
+import Speed from '../speed';
 
 export default class Unit {
     position: Point;
     speed: Speed;
-    connectionRadius: number;
+    connectionRange: number;
 
     constructor(
         position: Point,
@@ -13,12 +13,18 @@ export default class Unit {
     ) {
         this.position = position;
         this.speed = speed;
-        this.connectionRadius = connectionRadius;
+        this.connectionRange = connectionRadius;
     }
 
     update(unit: Unit) {
         this.position = unit.position;
         this.speed = unit.speed;
-        this.connectionRadius = unit.connectionRadius;
+        this.connectionRange = unit.connectionRange;
+    }
+
+    isInRange(unit: Unit): boolean {
+        const distance = this.position.getDistanceTo(unit.position);
+
+        return (distance.value <= this.connectionRange);
     }
 }
