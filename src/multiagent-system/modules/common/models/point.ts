@@ -14,4 +14,8 @@ export default class Point {
         const dy = this.y - point.y;
         return new Distance(dx, dy);
     }
+
+    equals(point : Point){
+        return this.x == point.x && this.y == point.y;
+    }
 }
