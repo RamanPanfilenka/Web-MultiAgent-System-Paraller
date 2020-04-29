@@ -1,5 +1,5 @@
-export default class Note{
-    constructor(id, x, y, tone){
+export default class Note {
+    constructor(id, x, y, tone) {
         this.id = id;
         this.position = {
             x : x,

@@ -6,8 +6,8 @@ export default class Rect {
     }
 
     getPotential(x, y, deviation = 0) {
-        let pathX = Math.abs(x - this.x);
-        let pathY = Math.abs(y - this.y);
+        const pathX = Math.abs(x - this.x);
+        const pathY = Math.abs(y - this.y);
         if (pathX < this.potentialRadius + deviation && pathY < this.potentialRadius + deviation) {
             return true;
         }
