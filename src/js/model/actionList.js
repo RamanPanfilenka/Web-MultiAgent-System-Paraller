@@ -20,7 +20,7 @@ export default class ActionList {
         const dy = ballPosition.y - notePosition.y;
         const angle = Math.atan2(dy, dx);
         ball.angle = angle;
-        
+
         ball.speed.x = -ball.velocity * Math.cos(angle);
         ball.speed.y = -ball.velocity * Math.sin(angle);
     }

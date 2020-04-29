@@ -14,5 +14,4 @@ export default class Speed {
     get y(): number {
         return -this.value * Math.sin(this.angle);
     }
-
 }
