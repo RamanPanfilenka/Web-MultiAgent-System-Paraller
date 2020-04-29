@@ -1,4 +1,4 @@
-import Ball from "@/modules/common/models/entity/ball";
+import Ball from "@/modules/common/models/units/ball";
 
 export default class FillingBall extends Ball{
     constructor(position, speed, connectionRadius, radius){
