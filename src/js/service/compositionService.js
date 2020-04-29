@@ -1,4 +1,4 @@
-import { melodyBallStatus } from '../enums/melodyBallStatus';
+import { melodyBallStatus } from '@/js/enums/melodyBallStatus';
 import ActionList from '../model/actionList';
 
 export class CompositionService {
@@ -22,13 +22,13 @@ export class CompositionService {
             this.ansCount++;
             if (this.ansCount == this.balls.length) {
                 const currentTime = (Date.now() - this.startTime)/600;
-                if (this.balls.filter(ball => ball.status == melodyBallStatus.IN_AGREEMENT).length != 0) {
+                if (this.balls.filter(ball => ball.status == MelodyBallStatus.IN_AGREEMENT).length != 0) {
                     this.sendDataToWorkers(true, currentTime);
 
                     return;
                 }
 
-                if (this.balls.filter(ball => ball.status == melodyBallStatus.DRAW).length == this.balls.length || currentTime < this.lastMelodyTime + 0.5) {
+                if (this.balls.filter(ball => ball.status == MelodyBallStatus.DRAW).length == this.balls.length || currentTime < this.lastMelodyTime + 0.5) {
                     this.draw(currentTime);
                     this.sendDataToWorkers(false, currentTime);
                 }

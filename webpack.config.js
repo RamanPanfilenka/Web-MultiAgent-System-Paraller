@@ -21,7 +21,6 @@ module.exports = {
         port: 9000,
     },
     resolve: {
-        extensions: ['.js'],
         modules: [
             path.resolve(__dirname, 'src'),
             'node_modules',
@@ -40,10 +39,11 @@ module.exports = {
                 ],
             },
             {
-                test: /\.js$/,
+                test: /\.[jt]s?x$/,
                 exclude: /node_modules/,
                 use: [
                     'babel-loader',
+                    'ts-loader',
                 ],
             },
             {

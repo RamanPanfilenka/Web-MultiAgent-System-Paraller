@@ -1,9 +1,9 @@
 import { forEach } from 'async-foreach';
-import config  from '@/config';
+import config from '@/config';
 import ActionList from '../model/actionList';
 import Circle from '../model/figures/circle';
 import Rect from '../model/figures/rect';
-import { actionEnum } from '../enums/actionListEnum';
+import { actionEnum } from '@/js/enums/actionListEnum';
 
 export class ShapeFillingService {
     constructor(balls, drawer, figure) {
@@ -131,7 +131,7 @@ export class ShapeFillingService {
             this.balls[model.ball.id].worker = worker;
             if (this.postCount == this.balls.length) {
                 this.postCount = 0;
-                this.drawer.Init();
+                this.drawer.init();
                 this.balls.forEach((ball) => {
                     if (this.checkAllInPotential()) {
                         ball.speed.x = 0;
@@ -171,7 +171,7 @@ export class ShapeFillingService {
 
     getAction(ball) {
         switch (ball.currentAction) {
-            case actionEnum.MOVE_TO_POTENTIAL_BASE:
+            case Action.MOVE_TO_POTENTIAL_BASE:
                 ball = this.actionList.moveToPotentialBase(ball);
                 break;
         }
