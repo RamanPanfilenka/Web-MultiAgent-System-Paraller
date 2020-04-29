@@ -23,9 +23,7 @@ export default class MelodyBall extends Ball {
     }
 
     getTimeToNote() : number {
-        const dx = this.position.x - this.destinationPoint.x;
-        const dy = this.position.y - this.destinationPoint.y;
-        const distance = Math.sqrt(dx ** 2 + dy ** 2);
+        const distance = this.position.getDistanceTo(this.destinationPoint).value;
         return distance / this.speed.value;
     }
 }
