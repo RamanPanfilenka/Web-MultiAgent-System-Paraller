@@ -9,7 +9,8 @@
         "jsx": "react",
         "baseUrl": ".",
         "paths": {
-            "@/*": ["./src/*"]
+            "@/*": ["./src/*"],
+            "@mas/*": ["./src/multiagent-system/*"]
         },
     },
     "include": [

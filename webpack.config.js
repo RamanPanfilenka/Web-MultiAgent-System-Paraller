@@ -27,6 +27,7 @@ module.exports = {
         ],
         alias: {
             "@": path.resolve(__dirname, 'src'),
+            "@mas": path.resolve(__dirname, 'src/multiagent-system'),
         },
     },
     module: {
