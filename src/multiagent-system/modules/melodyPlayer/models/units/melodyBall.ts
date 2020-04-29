@@ -1,11 +1,11 @@
-import Ball from "@/modules/common/models/units/ball";
-import Point from "@/modules/common/models/point";
-import Speed from "@/modules/common/models/speed";
-import Note from "../note";
+import Ball from '@mas/modules/common/models/units/ball';
+import Point from '@mas/modules/common/models/point';
+import Speed from '@mas/modules/common/models/speed';
+import Note from '../note';
 
 export default class MelodyBall extends Ball {
-    note: null | Note = null;
-    destinationPoint: null | Point = null;
+    note?: Note;
+    destinationPoint?: Point;
 
     constructor(
         position: Point,
@@ -22,8 +22,9 @@ export default class MelodyBall extends Ball {
         this.destinationPoint = melodyBall.destinationPoint;
     }
 
-    getTimeToNote() : number {
-        const distance = this.position.getDistanceTo(this.destinationPoint).value;
-        return distance / this.speed.value;
+    getTimeToNote(): number {
+        const distance = this.position.getDistanceTo(this.destinationPoint);
+
+        return distance.value / this.speed.value;
     }
 }

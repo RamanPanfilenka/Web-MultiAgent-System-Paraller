@@ -1,4 +1,4 @@
-import Point from "@/modules/common/models/point";
+import Point from '@mas/modules/common/models/point';
 
 export default class PianoKey {
     tone: number;
