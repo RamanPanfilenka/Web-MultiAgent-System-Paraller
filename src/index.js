@@ -4,7 +4,7 @@ import { BallDrawer } from '@/js/drawers/ballDrawer';
 import WorkerController from '@/js/workerController';
 import Circle from '@/js/model/figures/circle';
 import Rect from '@/js/model/figures/rect';
-import config  from '@/config'
+import config  from '@/config';
 import { ShapeFillingService } from '@/js/service/shapeFillingService';
 import Note from '@/js/model/melody/note';
 import { MelodyDrawer } from '@/js/drawers/melodyDrawer';
@@ -23,7 +23,7 @@ window.onload = function() {
     readMidi();
 };
 
-function playMidi(midi){
+function playMidi(midi) {
     const canvas = document.getElementById('canvas');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -38,7 +38,7 @@ function playMidi(midi){
     workerController.runWorkers();
 }
 
-function getAllNotes(count){
+function getAllNotes(count) {
     const screenWidth = config.width;
     const maxNotesInRow = Math.round(screenWidth / config.noteWidth) - 1;
     let startWidhtPosition = config.noteWidth / 2;
@@ -47,54 +47,56 @@ function getAllNotes(count){
     let toneNumber = -1;
     const allNotes = [...new Array(count)].map((a, index) => {
         toneNumber++;
-        if(toneNumber == tones.length){
+        if (toneNumber == tones.length) {
             toneNumber = 0;
         }
-        if(index != 0 && (index) % maxNotesInRow == 0){
+        if (index != 0 && (index) % maxNotesInRow == 0) {
             startHeightPosition += config.noteHeight;
             startWidhtPosition = config.noteWidth / 2;
         }
 
-        if(index != 0  && index % 7 == 0){
+        if (index != 0  && index % 7 == 0) {
             octaves++;
         }
 
         const x = startWidhtPosition + config.noteHeight / 2;
         const y = startHeightPosition + config.noteHeight / 2;
         startWidhtPosition += config.noteWidth;
-        const note = new Note(index, x, y, tones[toneNumber] + octaves)
+        const note = new Note(index, x, y, tones[toneNumber] + octaves);
+
         return note;
     });
 
     return allNotes;
 }
 
-function readMidi(){
+function readMidi() {
     const source = document.getElementById('filereader');
     source.addEventListener('change', handler, false);
 
 }
 
-function handler(){
+function handler() {
     const file = this.files[0];
     parseFile(file);
 }
 
-function parseFile(file){
-    const reader = new FileReader()
-    reader.onload = function(e){
-        const midi = new Midi(e.target.result)
+function parseFile(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const midi = new Midi(e.target.result);
         playMidi(midi);
-    }
+    };
     reader.readAsArrayBuffer(file);
 }
 
-function getMelody(midi){
+function getMelody(midi) {
     const track = midi.tracks[0];
-    let notes = [];
+    const notes = [];
     track.notes.forEach((note, index) => {
         const noteId = allNotes.find(elem => elem.tone == note.name).id;
         notes.push({orderNumber: index + 1, noteId: noteId, time: note.time + 4});
     });
+
     return new Melody(notes);
 }

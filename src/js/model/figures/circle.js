@@ -7,8 +7,8 @@ export default class Circle {
 
     getPotential(x, y, deviation = 0) {
         let inPotential = false;
-        let pathX = Math.abs(x - this.x);
-        let pathY = Math.abs(y - this.y);
+        const pathX = Math.abs(x - this.x);
+        const pathY = Math.abs(y - this.y);
         if (Math.sqrt(pathX ** 2 + pathY ** 2) < this.potentialRadius + deviation) {
             inPotential = true;
         }
