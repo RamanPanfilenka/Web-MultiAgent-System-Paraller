@@ -19,7 +19,7 @@ export default class MelodyProcess extends Process{
         this.pianoKeys = pianoKeys;
     }   
 
-    pondering() : string{
+    protected pondering() : string{
         if (this.melodyBall.note == null) {
             this.chooseNote();
         }

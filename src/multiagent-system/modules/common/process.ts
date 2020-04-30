@@ -15,7 +15,7 @@ export default abstract class Process{
         self.postMessage(msg, targerOptions);
     }
     
-    abstract pondering() : string
+    protected abstract pondering() : string
 
     protected abstract parseMessage(msg : string) : void;
 }
