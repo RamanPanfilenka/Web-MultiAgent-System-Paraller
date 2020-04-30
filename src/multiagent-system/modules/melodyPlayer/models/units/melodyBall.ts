@@ -1,5 +1,5 @@
-import Ball from "@/modules/common/models/units/ball";
-import Point from "@/modules/common/models/point";
+import Ball from "@/multiagent-system/modules/common/models/units/ball";
+import Point from "@/multiagent-system/modules/common/models/point";
 import Speed from "@/modules/common/models/speed";
 import Note from "../note";
 
@@ -22,8 +22,14 @@ export default class MelodyBall extends Ball {
         this.destinationPoint = melodyBall.destinationPoint;
     }
 
-    getTimeToNote() : number {
-        const distance = this.position.getDistanceTo(this.destinationPoint).value;
+    getTimeToNote() : number;
+
+    getTimeToNote(notePoint : Point) : number;
+    
+    getTimeToNote(notePoint? : Point) : number {
+        const distance = notePoint 
+                            ? this.position.getDistanceTo(notePoint).value
+                            : this.position.getDistanceTo(this.destinationPoint).value;
         return distance / this.speed.value;
     }
-}
+ }
