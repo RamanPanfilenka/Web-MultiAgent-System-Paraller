@@ -53,6 +53,22 @@ module.exports = {
                     'css-loader',
                 ],
             },
+            {
+                test: /\.ts$/,
+                exclude: /node_modules/,
+                use: [
+                    'babel-loader',
+                    'ts-loader',
+                ],
+            },
+            {
+                test: /\.process\.ts$/,
+                exclude: /node_modules/,
+                use: [
+                    'worker-loader',
+                    'ts-loader',
+                ],
+            },
         ],
     },
     plugins: [

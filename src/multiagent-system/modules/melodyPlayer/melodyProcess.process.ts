@@ -1,11 +1,11 @@
 import Note from "./models/note";
-import Process from "../common/Process";
+import Process from "@/multiagent-system/modules/common/process.ts";
 import PianoKey from "./models/pianoKey";
 import Point from "../common/models/point";
 import Message from "../common/models/message";
 import MelodyBall from "./models/units/melodyBall";
 
-export default class MelodyProcess extends Process{
+class MelodyProcess extends Process{
     melody : Array<Note>;
     currentTime : number;
     melodyBall : MelodyBall;
@@ -13,11 +13,15 @@ export default class MelodyProcess extends Process{
     pianoKeys : Array<PianoKey>;
 
 
-    constructor(melody : Array<Note>, pianoKeys : Array<PianoKey>){
+    // constructor(melody : Array<Note>, pianoKeys : Array<PianoKey>){
+    //     super();
+    //     this.melody = melody;
+    //     this.pianoKeys = pianoKeys;
+    // }   
+
+    constructor(){
         super();
-        this.melody = melody;
-        this.pianoKeys = pianoKeys;
-    }   
+    }
 
     protected pondering() : string{
         if (this.melodyBall.note == null) {
@@ -67,7 +71,7 @@ export default class MelodyProcess extends Process{
         });
     }
 
-    private getAvailableNotes(){
+    private getAvailableNotes() : Array<Note> {
         const destinationNote = this.melodyBall.note
         return destinationNote == null 
                 ? this.melody.filter(note => note.playTime > this.currentTime)
@@ -85,3 +89,5 @@ export default class MelodyProcess extends Process{
         return JSON.stringify(message);
     }
 }
+
+new MelodyProcess();

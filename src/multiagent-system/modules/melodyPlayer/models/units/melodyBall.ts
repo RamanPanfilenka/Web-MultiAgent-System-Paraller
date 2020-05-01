@@ -1,6 +1,6 @@
 import Ball from "@/multiagent-system/modules/common/models/units/ball";
 import Point from "@/multiagent-system/modules/common/models/point";
-import Speed from "@/modules/common/models/speed";
+import Speed from "@/multiagent-system/modules/common/models/speed";
 import Note from "../note";
 
 export default class MelodyBall extends Ball {
@@ -16,7 +16,7 @@ export default class MelodyBall extends Ball {
         super(position, speed, connectionRadius, radius);
     }
 
-    update(melodyBall: MelodyBall) {
+    update(melodyBall: MelodyBall) : void {
         super.update(melodyBall);
         this.note = melodyBall.note;
         this.destinationPoint = melodyBall.destinationPoint;

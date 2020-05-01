@@ -4,15 +4,15 @@ export default abstract class Process{
     }
 
     private initMessageHandler(){
-        self.onmessage = (msg : any) => {
-            this.parseMessage(msg);
-            const message = this.pondering();
-            this.sensive(message);
+        self.onmessage = (event : any) => {
+            this.parseMessage(event.data);
+            const msg = this.pondering();
+            this.sensive(msg);
         };
     }
 
-    protected sensive(msg : string, targerOptions : string = '*') {
-        self.postMessage(msg, targerOptions);
+    protected sensive(msg : string) {
+        self.postMessage(msg, null);
     }
     
     protected abstract pondering() : string
