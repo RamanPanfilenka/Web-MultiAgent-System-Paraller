@@ -11,8 +11,8 @@ export default abstract class Process {
         };
     }
 
-    protected sensive(msg: string, targerOptions = '*') {
-        self.postMessage(msg, targerOptions);
+    protected sensive(msg: string, targetOptions = '*') {
+        self.postMessage(msg, targetOptions);
     }
 
     abstract pondering(): string

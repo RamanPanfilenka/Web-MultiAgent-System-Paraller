@@ -11,6 +11,7 @@ import { MelodyDrawer } from '@/js/drawers/melodyDrawer';
 import { MelodyBall } from '@/js/model/melodyBall';
 import Melody from '@/js/model/melody/melody';
 import { CompositionService } from '@/js/service/compositionService';
+import Worker from "@/multiagent-system/modules/melodyPlayer/melodyProcess.process.ts"
 
 const BallCount = 70;
 const melodyBallCount = 2;
@@ -20,7 +21,12 @@ const tones = ['A','B', 'C', 'D', 'E', 'F', 'G'];
 const allNotes = getAllNotes(melodyCount);
 
 window.onload = function() {
-    readMidi();
+    //readMidi();
+    const worker = new Worker();
+    worker.onmessage = (msg) => {
+        this.console.log(msg);
+    }
+    worker.postMessage('');
 };
 
 function playMidi(midi) {

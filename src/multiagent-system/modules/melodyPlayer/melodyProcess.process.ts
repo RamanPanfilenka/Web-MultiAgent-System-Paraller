@@ -20,7 +20,7 @@ export default class MelodyProcess extends Process {
     }
 
     pondering(): string {
-        if (this.melodyBall.note == null) {
+        if (this.melodyBall.note) {
             this.chooseNote();
         }
 
@@ -71,10 +71,11 @@ export default class MelodyProcess extends Process {
 
     private getAvailableNotes() {
         const destinationNote = this.melodyBall.note;
-
-        return destinationNote == null
+        const availableNotes = destinationNote
             ? this.melody.filter(note => note.playTime > this.currentTime)
             : this.melody.filter(note => note.playTime > this.currentTime && note.orderNumber != destinationNote.orderNumber);
+
+        return availableNotes;
     }
 
     private getPianoKey(tone: string) {
@@ -89,3 +90,5 @@ export default class MelodyProcess extends Process {
         return JSON.stringify(message);
     }
 }
+
+new MelodyProcess();

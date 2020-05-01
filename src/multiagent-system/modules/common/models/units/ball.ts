@@ -1,6 +1,6 @@
 import Unit from "./unit";
-import Point from "../point";
 import Speed from "../speed";
+import Point from "../point";
 
 export default class Ball extends Unit {
     radius: number;

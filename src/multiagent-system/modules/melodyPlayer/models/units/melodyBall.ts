@@ -16,7 +16,7 @@ export default class MelodyBall extends Ball {
         super(position, speed, connectionRadius, radius);
     }
 
-    update(melodyBall: MelodyBall) {
+    update(melodyBall: MelodyBall): void {
         super.update(melodyBall);
         this.note = melodyBall.note;
         this.destinationPoint = melodyBall.destinationPoint;
