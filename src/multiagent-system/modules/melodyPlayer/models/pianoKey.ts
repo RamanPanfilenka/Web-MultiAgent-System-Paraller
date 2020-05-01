@@ -1,10 +1,10 @@
 import Point from '@mas/modules/common/models/point';
 
 export default class PianoKey {
-    tone: number;
+    tone: string;
     position: Point;
 
-    constructor(tone: number, position: Point) {
+    constructor(tone: string, position: Point) {
         this.tone = tone;
         this.position = position;
     }
