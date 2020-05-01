@@ -1,11 +1,11 @@
-import Ball from "@/multiagent-system/modules/common/models/units/ball";
-import Point from "@/multiagent-system/modules/common/models/point";
-import Speed from "@/multiagent-system/modules/common/models/speed";
-import Note from "../note";
+import Ball from '@mas/modules/common/models/units/ball';
+import Point from '@mas/modules/common/models/point';
+import Speed from '@mas/modules/common/models/speed';
+import Note from '../note';
 
 export default class MelodyBall extends Ball {
-    note: null | Note = null;
-    destinationPoint: null | Point = null;
+    note?: Note;
+    destinationPoint?: Point;
 
     constructor(
         position: Point,
@@ -16,20 +16,19 @@ export default class MelodyBall extends Ball {
         super(position, speed, connectionRadius, radius);
     }
 
-    update(melodyBall: MelodyBall) : void {
+    update(melodyBall: MelodyBall): void {
         super.update(melodyBall);
         this.note = melodyBall.note;
         this.destinationPoint = melodyBall.destinationPoint;
     }
 
-    getTimeToNote() : number;
+    getTimeToNote(): number;
+    getTimeToNote(notePoint: Point): number;
+    getTimeToNote(notePoint? : Point): number {
+        const distance = notePoint
+            ? this.position.getDistanceTo(notePoint)
+            : this.position.getDistanceTo(this.destinationPoint);
 
-    getTimeToNote(notePoint : Point) : number;
-    
-    getTimeToNote(notePoint? : Point) : number {
-        const distance = notePoint 
-                            ? this.position.getDistanceTo(notePoint).value
-                            : this.position.getDistanceTo(this.destinationPoint).value;
-        return distance / this.speed.value;
+        return distance.value / this.speed.value;
     }
- }
+}
