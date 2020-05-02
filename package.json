@@ -28,11 +28,8 @@
   },
   "homepage": "https://github.com/RomanPanfilenko/Multi-Agent-Web-System#readme",
   "devDependencies": {
-    "@babel/core": "^7.8.3",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
-    "babel-eslint": "^10.0.3",
-    "babel-loader": "^8.0.6",
     "chalk": "^4.0.0",
     "css-loader": "^3.4.2",
     "error-overlay-webpack-plugin": "^0.4.1",

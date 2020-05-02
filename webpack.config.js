@@ -6,44 +6,48 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const { HotModuleReplacementPlugin } = require('webpack');
 const ErrorOverlayWebpackPlugin = require('error-overlay-webpack-plugin');
 
+const DIST_DIR = path.resolve(__dirname, 'dist');
+const SRC_DIR = path.resolve(__dirname, 'src');
+
 module.exports = {
-    entry: './src/index.js',
+    entry: path.resolve(SRC_DIR, 'index.ts'),
     devtool: 'source-map',
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: DIST_DIR,
         filename: 'bundle.js',
     },
     devServer: {
-        contentBase: path.join(__dirname, 'dist'),
+        contentBase: DIST_DIR,
         compress: true,
         quiet: true,
         hot: true,
         port: 9000,
     },
     resolve: {
+        extensions: ['.ts', '.tsx', '.js'],
         modules: [
-            path.resolve(__dirname, 'src'),
+            SRC_DIR,
             'node_modules',
         ],
         alias: {
-            "@": path.resolve(__dirname, 'src'),
-            "@mas": path.resolve(__dirname, 'src/multiagent-system'),
+            "@": SRC_DIR,
+            "@mas": path.resolve(SRC_DIR, 'multiagent-system'),
         },
     },
     module: {
         rules: [
             {
-                test: /\.worker\.js$/,
+                test: /\.worker\.ts$/,
                 exclude: /node_modules/,
                 use: [
                     'worker-loader',
+                    'ts-loader',
                 ],
             },
             {
-                test: /\.[jt]s?x$/,
+                test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
                 use: [
-                    'babel-loader',
                     'ts-loader',
                 ],
             },
@@ -52,22 +56,6 @@ module.exports = {
                 use: [
                     MiniCssExtractPlugin.loader,
                     'css-loader',
-                ],
-            },
-            {
-                test: /\.ts$/,
-                exclude: /node_modules/,
-                use: [
-                    'babel-loader',
-                    'ts-loader',
-                ],
-            },
-            {
-                test: /\.process\.ts$/,
-                exclude: /node_modules/,
-                use: [
-                    'worker-loader',
-                    'ts-loader',
                 ],
             },
         ],

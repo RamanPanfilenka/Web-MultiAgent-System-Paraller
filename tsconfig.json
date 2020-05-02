@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "outDir": "./dist/",
         "noImplicitAny": true,
         "allowJs": true,
         "sourceMap": true,
@@ -13,7 +12,4 @@
             "@mas/*": ["./src/multiagent-system/*"]
         },
     },
-    "include": [
-        "src"
-    ]
 }

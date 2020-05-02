@@ -1,11 +1,13 @@
 import Note from './models/note';
-import Process from '../common/Process';
+import AgentWorker from '../common/agentWorker';
 import PianoKey from './models/pianoKey';
 import Point from '../common/models/point';
 import Message from '../common/models/message';
 import MelodyBall from './models/units/melodyBall';
 
-export default class MelodyProcess extends Process {
+export default {} as typeof Worker & (new () => Worker);
+
+class MelodyPlayerWorker extends AgentWorker<MelodyBall> {
     melody: Array<Note>;
     currentTime: number;
     melodyBall: MelodyBall;
@@ -13,13 +15,17 @@ export default class MelodyProcess extends Process {
     pianoKeys: Array<PianoKey>;
 
 
-    constructor(melody: Array<Note>, pianoKeys: Array<PianoKey>) {
+    // constructor(melody: Array<Note>, pianoKeys: Array<PianoKey>) {
+    //     super();
+    //     this.melody = melody;
+    //     this.pianoKeys = pianoKeys;
+    // }
+
+    constructor() {
         super();
-        this.melody = melody;
-        this.pianoKeys = pianoKeys;
     }
 
-    pondering(): string {
+    pondering(): MelodyBall {
         if (this.melodyBall.note) {
             this.chooseNote();
         }
@@ -34,14 +40,7 @@ export default class MelodyProcess extends Process {
             }
         });
 
-        return this.getAnswerMessage();
-    }
-
-    protected parseMessage(msg: string): void {
-        const model: Message<MelodyBall> = JSON.parse(msg);
-        this.melodyBall = model.unit;
-        this.nearestBalls = model.nearestUnits;
-        this.currentTime = model.currentTime;
+        return this.melodyBall;
     }
 
     private isSameDestinationPoint(otherBallPoint: Point): boolean {
@@ -81,14 +80,6 @@ export default class MelodyProcess extends Process {
     private getPianoKey(tone: string) {
         return this.pianoKeys.find(key => key.tone == tone);
     }
-
-    private getAnswerMessage(): string {
-        const message: Message<MelodyBall> = {
-            unit : this.melodyBall,
-        };
-
-        return JSON.stringify(message);
-    }
 }
 
-new MelodyProcess();
+new MelodyPlayerWorker();
