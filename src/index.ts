@@ -1,10 +1,5 @@
 import MelodyPlayerWorker from '@mas/modules/melodyPlayer/melodyPlayer.worker';
-
-const worker = new MelodyPlayerWorker();
-
-worker.onmessage = (event: MessageEvent) => {
-    console.log(event.data);
-};
+import Process from '@mas/modules/common/models/process';
 
 const complexData = {
     some: 10,
@@ -13,4 +8,9 @@ const complexData = {
     told: 10,
 };
 
-worker.postMessage(complexData);
+const worker = new MelodyPlayerWorker();
+const process = new Process(worker, complexData);
+
+worker.onmessage = (event: MessageEvent) => {
+    console.log(event.data);
+};

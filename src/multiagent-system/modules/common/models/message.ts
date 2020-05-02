@@ -1,7 +1,8 @@
-interface Message<T> {
-    unit: T;
-    nearestUnits?: Array<T>;
-    currentTime?: number;
+import MessageTypes from './messageTypes';
+
+interface Message {
+    type: MessageTypes;
+    data: any;
 }
 
 export default Message;
