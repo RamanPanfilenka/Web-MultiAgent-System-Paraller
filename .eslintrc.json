@@ -18,6 +18,7 @@
         "prefer-exponentiation-operator": "error",
         "quotes": [ "error", "single" ],
         "comma-dangle": [ "error", "always-multiline" ],
+        "@typescript-eslint/interface-name-prefix": ["off"],
         "camelcase": [
             "error",
             {
