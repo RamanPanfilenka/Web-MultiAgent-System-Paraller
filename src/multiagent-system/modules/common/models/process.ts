@@ -1,5 +1,4 @@
-import Message from './message';
-import MessageTypes from './messageTypes';
+import { Message, MessageTypes } from './message';
 import PonderingData from './ponderingData';
 
 export default class Process {
@@ -8,31 +7,42 @@ export default class Process {
     constructor(worker: Worker, initialData?: any) {
         this.worker = worker;
         if (initialData) {
-            const message: Message = {
-                type: MessageTypes.INITIAL_DATA,
-                data: initialData,
-            };
+            const message = this.createMessage(MessageTypes.INITIAL_DATA, initialData);
             this.sendMessage(message);
         }
+    }
+
+    private createMessage(type: MessageTypes, data: any): Message {
+        const message: Message = {
+            type,
+            data,
+        };
+
+        return message;
     }
 
     private sendMessage(message: Message) {
         this.worker.postMessage(message);
     }
 
-    async ponder<T>(ponderData: PonderingData<T>) {
-        const message: Message = {
-            type: MessageTypes.PONDERING_DATA,
-            data: ponderData,
+    private setOnMessageEventHandler(callback: Function) {
+        this.worker.onmessage = (event: MessageEvent) => {
+            const unit = event.data;
+            callback(unit);
         };
+    }
+
+    async runPondering(ponderingData: PonderingData) {
+        const message = this.createMessage(MessageTypes.PONDERING_DATA, ponderingData);
         const ponderingPromise = new Promise(resolve => {
-            this.worker.onmessage = (event: MessageEvent) => {
-                const unit: T = event.data;
-                resolve(unit);
-            };
+            this.setOnMessageEventHandler(resolve);
             this.sendMessage(message);
         });
 
         return ponderingPromise;
+    }
+
+    terminate() {
+        this.worker.terminate();
     }
 }

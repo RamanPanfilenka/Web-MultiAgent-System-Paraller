@@ -1,55 +1,52 @@
+import WebWorker from '@mas/modules/common/models/webWorker';
+import Point from '@mas/modules/common/models/point';
 import Note from './models/note';
-import AgentWorker from '../common/agentWorker';
 import PianoKey from './models/pianoKey';
-import Point from '../common/models/point';
-import Message from '../common/models/message';
 import MelodyBall from './models/units/melodyBall';
+import PonderingData from '../common/models/ponderingData';
 
 export default {} as typeof Worker & (new () => Worker);
 
-class MelodyPlayerWorker extends AgentWorker<MelodyBall> {
+class MelodyPlayerWorker extends WebWorker<MelodyBall> {
     melody: Array<Note>;
     currentTime: number;
-    melodyBall: MelodyBall;
-    nearestBalls: Array<MelodyBall>;
     pianoKeys: Array<PianoKey>;
-
-
-    // constructor(melody: Array<Note>, pianoKeys: Array<PianoKey>) {
-    //     super();
-    //     this.melody = melody;
-    //     this.pianoKeys = pianoKeys;
-    // }
 
     constructor() {
         super();
     }
 
-    pondering(): MelodyBall {
-        if (this.melodyBall.note) {
+    setInitialData(initialData: any): void {
+        this.melody = initialData.melody;
+        this.pianoKeys = initialData.pianoKeys;
+    }
+
+    runPondering(ponderingData: any): MelodyBall {
+        if (this.unit.note) {
             this.chooseNote();
         }
 
-        if (this.isInKey() && this.currentTime > this.melodyBall.note.playTime) {
+        if (this.isInKey() && this.currentTime > this.unit.note.playTime) {
             this.chooseNote();
         }
 
-        this.nearestBalls.filter(ball => this.isSameDestinationPoint(ball.destinationPoint)).forEach(ball => {
-            if (this.melodyBall.getTimeToNote() > ball.getTimeToNote()) {
+        const conflictingUnits = this.nearestUnits.filter(unit => this.isSameDestinationPoint(unit.destinationPoint));
+        conflictingUnits.forEach(unit => {
+            if (this.unit.getTimeToNote() > unit.getTimeToNote()) {
                 this.chooseNote();
             }
         });
 
-        return this.melodyBall;
+        return this.unit;
     }
 
     private isSameDestinationPoint(otherBallPoint: Point): boolean {
-        return this.melodyBall.destinationPoint.equals(otherBallPoint);
+        return this.unit.destinationPoint.equals(otherBallPoint);
     }
 
     private isInKey(): boolean {
-        const destinationPoint = this.melodyBall.destinationPoint;
-        const distance = this.melodyBall.position.getDistanceTo(destinationPoint).value;
+        const destinationPoint = this.unit.destinationPoint;
+        const distance = this.unit.position.getDistanceTo(destinationPoint).value;
 
         return distance < 30;
     }
@@ -58,10 +55,10 @@ class MelodyPlayerWorker extends AgentWorker<MelodyBall> {
         const notes = this.getAvailableNotes();
         notes.forEach(note =>{
             const pianoKey = this.getPianoKey(note.tone);
-            const timeToNote = this.melodyBall.getTimeToNote(pianoKey.position);
+            const timeToNote = this.unit.getTimeToNote(pianoKey.position);
             if (timeToNote + this.currentTime <= note.playTime) {
-                this.melodyBall.note = note;
-                this.melodyBall.destinationPoint = pianoKey.position;
+                this.unit.note = note;
+                this.unit.destinationPoint = pianoKey.position;
 
                 return;
             }
@@ -69,7 +66,7 @@ class MelodyPlayerWorker extends AgentWorker<MelodyBall> {
     }
 
     private getAvailableNotes() {
-        const destinationNote = this.melodyBall.note;
+        const destinationNote = this.unit.note;
         const availableNotes = destinationNote
             ? this.melody.filter(note => note.playTime > this.currentTime)
             : this.melody.filter(note => note.playTime > this.currentTime && note.orderNumber != destinationNote.orderNumber);

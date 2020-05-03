@@ -1,8 +1,9 @@
-import MessageTypes from './messageTypes';
+export enum MessageTypes {
+    INITIAL_DATA,
+    PONDERING_DATA,
+}
 
-interface Message {
+export interface Message {
     type: MessageTypes;
     data: any;
 }
-
-export default Message;
