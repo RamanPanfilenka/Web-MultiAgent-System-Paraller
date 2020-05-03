@@ -1,31 +1,31 @@
+import Process from './process';
 import Unit from './units/unit';
-import Worker from '@/multiagent-system/modules/common/worker';
-import Message from './message';
+import PonderingData from './ponderingData';
 
 export default class Agent {
     unit: Unit;
-    worker: Worker;
+    process: Process;
 
     constructor(unit: Unit) {
         this.unit = unit;
     }
 
-    async pondering(nearestUnits: Array<Unit>) {
-        const message = this.package(nearestUnits);
-        const result = await this.worker.send(message);
+    async runPondering(nearestUnits: Array<Unit>) {
+        const ponderingData = this.createPonderingData(nearestUnits);
+        const result = await this.process.runPondering(ponderingData);
         this.unit.update(result);
     }
 
-    package(nearestUnits: Array<Unit>): string {
-        const message: Message<Unit> = {
+    createPonderingData(nearestUnits: Array<Unit>): PonderingData {
+        const ponderingData: PonderingData = {
             unit: this.unit,
             nearestUnits : nearestUnits,
         };
 
-        return JSON.stringify(message);
+        return ponderingData;
     }
 
     terminate() {
-        this.worker.terminate();
+        this.process.terminate();
     }
 }

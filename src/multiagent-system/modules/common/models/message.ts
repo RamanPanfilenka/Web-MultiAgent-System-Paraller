@@ -1,7 +1,9 @@
-interface Message<T> {
-    unit: T;
-    nearestUnits?: Array<T>;
-    currentTime?: number;
+export enum MessageTypes {
+    INITIAL_DATA,
+    PONDERING_DATA,
 }
 
-export default Message;
+export interface Message {
+    type: MessageTypes;
+    data: any;
+}
