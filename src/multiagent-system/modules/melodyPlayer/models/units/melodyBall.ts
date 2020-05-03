@@ -1,25 +1,18 @@
-import Ball from '@mas/modules/common/models/units/ball';
-import Point from '@mas/modules/common/models/point';
-import Speed from '@mas/modules/common/models/speed';
+import { Ball, IBall} from '@mas/modules/common/models/units/ball';
+import { Point } from '@mas/modules/common/models/point';
 import Note from '../note';
 
-export default class MelodyBall extends Ball {
+export interface IMelodyBall extends IBall {
+    note?: Note;
+    destinationPoint?: Point;
+}
+
+export class MelodyBall extends Ball implements IMelodyBall {
     note?: Note;
     destinationPoint?: Point;
 
-    constructor(
-        position: Point,
-        speed: Speed,
-        connectionRadius: number,
-        radius: number
-    ) {
-        super(position, speed, connectionRadius, radius);
-    }
-
-    update(melodyBall: MelodyBall): void {
-        super.update(melodyBall);
-        this.note = melodyBall.note;
-        this.destinationPoint = melodyBall.destinationPoint;
+    constructor(melodyBall: IMelodyBall) {
+        super(melodyBall);
     }
 
     getTimeToNote(): number;

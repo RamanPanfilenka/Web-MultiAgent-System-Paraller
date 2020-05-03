@@ -1,23 +1,16 @@
-import Ball from '@mas/modules/common/models/units/ball';
-import Speed from '@mas/modules/common/models/speed';
-import Point from '@mas/modules/common/models/point';
+import { Ball, IBall } from '@mas/modules/common/models/units/ball';
+import { Point } from '@mas/modules/common/models/point';
 
-export default class FillingBall extends Ball {
+export interface IFillingBall extends IBall {
+    isInPotential: boolean;
+    approximationPoint?: Point ;
+}
+
+export class FillingBall extends Ball implements IFillingBall {
     isInPotential = false;
     approximationPoint: null | Point = null;
 
-    constructor(
-        position: Point,
-        speed: Speed,
-        connectionRadius: number,
-        radius: number,
-    ) {
-        super(position, speed, connectionRadius, radius);
-    }
-
-    update(fillingBall: FillingBall) {
-        super.update(fillingBall);
-        this.isInPotential = fillingBall.isInPotential;
-        this.approximationPoint = fillingBall.approximationPoint;
+    constructor(fillingBall: IFillingBall) {
+        super(fillingBall);
     }
 }

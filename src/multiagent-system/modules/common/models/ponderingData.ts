@@ -1,8 +1,9 @@
-import Unit from './units/unit';
-
-interface PonderingData {
-    unit: Unit;
-    nearestUnits: Array<Unit>;
+export interface UnitPackage{
+    constructor: string;
+    data: any;
 }
 
-export default PonderingData;
+export interface PonderingData {
+    unitPackage: UnitPackage;
+    nearestUnitPackages: Array<UnitPackage>;
+}

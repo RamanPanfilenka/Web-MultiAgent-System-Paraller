@@ -1,22 +1,14 @@
-import Unit from "./unit";
-import Speed from "../speed";
-import Point from "../point";
+import  {Unit, IUnit } from './unit';
 
-export default class Ball extends Unit {
+export interface IBall extends IUnit {
+    radius: number;
+}
+
+export class Ball extends Unit implements IBall {
     radius: number;
 
-    constructor(
-        position: Point,
-        speed: Speed,
-        connectionRadius: number,
-        radius: number,
-    ) {
-        super(position, speed, connectionRadius);
-        this.radius = radius;
-    }
-
-    update(ball: Ball) {
-        super.update(ball);
+    constructor(ball: IBall) {
+        super(ball);
         this.radius = ball.radius;
     }
 }

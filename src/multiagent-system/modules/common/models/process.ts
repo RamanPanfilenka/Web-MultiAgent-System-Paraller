@@ -1,5 +1,6 @@
 import { Message, MessageTypes } from './message';
-import PonderingData from './ponderingData';
+import { PonderingData } from './ponderingData';
+import { IUnit } from './units/unit';
 
 export default class Process {
     private worker: Worker;
@@ -21,20 +22,20 @@ export default class Process {
         return message;
     }
 
-    private sendMessage(message: Message) {
+    private sendMessage(message: Message): void {
         this.worker.postMessage(message);
     }
 
-    private setOnMessageEventHandler(callback: Function) {
-        this.worker.onmessage = (event: MessageEvent) => {
+    private setOnMessageEventHandler(callback: Function): void{
+        this.worker.onmessage = (event: MessageEvent): void => {
             const unit = event.data;
             callback(unit);
         };
     }
 
-    async runPondering(ponderingData: PonderingData) {
+    async runPondering(ponderingData: PonderingData): Promise<IUnit> {
         const message = this.createMessage(MessageTypes.PONDERING_DATA, ponderingData);
-        const ponderingPromise = new Promise(resolve => {
+        const ponderingPromise = new Promise<IUnit>(resolve => {
             this.setOnMessageEventHandler(resolve);
             this.sendMessage(message);
         });
@@ -42,7 +43,7 @@ export default class Process {
         return ponderingPromise;
     }
 
-    terminate() {
+    terminate(): void {
         this.worker.terminate();
     }
 }

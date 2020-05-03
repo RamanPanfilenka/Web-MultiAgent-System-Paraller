@@ -1,10 +1,15 @@
-export default class Speed {
+export interface ISpeed {
+    value: number;
+    angle: number;
+}
+
+export class Speed implements ISpeed {
     value: number;
     angle: number;
 
-    constructor(value: number, angle: number) {
-        this.value = value;
-        this.angle = angle;
+    constructor(speed: ISpeed) {
+        this.value = speed.value;
+        this.angle = speed.angle;
     }
 
     get x(): number {

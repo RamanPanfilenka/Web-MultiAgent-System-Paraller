@@ -1,12 +1,17 @@
 import Distance from './distance';
 
-export default class Point {
+export interface IPoint {
+    x: number;
+    y: number;
+}
+
+export class Point implements IPoint {
     x: number;
     y: number;
 
-    constructor(x: number, y: number) {
-        this.x = x;
-        this.y = y;
+    constructor(point: IPoint) {
+        this.x = point.x;
+        this.y = point.y;
     }
 
     getDistanceTo(point: Point): Distance {
@@ -16,7 +21,7 @@ export default class Point {
         return new Distance(dx, dy);
     }
 
-    equals(point: Point) {
+    equals(point: Point): boolean {
         return this.x == point.x && this.y == point.y;
     }
 }
