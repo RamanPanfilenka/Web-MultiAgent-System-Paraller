@@ -1,14 +1,18 @@
 import Agent from '@mas/modules/common/models/agent';
-import Unit from '@mas/modules/common/models/units/unit';
+import { Unit } from '@mas/modules/common/models/units/unit';
 
 export default class AgentsEnvironment {
     agents: Array<Agent>;
 
-    async run() {
+    constructor(agents: Array<Agent>) {
+        this.agents = agents;
+    }
+
+    async run(): Promise<void> {
         await this.ponderAgents();
     }
 
-    async ponderAgents() {
+    private async ponderAgents(): Promise<PromiseSettledResult<void>[]> {
         const ponderPromises = this.agents.map(agent => {
             const nearestUnits = this.getNearestUnits(agent.unit);
             const ponderPromise = agent.runPondering(nearestUnits);
