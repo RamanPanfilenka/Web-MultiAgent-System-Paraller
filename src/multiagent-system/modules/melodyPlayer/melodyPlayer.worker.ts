@@ -1,10 +1,15 @@
 import WebWorker from '@mas/modules/common/models/webWorker';
 import { Point } from '@mas/modules/common/models/point';
-import Note from './models/note';
-import PianoKey from './models/pianoKey';
+import { Note, INote } from './models/note';
+import { PianoKey ,IPianoKey } from './models/pianoKey';
 import { MelodyBall } from './models/units/melodyBall';
 
 export default {} as typeof Worker & (new () => Worker);
+
+interface MelodyPlayerWorkerData {
+    melody: Array<INote>;
+    pianoKeys: Array<IPianoKey>;
+}
 
 class MelodyPlayerWorker extends WebWorker<MelodyBall> {
     melody: Array<Note>;
@@ -15,9 +20,9 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
         super();
     }
 
-    setInitialData(initialData: any): void {
-        this.melody = initialData.melody;
-        this.pianoKeys = initialData.pianoKeys;
+    setInitialData(initialData: MelodyPlayerWorkerData): void {
+        this.melody = initialData.melody.map(note => new Note(note));
+        this.pianoKeys = initialData.pianoKeys.map(key => new PianoKey(key));
     }
 
     runPondering(): void {
@@ -76,9 +81,7 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
     }
 
     protected initMappers(): void {
-        this.mappers = {
-            [MelodyBall.name] : MelodyBall,
-        };
+        this.mappers.add(MelodyBall);
     }
 }
 

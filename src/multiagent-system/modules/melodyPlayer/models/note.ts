@@ -1,18 +1,20 @@
-export default class Note {
+export interface INote {
+    tone: string;
+    orderNumber: number;
+    playTime: number;
+    duration: number;
+}
+
+export class Note {
     tone: string;
     orderNumber: number;
     playTime: number;
     duration: number;
 
-    constructor(
-        tone: string,
-        orderNumber: number,
-        playTime: number,
-        duration: number,
-    ) {
-        this.tone = tone;
-        this.orderNumber = orderNumber;
-        this.playTime = playTime;
-        this.duration = duration;
+    constructor(note: INote) {
+        this.tone = note.tone;
+        this.orderNumber = note.orderNumber;
+        this.playTime = note.playTime;
+        this.duration = note.duration;
     }
 }

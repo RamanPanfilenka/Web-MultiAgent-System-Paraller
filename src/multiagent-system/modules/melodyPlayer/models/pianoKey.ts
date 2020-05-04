@@ -1,11 +1,16 @@
 import { Point } from '@mas/modules/common/models/point';
 
-export default class PianoKey {
+export interface IPianoKey {
+    tone: string;
+    position: Point;
+}
+
+export class PianoKey {
     tone: string;
     position: Point;
 
-    constructor(tone: string, position: Point) {
-        this.tone = tone;
-        this.position = position;
+    constructor(key: IPianoKey) {
+        this.tone = key.tone;
+        this.position = key.position;
     }
 }
