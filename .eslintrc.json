@@ -14,6 +14,7 @@
         "no-var": "error",
         "no-trailing-spaces": "error",
         "prefer-exponentiation-operator": "error",
+        "linebreak-style": [ "error", "windows" ],
         "semi": [ "error", "always" ],
         "eol-last": [ "error", "always" ],
         "quotes": [ "error", "single" ],
@@ -50,6 +51,7 @@
                 "after": true
             }
         ],
-        "@typescript-eslint/interface-name-prefix": ["off"]
+        "@typescript-eslint/interface-name-prefix": ["off"],
+        "@typescript-eslint/consistent-type-assertions": ["off"]
     }
 }

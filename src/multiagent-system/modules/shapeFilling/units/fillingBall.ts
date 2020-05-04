@@ -8,7 +8,7 @@ export interface IFillingBall extends IBall {
 
 export class FillingBall extends Ball implements IFillingBall {
     isInPotential = false;
-    approximationPoint: null | Point = null;
+    approximationPoint?: Point = null;
 
     constructor(fillingBall: IFillingBall) {
         super(fillingBall);

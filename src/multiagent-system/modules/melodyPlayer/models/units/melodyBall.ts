@@ -1,6 +1,6 @@
 import { Ball, IBall} from '@mas/modules/common/models/units/ball';
 import { Point } from '@mas/modules/common/models/point';
-import Note from '../note';
+import { Note } from '../note';
 
 export interface IMelodyBall extends IBall {
     note?: Note;
@@ -20,6 +20,7 @@ export class MelodyBall extends Ball implements IMelodyBall {
     getTimeToNote(notePoint? : Point): number {
         const distance = notePoint
             ? this.position.getDistanceTo(notePoint)
-            : this.position.getDistanceTo(this.destinationPoint);        return distance.value / this.speed.value;
+            : this.position.getDistanceTo(this.destinationPoint);
+        return distance.value / this.speed.value;
     }
 }

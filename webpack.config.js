@@ -1,6 +1,5 @@
 const path = require('path');
 const chalk = require('chalk');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const { HotModuleReplacementPlugin } = require('webpack');
@@ -51,13 +50,6 @@ module.exports = {
                     'ts-loader',
                 ],
             },
-            {
-                test: /\.css$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader',
-                ],
-            },
         ],
     },
     plugins: [
@@ -68,9 +60,6 @@ module.exports = {
             compilationSuccessInfo: {
                 messages: [`You application is running here ${chalk.blue.bold('http://localhost:9000')}`]
             }
-        }),
-        new MiniCssExtractPlugin({
-            filename: 'main.css',
         }),
         new HtmlWebpackPlugin({
             template: './src/index.html',

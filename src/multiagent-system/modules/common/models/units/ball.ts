@@ -1,4 +1,4 @@
-import  {Unit, IUnit } from './unit';
+import { Unit, IUnit } from './unit';
 
 export interface IBall extends IUnit {
     radius: number;

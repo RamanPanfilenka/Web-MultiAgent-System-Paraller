@@ -1,6 +1,10 @@
 import { Point, IPoint } from '../point';
 import { Speed, ISpeed} from '../speed';
-import { UnitPackage } from '../ponderingData';
+
+export interface UnitPackage {
+    constructor: string;
+    data: IUnit;
+}
 
 export interface IUnit {
     position: IPoint;
@@ -20,13 +24,15 @@ export class Unit implements IUnit {
     }
 
     isInRange(unit: Unit): boolean {
-        const distance = this.position.getDistanceTo(unit.position);        return (distance.value <= this.connectionRange);
+        const distance = this.position.getDistanceTo(unit.position);
+        return (distance.value <= this.connectionRange);
     }
 
     package(): UnitPackage {
         const unitPackage: UnitPackage = {
             constructor: this.constructor.name,
             data: this,
-        };        return unitPackage;
+        };
+        return unitPackage;
     }
 }

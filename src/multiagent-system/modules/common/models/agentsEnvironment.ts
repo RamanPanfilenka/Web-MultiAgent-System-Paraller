@@ -1,8 +1,8 @@
-import Agent from '@mas/modules/common/models/agent';
+import { Agent } from '@mas/modules/common/models/agent';
 import { Unit } from '@mas/modules/common/models/units/unit';
 
-export default class AgentsEnvironment {
-    agents: Array<Agent>;
+export class AgentsEnvironment {
+    private agents: Array<Agent>;
 
     constructor(agents: Array<Agent>) {
         this.agents = agents;
@@ -15,13 +15,16 @@ export default class AgentsEnvironment {
     private async ponderAgents(): Promise<PromiseSettledResult<void>[]> {
         const ponderPromises = this.agents.map(agent => {
             const nearestUnits = this.getNearestUnits(agent.unit);
-            const ponderPromise = agent.runPondering(nearestUnits);            return ponderPromise;
-        });        return Promise.allSettled(ponderPromises);
+            const ponderPromise = agent.runPondering(nearestUnits);
+            return ponderPromise;
+        });
+        return Promise.allSettled(ponderPromises);
     }
 
     private getNearestUnits(targetUnit: Unit): Array<Unit> {
         const nearestUnits = this.agents
             .map(agent => agent.unit)
-            .filter(unit => unit.isInRange(targetUnit));        return nearestUnits;
+            .filter(unit => unit.isInRange(targetUnit));
+        return nearestUnits;
     }
 }

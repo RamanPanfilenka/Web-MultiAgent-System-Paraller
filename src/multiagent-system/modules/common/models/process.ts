@@ -2,7 +2,7 @@ import { Message, MessageTypes } from './message';
 import { PonderingData } from './ponderingData';
 import { IUnit } from './units/unit';
 
-export default class Process {
+export class Process {
     private worker: Worker;
 
     constructor(worker: Worker, initialData?: any) {
@@ -17,7 +17,8 @@ export default class Process {
         const message: Message = {
             type,
             data,
-        };        return message;
+        };
+        return message;
     }
 
     private sendMessage(message: Message): void {
@@ -36,7 +37,8 @@ export default class Process {
         const ponderingPromise = new Promise<IUnit>(resolve => {
             this.setOnMessageEventHandler(resolve);
             this.sendMessage(message);
-        });        return ponderingPromise;
+        });
+        return ponderingPromise;
     }
 
     terminate(): void {

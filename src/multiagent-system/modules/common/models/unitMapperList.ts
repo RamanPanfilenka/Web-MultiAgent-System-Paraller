@@ -1,5 +1,4 @@
-import { Unit, IUnit } from './units/unit';
-import { UnitPackage } from './ponderingData';
+import { Unit, IUnit, UnitPackage } from './units/unit';
 
 export interface UnitMapper {
     name: string;
@@ -9,8 +8,10 @@ export interface UnitMapper {
 export class UnitMapperList {
     private mappers: Map<string, UnitMapper> = new Map();
 
-    constructor(mappers: Array<UnitMapper>) {
-        mappers.forEach(mapper => this.add(mapper));
+    constructor(mappers?: Array<UnitMapper>) {
+        if (mappers) {
+            mappers.forEach(mapper => this.add(mapper));
+        }
     }
 
     add(mapper: UnitMapper): void {
@@ -19,6 +20,7 @@ export class UnitMapperList {
 
     map(unitPackage: UnitPackage): Unit {
         const unitMapper = this.mappers.get(unitPackage.constructor);
-        const unit = new unitMapper(unitPackage.data);        return unit;
+        const unit = new unitMapper(unitPackage.data);
+        return unit;
     }
 }

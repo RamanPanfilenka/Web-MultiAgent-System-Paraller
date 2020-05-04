@@ -1,9 +1,11 @@
-import Shape from './shape';
+import { Shape, IShape } from './shape';
 import { Point } from '../point';
 
-export default class Rect extends Shape {
-    constructor(centerPoint: Point, size: number) {
-        super(centerPoint, size);
+export type ISquare = IShape
+
+export class Square extends Shape implements ISquare {
+    constructor(square: ISquare) {
+        super(square);
     }
 
     isPointIn(point: Point, deviation = 0): boolean {

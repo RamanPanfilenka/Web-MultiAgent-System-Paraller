@@ -5,15 +5,21 @@ import { UnitMapperList } from './unitMapperList';
 
 const globalSelf: Worker = self as any;
 
-export default abstract class WebWorker<T extends Unit> {
+export abstract class WebWorker<T extends Unit> {
     unit: T;
-    nearestUnits: Array<Unit> = [];                 //It can be not only T type
-    mappers: UnitMapperList;
+    nearestUnits: Array<Unit> = [];
+    mappers: UnitMapperList = new UnitMapperList();
 
     constructor() {
         this.initMessageHandler();
         this.initMappers();
     }
+
+    protected abstract runPondering(): void;
+
+    protected abstract initMappers(): void;
+
+    protected abstract setInitialData(initialData: any): void;
 
     private initMessageHandler(): void {
         globalSelf.onmessage = (event: MessageEvent): void => {
@@ -39,17 +45,11 @@ export default abstract class WebWorker<T extends Unit> {
     }
 
     private setPonderingData(ponderingData: PonderingData): void {
-        this.unit = this.mappers.map(ponderingData.unitPackage);
+        this.unit = <T> this.mappers.map(ponderingData.unitPackage);
 
         ponderingData.nearestUnitPackages.forEach(unitPackage => {
             const nearestUnit = this.mappers.map(unitPackage);
             this.nearestUnits.push(nearestUnit);
         });
     }
-
-    abstract runPondering(): void;
-
-    protected abstract initMappers(): void;
-
-    abstract setInitialData(initialData: any): void;
 }

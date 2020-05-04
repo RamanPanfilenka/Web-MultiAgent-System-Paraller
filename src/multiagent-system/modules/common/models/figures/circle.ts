@@ -1,9 +1,11 @@
-import Shape from './shape';
+import { Shape, IShape } from './shape';
 import { Point } from '../point';
 
-export default class Circle extends Shape {
-    constructor(centerPoint: Point, size: number) {
-        super(centerPoint, size);
+export type ICircle = IShape
+
+export class Circle extends Shape implements ICircle {
+    constructor(circle: ICircle) {
+        super(circle);
     }
 
     isPointIn(point: Point, deviation = 0): boolean {
