@@ -12,13 +12,12 @@
     ],
     "rules": {
         "no-var": "error",
-        "no-unused-vars": "warn",
-        "semi": [ "error", "always" ],
         "no-trailing-spaces": "error",
         "prefer-exponentiation-operator": "error",
+        "semi": [ "error", "always" ],
+        "eol-last": [ "error", "always" ],
         "quotes": [ "error", "single" ],
         "comma-dangle": [ "error", "always-multiline" ],
-        "@typescript-eslint/interface-name-prefix": ["off"],
         "camelcase": [
             "error",
             {
@@ -28,7 +27,7 @@
         ],
         "padding-line-between-statements": [
             "error",
-            { "blankLine": "always", "prev": "*", "next": "return" }
+            { "blankLine": "never", "prev": "*", "next": "return" }
         ],
         "indent": [
             "error", 4,
@@ -50,6 +49,7 @@
                 "before": true,
                 "after": true
             }
-        ]
+        ],
+        "@typescript-eslint/interface-name-prefix": ["off"]
     }
 }

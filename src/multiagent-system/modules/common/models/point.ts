@@ -16,9 +16,7 @@ export class Point implements IPoint {
 
     getDistanceTo(point: Point): Distance {
         const dx = this.x - point.x;
-        const dy = this.y - point.y;
-
-        return new Distance(dx, dy);
+        const dy = this.y - point.y;        return new Distance(dx, dy);
     }
 
     equals(point: Point): boolean {

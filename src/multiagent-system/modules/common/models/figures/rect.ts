@@ -11,8 +11,6 @@ export default class Rect extends Shape {
         const dy = Math.abs(this.centerPoint.y - unitPosition.y);
         if (dx < this.size + deviation && dy < this.size + deviation) {
             return true;
-        }
-
-        return false;
+        }        return false;
     }
 }

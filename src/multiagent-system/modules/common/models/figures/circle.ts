@@ -11,8 +11,6 @@ export default class Circle extends Shape {
         const dy = this.centerPoint.y - unitPosition.y;
         if (Math.sqrt(dx ** 2 + dy ** 2) < this.size + deviation) {
             return true;
-        }
-
-        return false;
+        }        return false;
     }
 }

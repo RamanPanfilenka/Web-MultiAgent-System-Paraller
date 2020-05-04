@@ -20,8 +20,6 @@ export class MelodyBall extends Ball implements IMelodyBall {
     getTimeToNote(notePoint? : Point): number {
         const distance = notePoint
             ? this.position.getDistanceTo(notePoint)
-            : this.position.getDistanceTo(this.destinationPoint);
-
-        return distance.value / this.speed.value;
+            : this.position.getDistanceTo(this.destinationPoint);        return distance.value / this.speed.value;
     }
 }

@@ -24,9 +24,7 @@ export default class Agent {
         const ponderingData: PonderingData = {
             unitPackage: unitPackage,
             nearestUnitPackages : nearestUnits.map(unit => unit.package()),
-        };
-
-        return ponderingData;
+        };        return ponderingData;
     }
 
     terminate(): void {

@@ -17,9 +17,7 @@ export default class Process {
         const message: Message = {
             type,
             data,
-        };
-
-        return message;
+        };        return message;
     }
 
     private sendMessage(message: Message): void {
@@ -38,9 +36,7 @@ export default class Process {
         const ponderingPromise = new Promise<IUnit>(resolve => {
             this.setOnMessageEventHandler(resolve);
             this.sendMessage(message);
-        });
-
-        return ponderingPromise;
+        });        return ponderingPromise;
     }
 
     terminate(): void {

@@ -48,9 +48,7 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
 
     private isInKey(): boolean {
         const destinationPoint = this.unit.destinationPoint;
-        const distance = this.unit.position.getDistanceTo(destinationPoint).value;
-
-        return distance < 30;
+        const distance = this.unit.position.getDistanceTo(destinationPoint).value;        return distance < 30;
     }
 
     private chooseNote(): void {
@@ -60,9 +58,7 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
             const timeToNote = this.unit.getTimeToNote(pianoKey.position);
             if (timeToNote + this.currentTime <= note.playTime) {
                 this.unit.note = note;
-                this.unit.destinationPoint = pianoKey.position;
-
-                return;
+                this.unit.destinationPoint = pianoKey.position;                return;
             }
         });
     }
@@ -71,9 +67,7 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
         const destinationNote = this.unit.note;
         const availableNotes = destinationNote
             ? this.melody.filter(note => note.playTime > this.currentTime)
-            : this.melody.filter(note => note.playTime > this.currentTime && note.orderNumber != destinationNote.orderNumber);
-
-        return availableNotes;
+            : this.melody.filter(note => note.playTime > this.currentTime && note.orderNumber != destinationNote.orderNumber);        return availableNotes;
     }
 
     private getPianoKey(tone: string): PianoKey {

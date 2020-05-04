@@ -20,17 +20,13 @@ export class Unit implements IUnit {
     }
 
     isInRange(unit: Unit): boolean {
-        const distance = this.position.getDistanceTo(unit.position);
-
-        return (distance.value <= this.connectionRange);
+        const distance = this.position.getDistanceTo(unit.position);        return (distance.value <= this.connectionRange);
     }
 
     package(): UnitPackage {
         const unitPackage: UnitPackage = {
             constructor: this.constructor.name,
             data: this,
-        };
-
-        return unitPackage;
+        };        return unitPackage;
     }
 }

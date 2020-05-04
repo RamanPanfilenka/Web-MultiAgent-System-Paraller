@@ -1,7 +1,7 @@
 import { Message, MessageTypes } from './message';
-import { PonderingData, UnitPackage } from './ponderingData';
+import { PonderingData } from './ponderingData';
 import { Unit } from './units/unit';
-import { UnitMapperList } from './untiMapperList';
+import { UnitMapperList } from './unitMapperList';
 
 const globalSelf: Worker = self as any;
 
@@ -9,6 +9,7 @@ export default abstract class WebWorker<T extends Unit> {
     unit: T;
     nearestUnits: Array<Unit> = [];                 //It can be not only T type
     mappers: UnitMapperList;
+
     constructor() {
         this.initMessageHandler();
         this.initMappers();
