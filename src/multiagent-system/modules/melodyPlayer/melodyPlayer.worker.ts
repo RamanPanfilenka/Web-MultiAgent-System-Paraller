@@ -13,8 +13,8 @@ interface MelodyPlayerWorkerData {
 
 class MelodyPlayerWorker extends WebWorker<MelodyBall> {
     melody: Array<Note>;
-    currentTime: number;
     pianoKeys: Array<PianoKey>;
+    currentTime: number;
 
     constructor() {
         super();

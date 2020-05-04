@@ -1,6 +1,8 @@
+import { IUnit } from './units/unit';
+
 export interface UnitPackage{
     constructor: string;
-    data: any;
+    data: IUnit;
 }
 
 export interface PonderingData {

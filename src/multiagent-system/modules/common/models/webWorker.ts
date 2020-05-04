@@ -1,13 +1,14 @@
 import { Message, MessageTypes } from './message';
 import { PonderingData, UnitPackage } from './ponderingData';
 import { Unit } from './units/unit';
+import { UnitMapperList } from './untiMapperList';
 
 const globalSelf: Worker = self as any;
 
 export default abstract class WebWorker<T extends Unit> {
     unit: T;
-    nearestUnits: Array<Unit>;                 //It can be not only T type
-    mappers: any;
+    nearestUnits: Array<Unit> = [];                 //It can be not only T type
+    mappers: UnitMapperList;
     constructor() {
         this.initMessageHandler();
         this.initMappers();
@@ -37,22 +38,12 @@ export default abstract class WebWorker<T extends Unit> {
     }
 
     private setPonderingData(ponderingData: PonderingData): void {
-        this.nearestUnits = [];
-        const constructor = this.getConstructor(ponderingData.unitPackage);
-        this.unit = new constructor(ponderingData.unitPackage.data);
+        this.unit = this.mappers.map(ponderingData.unitPackage);
 
         ponderingData.nearestUnitPackages.forEach(unitPackage => {
-            const constructor = this.getConstructor(unitPackage);
-            const nearestUnit = new constructor(unitPackage.data);
+            const nearestUnit = this.mappers.map(unitPackage);
             this.nearestUnits.push(nearestUnit);
         });
-    }
-
-    private getConstructor(unitPackage: UnitPackage): any {
-        const constructorName = unitPackage.constructor;
-        const constructor = this.mappers[constructorName];
-
-        return constructor;
     }
 
     abstract runPondering(): void;
