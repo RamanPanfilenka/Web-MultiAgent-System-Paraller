@@ -6,11 +6,10 @@ export default class Rect extends Shape {
         super(centerPoint, size);
     }
 
-    isUnitIn(unitPosition: Point, deviation = 0): boolean {
-        const dx = Math.abs(this.centerPoint.x - unitPosition.x);
-        const dy = Math.abs(this.centerPoint.y - unitPosition.y);
-        if (dx < this.size + deviation && dy < this.size + deviation) {
-            return true;
-        }        return false;
+    isPointIn(point: Point, deviation = 0): boolean {
+        const dx = Math.abs(this.centerPoint.x - point.x);
+        const dy = Math.abs(this.centerPoint.y - point.y);
+        const isInside = dx < this.size + deviation && dy < this.size + deviation;
+        return isInside;
     }
 }

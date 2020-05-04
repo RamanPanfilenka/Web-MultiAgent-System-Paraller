@@ -1,6 +1,6 @@
 import { Point } from '../point';
 
-export default class Shape {
+export default abstract class Shape {
     centerPoint: Point;
     size: number;
 
@@ -8,4 +8,6 @@ export default class Shape {
         this.centerPoint = centerPoint;
         this.size = size;
     }
+
+    abstract isPointIn(point: Point, deviation: number): boolean;
 }

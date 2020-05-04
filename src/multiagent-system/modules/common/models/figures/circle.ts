@@ -6,11 +6,9 @@ export default class Circle extends Shape {
         super(centerPoint, size);
     }
 
-    isUnitIn(unitPosition: Point, deviation = 0): boolean {
-        const dx = this.centerPoint.x - unitPosition.x;
-        const dy = this.centerPoint.y - unitPosition.y;
-        if (Math.sqrt(dx ** 2 + dy ** 2) < this.size + deviation) {
-            return true;
-        }        return false;
+    isPointIn(point: Point, deviation = 0): boolean {
+        const distance = this.centerPoint.getDistanceTo(point);
+        const isInside = distance.value < this.size + deviation;
+        return isInside;
     }
 }
