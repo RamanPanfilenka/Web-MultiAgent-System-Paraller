@@ -1,8 +1,8 @@
-import { WebWorker } from '@mas/modules/common/models/webWorker';
-import { Point } from '@mas/modules/common/models/point';
-import { Note, INote } from './models/note';
-import { PianoKey ,IPianoKey } from './models/pianoKey';
-import { MelodyBall } from './models/units/melodyBall';
+import { WebWorker } from '@mas/modules/common/worker/webWorker';
+import { Point } from '@mas/modules/common/models/primitives/point';
+import { Note, INote } from '../models/primitives/note';
+import { PianoKey ,IPianoKey } from '../models/primitives/pianoKey';
+import { MelodyBall } from '../models/units/melodyBall';
 
 export default {} as typeof Worker & (new () => Worker);
 

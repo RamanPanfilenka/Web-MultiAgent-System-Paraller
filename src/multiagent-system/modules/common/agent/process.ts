@@ -1,6 +1,6 @@
-import { Message, MessageTypes } from './message';
-import { PonderingData } from './ponderingData';
-import { IUnit } from './units/unit';
+import { Message, MessageTypes } from '../models/messages/message';
+import { PonderingData } from '../models/messages/ponderingData';
+import { IUnit } from '../models/units/unit';
 
 export class Process {
     private worker: Worker;

@@ -1,8 +1,8 @@
-import MelodyPlayerWorker from '@mas/modules/melodyPlayer/melodyPlayer.worker';
-import { Process } from '@mas/modules/common/models/process';
-import { MelodyBall, IMelodyBall } from './multiagent-system/modules/melodyPlayer/models/units/melodyBall';
-import { Agent } from './multiagent-system/modules/common/models/agent';
-import { AgentsEnvironment } from './multiagent-system/modules/common/models/agentsEnvironment';
+import MelodyPlayerWorker from '@mas/modules/melody-player/worker/melodyPlayer.worker';
+import { Process } from '@mas/modules/common/agent/process';
+import { MelodyBall, IMelodyBall } from '@mas/modules/melody-player/models/units/melodyBall';
+import { Agent } from '@mas/modules/common/agent/agent';
+import { AgentsEnvironment } from '@mas/modules/common/environment/agentsEnvironment';
 
 const melodyBallInitData: IMelodyBall = {
     speed: {

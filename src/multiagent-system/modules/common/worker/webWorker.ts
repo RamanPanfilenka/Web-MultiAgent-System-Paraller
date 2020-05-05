@@ -1,7 +1,7 @@
-import { Message, MessageTypes } from './message';
-import { PonderingData } from './ponderingData';
-import { Unit } from './units/unit';
-import { UnitMapperList } from './unitMapperList';
+import { Message, MessageTypes } from '../models/messages/message';
+import { PonderingData } from '../models/messages/ponderingData';
+import { Unit } from '../models/units/unit';
+import { UnitMapperList } from '../utils/unitMapperList';
 
 const globalSelf: Worker = self as any;
 

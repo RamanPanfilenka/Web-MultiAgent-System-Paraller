@@ -1,5 +1,5 @@
 import { Shape, IShape } from './shape';
-import { Point } from '../point';
+import { Point } from '../primitives/point';
 
 export type ISquare = IShape
 

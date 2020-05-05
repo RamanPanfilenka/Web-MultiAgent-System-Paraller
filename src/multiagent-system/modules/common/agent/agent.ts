@@ -1,7 +1,7 @@
 import { Process } from './process';
-import { Unit } from './units/unit';
-import { PonderingData } from './ponderingData';
-import { UnitMapper } from './unitMapperList';
+import { Unit } from '../models/units/unit';
+import { PonderingData } from '../models/messages/ponderingData';
+import { UnitMapper } from '../utils/unitMapperList';
 
 export class Agent {
     unit: Unit;

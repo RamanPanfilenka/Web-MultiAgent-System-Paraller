@@ -1,4 +1,4 @@
-import { UnitPackage } from './units/unit';
+import { UnitPackage } from '../units/unit';
 
 export interface PonderingData {
     unitPackage: UnitPackage;

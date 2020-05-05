@@ -1,4 +1,4 @@
-import { Point } from '@mas/modules/common/models/point';
+import { Point } from '@mas/modules/common/models/primitives/point';
 
 export interface IPianoKey {
     tone: string;

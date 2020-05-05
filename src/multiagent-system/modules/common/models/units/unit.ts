@@ -1,5 +1,5 @@
-import { Point, IPoint } from '../point';
-import { Speed, ISpeed} from '../speed';
+import { Point, IPoint } from '../primitives/point';
+import { Speed, ISpeed} from '../primitives/speed';
 
 export interface UnitPackage {
     constructor: string;

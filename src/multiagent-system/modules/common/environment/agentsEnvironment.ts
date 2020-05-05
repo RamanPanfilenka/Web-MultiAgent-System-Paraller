@@ -1,4 +1,4 @@
-import { Agent } from '@mas/modules/common/models/agent';
+import { Agent } from '@mas/modules/common/agent/agent';
 import { Unit } from '@mas/modules/common/models/units/unit';
 
 export class AgentsEnvironment {

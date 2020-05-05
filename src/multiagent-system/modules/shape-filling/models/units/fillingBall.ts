@@ -1,5 +1,5 @@
 import { Ball, IBall } from '@mas/modules/common/models/units/ball';
-import { Point } from '@mas/modules/common/models/point';
+import { Point } from '@mas/modules/common/models/primitives/point';
 
 export interface IFillingBall extends IBall {
     isInPotential: boolean;

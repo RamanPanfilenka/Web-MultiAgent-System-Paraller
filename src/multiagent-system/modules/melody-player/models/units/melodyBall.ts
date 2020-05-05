@@ -1,6 +1,6 @@
 import { Ball, IBall} from '@mas/modules/common/models/units/ball';
-import { Point } from '@mas/modules/common/models/point';
-import { Note } from '../note';
+import { Point } from '@mas/modules/common/models/primitives/point';
+import { Note } from '../primitives/note';
 
 export interface IMelodyBall extends IBall {
     note?: Note;

@@ -1,4 +1,4 @@
-import { Point, IPoint } from '../point';
+import { Point, IPoint } from '../primitives/point';
 
 export interface IShape {
     centerPoint: IPoint;
