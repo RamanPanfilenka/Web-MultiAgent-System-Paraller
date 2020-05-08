@@ -1,19 +1,23 @@
-import { Point, IPoint } from '../point';
-import { Speed, ISpeed} from '../speed';
-import { UnitPackage } from '../ponderingData';
+import { Point, PointScheme } from '../primitives/point';
+import { Speed, SpeedScheme} from '../primitives/speed';
 
-export interface IUnit {
-    position: IPoint;
-    speed: ISpeed;
+export interface UnitPackage {
+    constructor: string;
+    data: UnitScheme;
+}
+
+export interface UnitScheme {
+    position: PointScheme;
+    speed: SpeedScheme;
     connectionRange: number;
 }
 
-export class Unit implements IUnit {
+export class Unit {
     position: Point;
     speed: Speed;
     connectionRange: number;
 
-    constructor(unit: IUnit) {
+    constructor(unit: UnitScheme) {
         this.position = new Point(unit.position);
         this.speed = new Speed(unit.speed);
         this.connectionRange = unit.connectionRange;
@@ -21,7 +25,6 @@ export class Unit implements IUnit {
 
     isInRange(unit: Unit): boolean {
         const distance = this.position.getDistanceTo(unit.position);
-
         return (distance.value <= this.connectionRange);
     }
 
@@ -30,7 +33,6 @@ export class Unit implements IUnit {
             constructor: this.constructor.name,
             data: this,
         };
-
         return unitPackage;
     }
 }

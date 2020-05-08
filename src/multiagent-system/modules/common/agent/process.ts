@@ -1,8 +1,8 @@
-import { Message, MessageTypes } from './message';
-import { PonderingData } from './ponderingData';
-import { IUnit } from './units/unit';
+import { Message, MessageTypes } from '../models/messages/message';
+import { PonderingData } from '../models/messages/ponderingData';
+import { UnitScheme } from '../models/units/unit';
 
-export default class Process {
+export class Process {
     private worker: Worker;
 
     constructor(worker: Worker, initialData?: any) {
@@ -18,7 +18,6 @@ export default class Process {
             type,
             data,
         };
-
         return message;
     }
 
@@ -33,13 +32,12 @@ export default class Process {
         };
     }
 
-    async runPondering(ponderingData: PonderingData): Promise<IUnit> {
+    async runPondering(ponderingData: PonderingData): Promise<UnitScheme> {
         const message = this.createMessage(MessageTypes.PONDERING_DATA, ponderingData);
-        const ponderingPromise = new Promise<IUnit>(resolve => {
+        const ponderingPromise = new Promise<UnitScheme>(resolve => {
             this.setOnMessageEventHandler(resolve);
             this.sendMessage(message);
         });
-
         return ponderingPromise;
     }
 

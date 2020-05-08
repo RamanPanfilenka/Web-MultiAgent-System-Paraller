@@ -1,13 +1,13 @@
-export interface ISpeed {
+export interface SpeedScheme {
     value: number;
     angle: number;
 }
 
-export class Speed implements ISpeed {
+export class Speed {
     value: number;
     angle: number;
 
-    constructor(speed: ISpeed) {
+    constructor(speed: SpeedScheme) {
         this.value = speed.value;
         this.angle = speed.angle;
     }

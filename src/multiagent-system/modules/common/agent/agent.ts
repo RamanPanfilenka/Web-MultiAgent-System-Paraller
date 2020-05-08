@@ -1,16 +1,17 @@
-import Process from './process';
-import { Unit } from './units/unit';
-import { PonderingData } from './ponderingData';
+import { Process } from './process';
+import { Unit } from '../models/units/unit';
+import { PonderingData } from '../models/messages/ponderingData';
+import { UnitMapper } from '../utils/unitMapperList';
 
-export default class Agent {
+export class Agent {
     unit: Unit;
-    process: Process;
-    private mapper: any;
+    private mapper: UnitMapper;
+    private process: Process;
 
     constructor(unit: Unit, process: Process) {
         this.unit = unit;
         this.process = process;
-        this.mapper = unit.constructor;
+        this.mapper = <UnitMapper>unit.constructor;
     }
 
     async runPondering(nearestUnits: Array<Unit>): Promise<void> {
@@ -25,7 +26,6 @@ export default class Agent {
             unitPackage: unitPackage,
             nearestUnitPackages : nearestUnits.map(unit => unit.package()),
         };
-
         return ponderingData;
     }
 

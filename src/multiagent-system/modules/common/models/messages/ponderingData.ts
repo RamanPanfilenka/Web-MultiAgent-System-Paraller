@@ -1,7 +1,4 @@
-export interface UnitPackage{
-    constructor: string;
-    data: any;
-}
+import { UnitPackage } from '../units/unit';
 
 export interface PonderingData {
     unitPackage: UnitPackage;

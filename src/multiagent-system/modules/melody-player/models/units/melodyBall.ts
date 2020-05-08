@@ -1,0 +1,42 @@
+import { Ball, BallScheme} from '@mas/modules/common/models/units/ball';
+import { Note, NoteScheme } from '../primitives/note';
+import { PianoKey, PianoKeyScheme } from '../primitives/pianoKey';
+
+export interface MelodyBallScheme extends BallScheme {
+    targetNote?: NoteScheme;
+    targetKey?: PianoKeyScheme;
+}
+
+export class MelodyBall extends Ball {
+    targetNote?: Note;
+    targetKey?: PianoKey;
+
+    constructor(melodyBall: MelodyBallScheme) {
+        super(melodyBall);
+    }
+
+    getTimeToNote(): number;
+    getTimeToNote(key: PianoKey): number;
+    getTimeToNote(key? : PianoKey): number {
+        const distance = key
+            ? this.position.getDistanceTo(key.centerPoint)
+            : this.position.getDistanceTo(this.targetKey.centerPoint);
+        return distance.value / this.speed.value;
+    }
+
+    isInKey(): boolean {
+        return (this.targetKey && this.targetKey.isPointIn(this.position));
+    }
+
+    isNotePlayed(currentTime: number): boolean {
+        return (
+            this.targetNote
+            && this.targetNote.playTime < currentTime
+            && this.isInKey()
+        );
+    }
+
+    hasSameTargetNoteWith(otherBall: MelodyBall): boolean {
+        return this.targetNote.equals(otherBall.targetNote);
+    }
+}
