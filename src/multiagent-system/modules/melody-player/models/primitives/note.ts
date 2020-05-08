@@ -1,4 +1,4 @@
-export interface INote {
+export interface NoteScheme {
     tone: string;
     orderNumber: number;
     playTime: number;
@@ -11,7 +11,7 @@ export class Note {
     playTime: number;
     duration: number;
 
-    constructor(note: INote) {
+    constructor(note: NoteScheme) {
         this.tone = note.tone;
         this.orderNumber = note.orderNumber;
         this.playTime = note.playTime;

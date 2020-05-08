@@ -1,9 +1,9 @@
-import { Note, INote } from './primitives/note';
+import { Note, NoteScheme } from './primitives/note';
 
 export class Melody {
     notes: Array<Note>;
 
-    constructor(notesData: Array<INote>) {
+    constructor(notesData: Array<NoteScheme>) {
         this.notes = notesData.map(noteData => new Note(noteData));
     }
 

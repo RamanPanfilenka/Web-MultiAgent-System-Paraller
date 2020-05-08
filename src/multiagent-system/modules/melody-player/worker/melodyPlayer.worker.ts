@@ -1,6 +1,6 @@
 import { WebWorker } from '@mas/modules/common/worker/webWorker';
-import { INote } from '../models/primitives/note';
-import { IPianoKey } from '../models/primitives/pianoKey';
+import { NoteScheme } from '../models/primitives/note';
+import { PianoKeyScheme } from '../models/primitives/pianoKey';
 import { MelodyBall } from '../models/units/melodyBall';
 import { PianoKeyboard } from '../models/pianoKeyboard';
 import { Melody } from '../models/melody';
@@ -8,8 +8,8 @@ import { Melody } from '../models/melody';
 export default {} as typeof Worker & (new () => Worker);
 
 interface MelodyPlayerWorkerData {
-    melody: Array<INote>;
-    pianoKeys: Array<IPianoKey>;
+    melody: Array<NoteScheme>;
+    pianoKeys: Array<PianoKeyScheme>;
 }
 
 class MelodyPlayerWorker extends WebWorker<MelodyBall> {

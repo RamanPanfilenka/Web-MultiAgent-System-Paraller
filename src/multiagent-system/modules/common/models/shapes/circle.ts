@@ -1,10 +1,10 @@
-import { Shape, IShape } from './shape';
+import { Shape, ShapeScheme } from './shape';
 import { Point } from '../primitives/point';
 
-export type ICircle = IShape
+export type CircleScheme = ShapeScheme
 
-export class Circle extends Shape implements ICircle {
-    constructor(circle: ICircle) {
+export class Circle extends Shape {
+    constructor(circle: CircleScheme) {
         super(circle);
     }
 

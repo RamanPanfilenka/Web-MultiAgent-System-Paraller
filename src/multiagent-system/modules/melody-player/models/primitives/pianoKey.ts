@@ -1,15 +1,15 @@
 import { Point } from '@mas/modules/common/models/primitives/point';
-import { Shape, IShape } from '@mas/modules/common/models/shapes/shape';
+import { Shape, ShapeScheme } from '@mas/modules/common/models/shapes/shape';
 
-export interface IPianoKey extends IShape {
+export interface PianoKeyScheme extends ShapeScheme {
     tone: string;
 }
 
 // TODO: Should extend Rectangle class.
-export class PianoKey extends Shape implements IPianoKey {
+export class PianoKey extends Shape {
     tone: string;
 
-    constructor(key: IPianoKey) {
+    constructor(key: PianoKeyScheme) {
         super(key);
         this.tone = key.tone;
     }

@@ -1,23 +1,23 @@
-import { Point, IPoint } from '../primitives/point';
-import { Speed, ISpeed} from '../primitives/speed';
+import { Point, PointScheme } from '../primitives/point';
+import { Speed, SpeedScheme} from '../primitives/speed';
 
 export interface UnitPackage {
     constructor: string;
-    data: IUnit;
+    data: UnitScheme;
 }
 
-export interface IUnit {
-    position: IPoint;
-    speed: ISpeed;
+export interface UnitScheme {
+    position: PointScheme;
+    speed: SpeedScheme;
     connectionRange: number;
 }
 
-export class Unit implements IUnit {
+export class Unit {
     position: Point;
     speed: Speed;
     connectionRange: number;
 
-    constructor(unit: IUnit) {
+    constructor(unit: UnitScheme) {
         this.position = new Point(unit.position);
         this.speed = new Speed(unit.speed);
         this.connectionRange = unit.connectionRange;

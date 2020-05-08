@@ -1,15 +1,15 @@
 import { Distance } from './distance';
 
-export interface IPoint {
+export interface PointScheme {
     x: number;
     y: number;
 }
 
-export class Point implements IPoint {
+export class Point {
     x: number;
     y: number;
 
-    constructor(point: IPoint) {
+    constructor(point: PointScheme) {
         this.x = point.x;
         this.y = point.y;
     }

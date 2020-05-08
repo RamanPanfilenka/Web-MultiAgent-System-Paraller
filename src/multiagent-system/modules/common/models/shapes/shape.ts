@@ -1,15 +1,15 @@
-import { Point, IPoint } from '../primitives/point';
+import { Point, PointScheme } from '../primitives/point';
 
-export interface IShape {
-    centerPoint: IPoint;
+export interface ShapeScheme {
+    centerPoint: PointScheme;
     size: number;
 }
 
-export abstract class Shape implements IShape {
+export abstract class Shape {
     centerPoint: Point;
     size: number;
 
-    constructor(shape: IShape) {
+    constructor(shape: ShapeScheme) {
         this.centerPoint = new Point(shape.centerPoint);
         this.size = shape.size;
     }

@@ -1,13 +1,13 @@
-import { Unit, IUnit } from './unit';
+import { Unit, UnitScheme } from './unit';
 
-export interface IBall extends IUnit {
+export interface BallScheme extends UnitScheme {
     radius: number;
 }
 
-export class Ball extends Unit implements IBall {
+export class Ball extends Unit {
     radius: number;
 
-    constructor(ball: IBall) {
+    constructor(ball: BallScheme) {
         super(ball);
         this.radius = ball.radius;
     }

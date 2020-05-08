@@ -1,16 +1,16 @@
-import { Ball, IBall } from '@mas/modules/common/models/units/ball';
-import { Point } from '@mas/modules/common/models/primitives/point';
+import { Ball, BallScheme } from '@mas/modules/common/models/units/ball';
+import { Point } from '@/multiagent-system/modules/common/models/primitives/point';
 
-export interface IFillingBall extends IBall {
+export interface FillingBallScheme extends BallScheme {
     isInPotential: boolean;
     approximationPoint?: Point ;
 }
 
-export class FillingBall extends Ball implements IFillingBall {
+export class FillingBall extends Ball {
     isInPotential = false;
     approximationPoint?: Point = null;
 
-    constructor(fillingBall: IFillingBall) {
+    constructor(fillingBall: FillingBallScheme) {
         super(fillingBall);
     }
 }

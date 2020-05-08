@@ -1,10 +1,10 @@
-import { Shape, IShape } from './shape';
+import { Shape, ShapeScheme } from './shape';
 import { Point } from '../primitives/point';
 
-export type ISquare = IShape
+export type SquareScheme = ShapeScheme
 
-export class Square extends Shape implements ISquare {
-    constructor(square: ISquare) {
+export class Square extends Shape {
+    constructor(square: SquareScheme) {
         super(square);
     }
 

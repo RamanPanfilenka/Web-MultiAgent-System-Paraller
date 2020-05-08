@@ -1,8 +1,8 @@
-import { Unit, IUnit, UnitPackage } from '../models/units/unit';
+import { Unit, UnitScheme, UnitPackage } from '../models/units/unit';
 
 export interface UnitMapper {
     name: string;
-    new (unit: IUnit): Unit;
+    new (unit: UnitScheme): Unit;
 }
 
 export class UnitMapperList {

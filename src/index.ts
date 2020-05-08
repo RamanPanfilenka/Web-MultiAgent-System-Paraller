@@ -1,10 +1,10 @@
 import MelodyPlayerWorker from '@mas/modules/melody-player/worker/melodyPlayer.worker';
 import { Process } from '@mas/modules/common/agent/process';
-import { MelodyBall, IMelodyBall } from '@mas/modules/melody-player/models/units/melodyBall';
+import { MelodyBall, MelodyBallScheme } from '@mas/modules/melody-player/models/units/melodyBall';
 import { Agent } from '@mas/modules/common/agent/agent';
 import { AgentsEnvironment } from '@mas/modules/common/environment/agentsEnvironment';
 
-const melodyBallInitData: IMelodyBall = {
+const melodyBallInitData: MelodyBallScheme = {
     speed: {
         value: 1,
         angle: 0,

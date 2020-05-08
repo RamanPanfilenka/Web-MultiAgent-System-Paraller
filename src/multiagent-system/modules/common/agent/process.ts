@@ -1,6 +1,6 @@
 import { Message, MessageTypes } from '../models/messages/message';
 import { PonderingData } from '../models/messages/ponderingData';
-import { IUnit } from '../models/units/unit';
+import { UnitScheme } from '../models/units/unit';
 
 export class Process {
     private worker: Worker;
@@ -32,9 +32,9 @@ export class Process {
         };
     }
 
-    async runPondering(ponderingData: PonderingData): Promise<IUnit> {
+    async runPondering(ponderingData: PonderingData): Promise<UnitScheme> {
         const message = this.createMessage(MessageTypes.PONDERING_DATA, ponderingData);
-        const ponderingPromise = new Promise<IUnit>(resolve => {
+        const ponderingPromise = new Promise<UnitScheme>(resolve => {
             this.setOnMessageEventHandler(resolve);
             this.sendMessage(message);
         });
