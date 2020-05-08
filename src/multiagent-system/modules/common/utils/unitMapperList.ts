@@ -19,6 +19,9 @@ export class UnitMapperList {
     }
 
     map(unitPackage: UnitPackage): Unit {
+        if (!this.mappers.has(unitPackage.constructor)) {
+            throw new Error(`Attempt to get not existed mapper: ${unitPackage.constructor}`);
+        }
         const unitMapper = this.mappers.get(unitPackage.constructor);
         const unit = new unitMapper(unitPackage.data);
         return unit;
