@@ -17,4 +17,8 @@ export class Note {
         this.playTime = note.playTime;
         this.duration = note.duration;
     }
+
+    equals(otherNote: Note): boolean {
+        return this.orderNumber == otherNote.orderNumber;
+    }
 }

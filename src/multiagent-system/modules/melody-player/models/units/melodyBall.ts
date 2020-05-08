@@ -1,26 +1,42 @@
 import { Ball, IBall} from '@mas/modules/common/models/units/ball';
-import { Point } from '@mas/modules/common/models/primitives/point';
-import { Note } from '../primitives/note';
+import { Note, INote } from '../primitives/note';
+import { PianoKey, IPianoKey } from '../primitives/pianoKey';
 
 export interface IMelodyBall extends IBall {
-    note?: Note;
-    destinationPoint?: Point;
+    targetNote?: INote;
+    targetKey?: IPianoKey;
 }
 
 export class MelodyBall extends Ball implements IMelodyBall {
-    note?: Note;
-    destinationPoint?: Point;
+    targetNote?: Note;
+    targetKey?: PianoKey;
 
     constructor(melodyBall: IMelodyBall) {
         super(melodyBall);
     }
 
     getTimeToNote(): number;
-    getTimeToNote(notePoint: Point): number;
-    getTimeToNote(notePoint? : Point): number {
-        const distance = notePoint
-            ? this.position.getDistanceTo(notePoint)
-            : this.position.getDistanceTo(this.destinationPoint);
+    getTimeToNote(key: PianoKey): number;
+    getTimeToNote(key? : PianoKey): number {
+        const distance = key
+            ? this.position.getDistanceTo(key.centerPoint)
+            : this.position.getDistanceTo(this.targetKey.centerPoint);
         return distance.value / this.speed.value;
+    }
+
+    isInKey(): boolean {
+        return (this.targetKey && this.targetKey.isPointIn(this.position));
+    }
+
+    isNotePlayed(currentTime: number): boolean {
+        return (
+            this.targetNote
+            && this.targetNote.playTime < currentTime
+            && this.isInKey()
+        );
+    }
+
+    hasSameTargetNoteWith(otherBall: MelodyBall): boolean {
+        return this.targetNote.equals(otherBall.targetNote);
     }
 }

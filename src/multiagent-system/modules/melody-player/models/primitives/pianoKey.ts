@@ -1,16 +1,21 @@
 import { Point } from '@mas/modules/common/models/primitives/point';
+import { Shape, IShape } from '@mas/modules/common/models/shapes/shape';
 
-export interface IPianoKey {
+export interface IPianoKey extends IShape {
     tone: string;
-    position: Point;
 }
 
-export class PianoKey {
+// TODO: Should extend Rectangle class.
+export class PianoKey extends Shape implements IPianoKey {
     tone: string;
-    position: Point;
 
     constructor(key: IPianoKey) {
+        super(key);
         this.tone = key.tone;
-        this.position = key.position;
+    }
+
+    isPointIn(point: Point): boolean {
+        const isInside = this.centerPoint.equals(point);
+        return isInside;
     }
 }

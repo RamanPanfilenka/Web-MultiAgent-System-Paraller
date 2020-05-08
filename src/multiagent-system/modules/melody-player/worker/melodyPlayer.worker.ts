@@ -1,8 +1,9 @@
 import { WebWorker } from '@mas/modules/common/worker/webWorker';
-import { Point } from '@mas/modules/common/models/primitives/point';
-import { Note, INote } from '../models/primitives/note';
-import { PianoKey ,IPianoKey } from '../models/primitives/pianoKey';
+import { INote } from '../models/primitives/note';
+import { IPianoKey } from '../models/primitives/pianoKey';
 import { MelodyBall } from '../models/units/melodyBall';
+import { PianoKeyboard } from '../models/pianoKeyboard';
+import { Melody } from '../models/melody';
 
 export default {} as typeof Worker & (new () => Worker);
 
@@ -12,8 +13,8 @@ interface MelodyPlayerWorkerData {
 }
 
 class MelodyPlayerWorker extends WebWorker<MelodyBall> {
-    melody: Array<Note>;
-    pianoKeys: Array<PianoKey>;
+    melody: Melody;
+    pianoKeyboard: PianoKeyboard;
     currentTime: number;
 
     constructor() {
@@ -25,60 +26,43 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
     }
 
     setInitialData(initialData: MelodyPlayerWorkerData): void {
-        this.melody = initialData.melody.map(note => new Note(note));
-        this.pianoKeys = initialData.pianoKeys.map(key => new PianoKey(key));
+        this.melody = new Melody(initialData.melody);
+        this.pianoKeyboard = new PianoKeyboard(initialData.pianoKeys);
     }
 
     runPondering(): void {
-        if (this.unit.note) {
+        this.melody.removePlayedNotes(this.currentTime);
+
+        if (this.unit.isNotePlayed(this.currentTime)) {
             this.chooseNote();
         }
 
-        if (this.isInKey() && this.currentTime > this.unit.note.playTime) {
-            this.chooseNote();
-        }
-
-        const conflictingUnits = this.nearestUnits.filter(unit => unit instanceof MelodyBall && this.isSameDestinationPoint(unit.destinationPoint));
-        conflictingUnits.forEach(unit => {
-            if (unit instanceof MelodyBall && this.unit.getTimeToNote() > unit.getTimeToNote()) {
-                this.chooseNote();
-            }
-        });
+        this.resolveConflicts();
     }
 
-    private isSameDestinationPoint(otherBallPoint: Point): boolean {
-        return this.unit.destinationPoint.equals(otherBallPoint);
-    }
-
-    private isInKey(): boolean {
-        const destinationPoint = this.unit.destinationPoint;
-        const distance = this.unit.position.getDistanceTo(destinationPoint).value;
-        return distance < 30;
+    private resolveConflicts() {
+        this.nearestUnits
+            .filter(unit => unit instanceof MelodyBall && this.unit.hasSameTargetNoteWith(unit))
+            .forEach((unit: MelodyBall) => {
+                if (this.unit.getTimeToNote() > unit.getTimeToNote()) {
+                    this.chooseNote();
+                }
+            });
     }
 
     private chooseNote(): void {
-        const notes = this.getAvailableNotes();
-        notes.forEach(note =>{
-            const pianoKey = this.getPianoKey(note.tone);
-            const timeToNote = this.unit.getTimeToNote(pianoKey.position);
+        for (const note of this.melody.notes) {
+            if (this.unit.targetNote?.equals(note)) {
+                continue;
+            }
+            const pianoKey = this.pianoKeyboard.keys.get(note.tone);
+            const timeToNote = this.unit.getTimeToNote(pianoKey);
             if (timeToNote + this.currentTime <= note.playTime) {
-                this.unit.note = note;
-                this.unit.destinationPoint = pianoKey.position;
+                this.unit.targetNote = note;
+                this.unit.targetKey = pianoKey;
                 return;
             }
-        });
-    }
-
-    private getAvailableNotes(): Array<Note> {
-        const destinationNote = this.unit.note;
-        const availableNotes = destinationNote
-            ? this.melody.filter(note => note.playTime > this.currentTime)
-            : this.melody.filter(note => note.playTime > this.currentTime && note.orderNumber != destinationNote.orderNumber);
-        return availableNotes;
-    }
-
-    private getPianoKey(tone: string): PianoKey {
-        return this.pianoKeys.find(key => key.tone == tone);
+        }
     }
 }
 
