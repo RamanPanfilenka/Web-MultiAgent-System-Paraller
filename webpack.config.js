@@ -1,3 +1,4 @@
+const os = require('os');
 const path = require('path');
 const chalk = require('chalk');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -10,7 +11,7 @@ const SRC_DIR = path.resolve(__dirname, 'src');
 
 module.exports = {
     entry: path.resolve(SRC_DIR, 'index.ts'),
-    devtool: 'source-map',
+    devtool: 'inline-source-map',
     output: {
         path: DIST_DIR,
         filename: 'bundle.js',
@@ -47,7 +48,19 @@ module.exports = {
                 test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
                 use: [
-                    'ts-loader',
+                    {
+                        loader: 'thread-loader',
+                        options: {
+                            workers: os.cpus().length - 1,
+                            poolRespawn: false,
+                        }
+                    },
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            happyPackMode: true,
+                        },
+                    }
                 ],
             },
         ],

@@ -52,7 +52,7 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
 
     private chooseNote(): void {
         for (const note of this.melody.notes) {
-            if (this.unit.targetNote?.equals(note)) {
+            if (this.unit.targetNote && this.unit.targetNote.equals(note)) {
                 continue;
             }
             const pianoKey = this.pianoKeyboard.keys.get(note.tone);
