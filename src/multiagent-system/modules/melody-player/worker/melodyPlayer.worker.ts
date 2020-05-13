@@ -31,6 +31,8 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
     }
 
     runPondering(): void {
+        this.unit.position.x += 1;
+        return;
         this.melody.removePlayedNotes(this.currentTime);
 
         if (this.unit.isNotePlayed(this.currentTime)) {
