@@ -22,8 +22,8 @@ export default class Renderer {
         agents.forEach(agent => {
             const unitSprite = PIXI.Sprite.from(ballTextureUrl);
             unitSprite.position.set(agent.unit.position.x, agent.unit.position.y);
-            unitSprite.scale.x = 0.2;
-            unitSprite.scale.y = 0.2;
+            unitSprite.width = 20;
+            unitSprite.height = 20;
             unitContainer.addChild(unitSprite);
             this.unitSprites.push(unitSprite);
         });

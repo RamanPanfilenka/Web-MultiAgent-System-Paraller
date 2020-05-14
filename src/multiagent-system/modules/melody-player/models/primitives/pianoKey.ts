@@ -21,7 +21,8 @@ export class PianoKey extends Shape {
     }
 
     isPointIn(point: Point): boolean {
-        const isInside = this.centerPoint.equals(point);
+        const isInside = Math.abs((this.centerPoint.x - point.x)) < (this.width / 2)
+                         && Math.abs((this.centerPoint.y - point.y)) < (this.height / 2);
         return isInside;
     }
 }

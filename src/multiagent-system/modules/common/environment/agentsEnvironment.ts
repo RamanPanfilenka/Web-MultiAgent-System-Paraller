@@ -13,7 +13,7 @@ export class AgentsEnvironment {
     }
 
     async run(): Promise<void> {
-        for (let i = 0; i < 1000; i++) {
+        for (let i = 0; i < 100000; i++) {
             await this.ponderAgents();
             this.renderer.render(this.agents);
         }

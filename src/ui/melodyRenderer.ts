@@ -28,7 +28,7 @@ export default class MelodyRenderer extends Renderer {
     private rederKeys(pianoKeys: Array<PianoKey>, spriteUrl: string, pianoKeysContainer: PIXI.Container) {
         pianoKeys.forEach(key => {
             const pianoSprite = PIXI.Sprite.from(spriteUrl);
-            pianoSprite.position.set(key.centerPoint.x, key.centerPoint.y);
+            pianoSprite.position.set(key.centerPoint.x - key.width / 2, key.centerPoint.y - key.height / 2);
             pianoSprite.width = key.width;
             pianoSprite.height = key.height;
             pianoKeysContainer.addChild(pianoSprite);

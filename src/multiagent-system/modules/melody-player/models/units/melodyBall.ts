@@ -1,6 +1,7 @@
 import { Ball, BallScheme} from '@mas/modules/common/models/units/ball';
 import { Note, NoteScheme } from '../primitives/note';
 import { PianoKey, PianoKeyScheme } from '../primitives/pianoKey';
+import { Unit } from '@/multiagent-system/modules/common/models/units/unit';
 
 export interface MelodyBallScheme extends BallScheme {
     targetNote?: NoteScheme;
@@ -13,6 +14,12 @@ export class MelodyBall extends Ball {
 
     constructor(melodyBall: MelodyBallScheme) {
         super(melodyBall);
+        if (melodyBall.targetNote) {
+            this.targetNote = new Note(melodyBall.targetNote);
+        }
+        if (melodyBall.targetKey) {
+            this.targetKey = new PianoKey(melodyBall.targetKey);
+        }
     }
 
     getTimeToNote(): number;
@@ -21,10 +28,13 @@ export class MelodyBall extends Ball {
         const distance = key
             ? this.position.getDistanceTo(key.centerPoint)
             : this.position.getDistanceTo(this.targetKey.centerPoint);
-        return distance.value / this.speed.value;
+        return distance.value / (this.speed.value * 600);
     }
 
-    isInKey(): boolean {
+    isInKey(pianoKey?: PianoKey): boolean {
+        if (pianoKey) {
+            return pianoKey.isPointIn(this.position);
+        }
         return (this.targetKey && this.targetKey.isPointIn(this.position));
     }
 

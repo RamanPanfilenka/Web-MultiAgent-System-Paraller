@@ -8,6 +8,9 @@ import $ from 'jquery';
 import MelodyRenderer from './ui/melodyRenderer';
 import { PianoKey, PianoKeyScheme } from './multiagent-system/modules/melody-player/models/primitives/pianoKey';
 import { Note, NoteScheme } from './multiagent-system/modules/melody-player/models/primitives/note';
+import { Midi } from '@tonejs/midi';
+import { Melody } from './multiagent-system/modules/melody-player/models/melody';
+import { MelodyPlayerWorkerData } from './multiagent-system/modules/melody-player/models/messages/melodyPlayerWorkerData';
 
 const blackTones = ['C#', 'D#', 'F#', 'G#', 'A#'];
 const whiteTones = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
@@ -16,8 +19,10 @@ const blackKeysCount = 35;
 const tonesCount = whiteKeysCount + blackKeysCount;
 const keyWidht = 75;
 const keyHeight = 300;
+const blackKeyHeight = keyHeight / 2.2;
 
 const melodyBallInitData: MelodyBallScheme = {
+    id: 0,
     speed: {
         value: 1,
         angle: 0,
@@ -57,10 +62,10 @@ function getPianoKey(x: number, y: number, tone: string) {
     const black = isBlack(tone);
     const pianoKeySheme: PianoKeyScheme = {
         size: 20,
-        centerPoint : {x: x, y: black ? y + 5 : y},         //Not perfect sprites =(
+        centerPoint : {x: x + keyWidht / 2, y: black ? y + 5 + blackKeyHeight / 2 : y + keyHeight / 2},         //Not perfect sprites =(
         tone: tone,
         width: black ? keyWidht - 10 : keyWidht,
-        height: black ? keyHeight / 2.2 : keyHeight,
+        height: black ? blackKeyHeight : keyHeight,
     };
     const note = new PianoKey(pianoKeySheme);
     return note;
@@ -103,31 +108,71 @@ function getBlackKeys() {
     return blackKeys;
 }
 
-const pianoKeySheme: PianoKeyScheme = {
-    centerPoint: { x: 100, y : 100},
-    size: 20,
-    tone: 'Tone',
-    width: 75,
-    height: 300,
-};
-const canvans =  $('#view')[0];
-const whiteKeys = getWhiteKeys();
-const blackKeys = getBlackKeys();
-const pianoKeys = whiteKeys.concat(blackKeys);
+function playMelody(melody: Melody) {
+    const canvans =  $('#view')[0];
+    const whiteKeys = getWhiteKeys();
+    const blackKeys = getBlackKeys();
+    const pianoKeys = whiteKeys.concat(blackKeys);
 
-const renderer = new MelodyRenderer(canvans, window.innerWidth, window.innerHeight, whiteKeys, blackKeys);
+    const renderer = new MelodyRenderer(canvans, window.innerWidth, window.innerHeight, whiteKeys, blackKeys);
 
-const agents = [...new Array(5)].map(() => {
-    melodyBallInitData.position.x = Math.random() * window.innerWidth;
-    melodyBallInitData.position.y= Math.random() * window.innerHeight;
-    const melodyBall = new MelodyBall(melodyBallInitData);
-    const worker = new MelodyPlayerWorker();
-    const process = new Process(worker);
-    return new Agent(melodyBall, process);
+    const melodyPlayerWorkerData: MelodyPlayerWorkerData = {
+        melody: melody.notes,
+        pianoKeys: pianoKeys,
+    };
+    const agents = [...new Array(3)].map((a, index) => {
+        melodyBallInitData.id = index;
+        melodyBallInitData.position.x = Math.random() * window.innerWidth;
+        melodyBallInitData.position.y= Math.random() * window.innerHeight;
+        const melodyBall = new MelodyBall(melodyBallInitData);
+        const worker = new MelodyPlayerWorker();
+        const process = new Process(worker, melodyPlayerWorkerData);
+        return new Agent(melodyBall, process);
+    });
+
+    const agentEnvironment = new AgentsEnvironment(agents, renderer);
+    agentEnvironment.run();
+}
+
+function getMelody(midi: Midi) {
+    const track = midi.tracks[0];
+    const trackNotes = track.notes;
+    const notes = [...new Array(track.notes.length)].map((a, index)=>{
+        return {
+            orderNumber: index + 1,
+            tone: trackNotes[index].name,
+            duration: trackNotes[index].duration,
+            playTime: trackNotes[index].time + 4,
+        };
+    });
+    return new Melody(notes);
+}
+
+function parseFile(file: File) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const fileArray = <ArrayBuffer>e.target.result;
+        const midi = new Midi(fileArray);
+        const melody = getMelody(midi);
+        playMelody(melody);
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+
+function handler() {
+    const file = this.files[0];
+    parseFile(file);
+}
+
+function readMidi() {
+    const source = $('#filereader');
+    source.change(handler);
+}
+
+$(document).ready(() => {
+    readMidi();
 });
-
-const agentEnvironment = new AgentsEnvironment(agents, renderer);
-agentEnvironment.run();
 
 
 
