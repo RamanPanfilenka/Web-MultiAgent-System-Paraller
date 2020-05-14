@@ -2,29 +2,36 @@ import * as PIXI from 'pixi.js';
 import Renderer from './renderer';
 import { Agent } from '@/multiagent-system/modules/common/agent/agent';
 import { PianoKey } from '@/multiagent-system/modules/melody-player/models/primitives/pianoKey';
-const pianoKeyUrl = require('./asserts/piano-key.png').default;
+
+const pianoKeyUncheckedUrl = require('./asserts/piano-key.png').default;
+const pianoKeyBlackUncheckedUrl = require('./asserts/piano-key-black.png').default;
 
 export default class MelodyRenderer extends Renderer {
-    pianoKeys: Array<PianoKey>
+    whiteKeys: Array<PianoKey>;
+    blackKeys: Array<PianoKey>;
 
-    constructor(canvans: any, width: number, height: number,  pianoKeys: Array<PianoKey>) {
+    constructor(canvans: any, width: number, height: number, whiteKeys: Array<PianoKey>, blackKeys: Array<PianoKey>) {
         super(canvans, width, height);
-        this.pianoKeys = pianoKeys;
+        this.whiteKeys = whiteKeys;
+        this.blackKeys = blackKeys;
     }
 
     init(agents: Array<Agent>, unitTexture: any) {
-        super.init(agents, unitTexture);
         const pianoKeysContainer = new PIXI.Container();
-        const pianoKeyTexture = PIXI.Texture.from(pianoKeyUrl);
-        this.pianoKeys.forEach((key: PianoKey) => {
-            const pianoSprite = new PIXI.Sprite(pianoKeyTexture);
-            pianoSprite.position.set(key.centerPoint.x, key.centerPoint.y);
-            pianoSprite.scale.x = 0.6;
-            pianoSprite.scale.y = 0.6;
-            pianoKeysContainer.addChild(pianoSprite);
-
-        });
-
         this.app.stage.addChild(pianoKeysContainer);
+        this.rederKeys(this.whiteKeys, pianoKeyUncheckedUrl, pianoKeysContainer);
+        this.rederKeys(this.blackKeys, pianoKeyBlackUncheckedUrl, pianoKeysContainer);
+
+        super.init(agents, unitTexture);
+    }
+
+    private rederKeys(pianoKeys: Array<PianoKey>, spriteUrl: string, pianoKeysContainer: PIXI.Container) {
+        pianoKeys.forEach(key => {
+            const pianoSprite = PIXI.Sprite.from(spriteUrl);
+            pianoSprite.position.set(key.centerPoint.x, key.centerPoint.y);
+            pianoSprite.width = key.width;
+            pianoSprite.height = key.height;
+            pianoKeysContainer.addChild(pianoSprite);
+        });
     }
 }

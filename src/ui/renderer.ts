@@ -17,12 +17,10 @@ export default class Renderer {
     }
 
     init(agents: Array<Agent>, texture: any) {
-        const ballTextureUrl = require('./asserts/ball.png');
+        const ballTextureUrl = require('./asserts/ball.png').default;
         const unitContainer = new PIXI.Container();
-
-        const textureBall = PIXI.Texture.from(ballTextureUrl.default);
         agents.forEach(agent => {
-            const unitSprite = new PIXI.Sprite(textureBall);
+            const unitSprite = PIXI.Sprite.from(ballTextureUrl);
             unitSprite.position.set(agent.unit.position.x, agent.unit.position.y);
             unitSprite.scale.x = 0.2;
             unitSprite.scale.y = 0.2;
