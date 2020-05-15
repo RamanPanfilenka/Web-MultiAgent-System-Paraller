@@ -5,6 +5,7 @@ import { PianoKey } from '@/multiagent-system/modules/melody-player/models/primi
 import { Melody } from '@/multiagent-system/modules/melody-player/models/melody';
 import { MelodyBall } from '@/multiagent-system/modules/melody-player/models/units/melodyBall';
 import { Point } from '@/multiagent-system/modules/common/models/primitives/point';
+import { UnitTexture } from '@/multiagent-system/modules/common/models/units/unitTexture';
 
 const pianoKeyUncheckedUrl = require('./asserts/piano-key.png').default;
 const pianoKeyBlackUncheckedUrl = require('./asserts/piano-key-black.png').default;
@@ -20,8 +21,8 @@ export default class MelodyRenderer extends Renderer {
     unchekedBlackKeysContainer:  PIXI.Container = new PIXI.Container();
     playedNotes: Array<number> = [];
 
-    constructor(canvans: any, width: number, height: number, whiteKeys: Array<PianoKey>, blackKeys: Array<PianoKey>) {
-        super(canvans, width, height);
+    constructor(canvans: any, width: number, height: number, backgroundColor: number ,whiteKeys: Array<PianoKey>, blackKeys: Array<PianoKey>) {
+        super(canvans, width, height, backgroundColor);
         this.whiteKeys = whiteKeys;
         this.blackKeys = blackKeys;
         this.app.stage.addChild(this.unchekedWhiteKeysContainer);
@@ -30,11 +31,11 @@ export default class MelodyRenderer extends Renderer {
         this.app.stage.addChild(this.checkedBlackKeysContainer);
     }
 
-    init(agents: Array<Agent>, unitTexture: any) {
+    init(unitTexture: Array <UnitTexture>) {
         this.rederKeys(this.whiteKeys, pianoKeyUncheckedUrl, pianoKeyCheckedUrl, this.unchekedWhiteKeysContainer, this.checkedWhiteKeysContainer, false);
         this.rederKeys(this.blackKeys, pianoKeyBlackUncheckedUrl, pianoKeyBlackCheckedUrl, this.unchekedBlackKeysContainer, this.checkedBlackKeysContainer, false);
 
-        super.init(agents, unitTexture);
+        super.init(unitTexture);
     }
 
     private rederKeys(pianoKeys: Array<PianoKey>, spriteUrl: string, checkedUrl: string, pianoKeysContainer: PIXI.Container, checkedPianoKeyContainer: PIXI.Container, visible: boolean) {

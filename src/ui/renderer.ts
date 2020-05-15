@@ -2,28 +2,25 @@ import * as PIXI from 'pixi.js';
 import { Unit } from '@/multiagent-system/modules/common/models/units/unit';
 import { AgentsEnvironment } from '@/multiagent-system/modules/common/environment/agentsEnvironment';
 import { Agent } from '@/multiagent-system/modules/common/agent/agent';
+import { UnitTexture } from '@/multiagent-system/modules/common/models/units/unitTexture';
 
 export default class Renderer {
     app: PIXI.Application;
     unitSprites: Array<PIXI.Sprite> = [];
 
-    constructor(canvans: any, width: number, height: number) {
+    constructor(canvans: any, width: number, height: number, backgroundColor: number) {
         this.app = new PIXI.Application({
             view: canvans,
             width: width,
             height: height,
-            backgroundColor: 0xffffff,
+            backgroundColor: backgroundColor,
         });
     }
 
-    init(agents: Array<Agent>, texture: any) {
-        const ballTextureUrl = require('./asserts/ball.png').default;
+    init(unitTextures: Array<UnitTexture>) {
         const unitContainer = new PIXI.Container();
-        agents.forEach(agent => {
-            const unitSprite = PIXI.Sprite.from(ballTextureUrl);
-            unitSprite.position.set(agent.unit.position.x, agent.unit.position.y);
-            unitSprite.width = 40;
-            unitSprite.height = 40;
+        unitTextures.forEach(unitTexture => {
+            const unitSprite = unitTexture.getSprite();
             unitContainer.addChild(unitSprite);
             this.unitSprites.push(unitSprite);
         });
@@ -34,7 +31,7 @@ export default class Renderer {
     render(agents: Array<Agent>) {
         for (let i = 0; i < agents.length; i++) {
             const unit = agents[i].unit;
-            this.unitSprites[i].position.set(unit.position.x - 40, unit.position.y - 40);
+            this.unitSprites[i].position.set(unit.position.x - unit.width / 2, unit.position.y - unit.height / 2);
         }
     }
 }

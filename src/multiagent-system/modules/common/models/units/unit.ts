@@ -11,6 +11,8 @@ export interface UnitScheme {
     position: PointScheme;
     speed: SpeedScheme;
     connectionRange: number;
+    width: number;
+    height: number;
 }
 
 export class Unit {
@@ -18,12 +20,16 @@ export class Unit {
     position: Point;
     speed: Speed;
     connectionRange: number;
+    width: number;
+    height: number;
 
     constructor(unit: UnitScheme) {
         this.id = unit.id;
         this.position = new Point(unit.position);
         this.speed = new Speed(unit.speed);
         this.connectionRange = unit.connectionRange;
+        this.width = unit.width;
+        this.height = unit.height;
     }
 
     isInRange(unit: Unit): boolean {

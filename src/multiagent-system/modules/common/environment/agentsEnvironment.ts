@@ -9,7 +9,6 @@ export class AgentsEnvironment {
     constructor(agents: Array<Agent>, renderer: Renderer) {
         this.agents = agents;
         this.renderer = renderer;
-        renderer.init(this.agents, null);
     }
 
     async run(): Promise<void> {

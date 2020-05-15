@@ -11,7 +11,10 @@ import { Note, NoteScheme } from './multiagent-system/modules/melody-player/mode
 import { Midi } from '@tonejs/midi';
 import { Melody } from './multiagent-system/modules/melody-player/models/melody';
 import { MelodyPlayerWorkerData } from './multiagent-system/modules/melody-player/models/messages/melodyPlayerWorkerData';
+import { UnitTexture } from './multiagent-system/modules/common/models/units/unitTexture';
 
+
+const ballTextureUrl = require('./ui/asserts/ball.png').default;
 const blackTones = ['C#', 'D#', 'F#', 'G#', 'A#'];
 const whiteTones = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const whiteKeysCount = 50;
@@ -20,6 +23,7 @@ const tonesCount = whiteKeysCount + blackKeysCount;
 const keyWidht = 75;
 const keyHeight = 300;
 const blackKeyHeight = keyHeight / 2.2;
+const backgroundColor = 0xffffff;
 
 const melodyBallInitData: MelodyBallScheme = {
     id: 0,
@@ -33,6 +37,8 @@ const melodyBallInitData: MelodyBallScheme = {
     },
     connectionRange: 1000,
     radius: 10,
+    width: 40,
+    height: 40,
 };
 
 
@@ -114,7 +120,7 @@ function playMelody(melody: Melody) {
     const whiteKeys = getWhiteKeys();
     const blackKeys = getBlackKeys();
     const pianoKeys = whiteKeys.concat(blackKeys);
-    const renderer = new MelodyRenderer(canvans, window.innerWidth, window.innerHeight, whiteKeys, blackKeys);
+    const renderer = new MelodyRenderer(canvans, window.innerWidth, window.innerHeight, backgroundColor, whiteKeys, blackKeys);
     const melodyPlayerWorkerData: MelodyPlayerWorkerData = {
         melody: melody.notes,
         pianoKeys: pianoKeys,
@@ -129,8 +135,9 @@ function playMelody(melody: Melody) {
         const process = new Process(worker, melodyPlayerWorkerData);
         return new Agent(melodyBall, process);
     });
-
+    const unitTextures = agents.map(agent => new UnitTexture(agent.unit, ballTextureUrl));
     const agentEnvironment = new AgentsEnvironment(agents, renderer);
+    renderer.init(unitTextures);
     agentEnvironment.run();
 }
 
