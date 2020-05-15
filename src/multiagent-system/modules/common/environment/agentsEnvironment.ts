@@ -32,7 +32,7 @@ export class AgentsEnvironment {
     private getNearestUnits(targetUnit: Unit): Array<Unit> {
         const nearestUnits = this.agents
             .map(agent => agent.unit)
-            .filter(unit => unit.isInRange(targetUnit));
+            .filter(unit => unit.isInRange(targetUnit) && unit.id != targetUnit.id);
         return nearestUnits;
     }
 }

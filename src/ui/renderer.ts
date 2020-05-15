@@ -22,8 +22,8 @@ export default class Renderer {
         agents.forEach(agent => {
             const unitSprite = PIXI.Sprite.from(ballTextureUrl);
             unitSprite.position.set(agent.unit.position.x, agent.unit.position.y);
-            unitSprite.width = 20;
-            unitSprite.height = 20;
+            unitSprite.width = 40;
+            unitSprite.height = 40;
             unitContainer.addChild(unitSprite);
             this.unitSprites.push(unitSprite);
         });
@@ -33,7 +33,8 @@ export default class Renderer {
 
     render(agents: Array<Agent>) {
         for (let i = 0; i < agents.length; i++) {
-            this.unitSprites[i].position.set(agents[i].unit.position.x, agents[i].unit.position.y);
+            const unit = agents[i].unit;
+            this.unitSprites[i].position.set(unit.position.x - 40, unit.position.y - 40);
         }
     }
 }

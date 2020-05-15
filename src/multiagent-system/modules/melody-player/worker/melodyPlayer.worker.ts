@@ -25,20 +25,27 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
     setInitialData(initialData: MelodyPlayerWorkerData): void {
         this.melody = new Melody(initialData.melody);
         this.pianoKeyboard = new PianoKeyboard(initialData.pianoKeys);
-        this.currentTime = 0;
-        this.startTime = Date.now();
+        this.startTime = initialData.startTime;
     }
 
     runPondering(): void {
         this.updateTime();
         this.melody.removePlayedNotes(this.currentTime);
 
+        if (this.unit.targetNote &&  this.unit.targetNote.playTime - this.currentTime < 0.05) {   //Bad
+            this.unit.targetKey.isPressed = true;
+        }
+
         if (this.unit.isNotePlayed(this.currentTime) || !this.unit.targetNote) {
+            this.unit.resetTargetNote();
             this.chooseNote();
         }
 
         this.resolveConflicts();
-        this.move();
+
+        if (!this.unit.isInKey()) {
+            this.move();
+        }
     }
 
     private updateTime() {

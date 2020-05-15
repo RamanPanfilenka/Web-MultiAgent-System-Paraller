@@ -28,7 +28,7 @@ export class MelodyBall extends Ball {
         const distance = key
             ? this.position.getDistanceTo(key.centerPoint)
             : this.position.getDistanceTo(this.targetKey.centerPoint);
-        return distance.value / (this.speed.value * 600);
+        return distance.value / (this.speed.value * 100);
     }
 
     isInKey(pianoKey?: PianoKey): boolean {
@@ -41,12 +41,17 @@ export class MelodyBall extends Ball {
     isNotePlayed(currentTime: number): boolean {
         return (
             this.targetNote
-            && this.targetNote.playTime < currentTime
+            && this.targetNote.playTime + this.targetNote.duration < currentTime
             && this.isInKey()
         );
     }
 
     hasSameTargetNoteWith(otherBall: MelodyBall): boolean {
         return this.targetNote.equals(otherBall.targetNote);
+    }
+
+    resetTargetNote() {
+        this.targetKey = undefined;
+        this.targetNote = undefined;
     }
 }

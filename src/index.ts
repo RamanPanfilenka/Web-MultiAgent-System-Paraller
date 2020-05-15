@@ -24,7 +24,7 @@ const blackKeyHeight = keyHeight / 2.2;
 const melodyBallInitData: MelodyBallScheme = {
     id: 0,
     speed: {
-        value: 1,
+        value: 2,
         angle: 0,
     },
     position: {
@@ -66,6 +66,7 @@ function getPianoKey(x: number, y: number, tone: string) {
         tone: tone,
         width: black ? keyWidht - 10 : keyWidht,
         height: black ? blackKeyHeight : keyHeight,
+        isPressed: false,
     };
     const note = new PianoKey(pianoKeySheme);
     return note;
@@ -113,14 +114,13 @@ function playMelody(melody: Melody) {
     const whiteKeys = getWhiteKeys();
     const blackKeys = getBlackKeys();
     const pianoKeys = whiteKeys.concat(blackKeys);
-
     const renderer = new MelodyRenderer(canvans, window.innerWidth, window.innerHeight, whiteKeys, blackKeys);
-
     const melodyPlayerWorkerData: MelodyPlayerWorkerData = {
         melody: melody.notes,
         pianoKeys: pianoKeys,
+        startTime: Date.now(),
     };
-    const agents = [...new Array(3)].map((a, index) => {
+    const agents = [...new Array(4)].map((a, index) => {
         melodyBallInitData.id = index;
         melodyBallInitData.position.x = Math.random() * window.innerWidth;
         melodyBallInitData.position.y= Math.random() * window.innerHeight;

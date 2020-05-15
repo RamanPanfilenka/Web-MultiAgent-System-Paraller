@@ -22,6 +22,6 @@ export class Note {
         if (!otherNote) {
             return false;
         }
-        return this.orderNumber == otherNote.orderNumber;
+        return this.tone == otherNote.tone;
     }
 }
