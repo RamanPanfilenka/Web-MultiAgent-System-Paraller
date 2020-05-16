@@ -2,23 +2,33 @@ import * as PIXI from 'pixi.js';
 import { Agent } from '@/multiagent-system/modules/common/agent/agent';
 import { UnitTexture } from '@/multiagent-system/modules/common/models/units/unitTexture';
 
-export default class Renderer {
+export interface RendererOps{
+    canvans: any;
+    width: number;
+    height: number;
+    backgroundColor: number;
+}
+
+export class Renderer {
     app: PIXI.Application;
     unitSprites: Array<PIXI.Sprite> = [];
 
-    constructor(canvans: any, width: number, height: number, backgroundColor: number) {
+    constructor(options: RendererOps) {
         this.app = new PIXI.Application({
-            view: canvans,
-            width: width,
-            height: height,
-            backgroundColor: backgroundColor,
+            view: options.canvans,
+            width: options.width,
+            height: options.height,
+            backgroundColor: options.backgroundColor,
         });
     }
 
-    init(unitTextures: Array<UnitTexture>) {
+    init(agents: Array<Agent>) {
         const unitContainer = new PIXI.Container();
-        unitTextures.forEach(unitTexture => {
-            const unitSprite = unitTexture.getSprite();
+        agents.forEach(agent => {
+            const unit = agent.unit;
+            const unitSprite = PIXI.Sprite.from(unit.textureUrl);
+            unitSprite.width = unit.width;
+            unitSprite.height = unit.height;
             unitContainer.addChild(unitSprite);
             this.unitSprites.push(unitSprite);
         });

@@ -1,18 +1,24 @@
 import * as PIXI from 'pixi.js';
-import Renderer from './renderer';
+import { Renderer, RendererOps } from './renderer';
 import { Agent } from '@/multiagent-system/modules/common/agent/agent';
 import { PianoKey } from '@/multiagent-system/modules/melody-player/models/primitives/pianoKey';
 import { MelodyBall } from '@/multiagent-system/modules/melody-player/models/units/melodyBall';
 import { Point } from '@/multiagent-system/modules/common/models/primitives/point';
-import { UnitTexture } from '@/multiagent-system/modules/common/models/units/unitTexture';
 import { PianoPlayer } from './pianoPlayer';
+
+
+export interface MelodyRendererOps extends RendererOps{
+    whiteKeys: Array<PianoKey>;
+    blackKeys: Array<PianoKey>;
+    pianoPlayer: PianoPlayer;
+}
 
 const pianoKeyUncheckedUrl = require('./asserts/piano-key.png').default;
 const pianoKeyBlackUncheckedUrl = require('./asserts/piano-key-black.png').default;
 const pianoKeyCheckedUrl = require('./asserts/piano-key-checked.png').default;
 const pianoKeyBlackCheckedUrl = require('./asserts/pinao-key-black-checked.png').default;
 
-export default class MelodyRenderer extends Renderer {
+export class MelodyRenderer extends Renderer {
     whiteKeys: Array<PianoKey>;
     blackKeys: Array<PianoKey>;
     checkedBlackKeysContainer: PIXI.Container = new PIXI.Container();
@@ -22,22 +28,22 @@ export default class MelodyRenderer extends Renderer {
     playedNotes: Array<number> = [];
     pianoPlayer: PianoPlayer;
 
-    constructor(canvans: any, width: number, height: number, backgroundColor: number ,whiteKeys: Array<PianoKey>, blackKeys: Array<PianoKey>, pianoPlayer: PianoPlayer) {
-        super(canvans, width, height, backgroundColor);
-        this.whiteKeys = whiteKeys;
-        this.blackKeys = blackKeys;
-        this.pianoPlayer = pianoPlayer;
+    constructor(options: MelodyRendererOps) {
+        super(options);
+        this.whiteKeys = options.whiteKeys;
+        this.blackKeys = options.blackKeys;
+        this.pianoPlayer = options.pianoPlayer;
         this.app.stage.addChild(this.unchekedWhiteKeysContainer);
         this.app.stage.addChild(this.checkedWhiteKeysContainer);
         this.app.stage.addChild(this.unchekedBlackKeysContainer);
         this.app.stage.addChild(this.checkedBlackKeysContainer);
     }
 
-    init(unitTexture: Array <UnitTexture>) {
+    init(agents: Array<Agent>) {
         this.rederKeys(this.whiteKeys, pianoKeyUncheckedUrl, pianoKeyCheckedUrl, this.unchekedWhiteKeysContainer, this.checkedWhiteKeysContainer, false);
         this.rederKeys(this.blackKeys, pianoKeyBlackUncheckedUrl, pianoKeyBlackCheckedUrl, this.unchekedBlackKeysContainer, this.checkedBlackKeysContainer, false);
 
-        super.init(unitTexture);
+        super.init(agents);
     }
 
     private rederKeys(pianoKeys: Array<PianoKey>, spriteUrl: string, checkedUrl: string, pianoKeysContainer: PIXI.Container, checkedPianoKeyContainer: PIXI.Container, visible: boolean) {

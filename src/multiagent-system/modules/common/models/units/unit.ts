@@ -13,6 +13,7 @@ export interface UnitScheme {
     connectionRange: number;
     width: number;
     height: number;
+    textureUrl: string;
 }
 
 export class Unit {
@@ -22,6 +23,7 @@ export class Unit {
     connectionRange: number;
     width: number;
     height: number;
+    textureUrl: string;
 
     constructor(unit: UnitScheme) {
         this.id = unit.id;
@@ -30,6 +32,7 @@ export class Unit {
         this.connectionRange = unit.connectionRange;
         this.width = unit.width;
         this.height = unit.height;
+        this.textureUrl = unit.textureUrl;
     }
 
     isInRange(unit: Unit): boolean {

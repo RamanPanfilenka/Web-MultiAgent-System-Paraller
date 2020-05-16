@@ -101,6 +101,38 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
         this.unit.speed.angle = angle;
     }
 
+    protected step() {
+        this.unit.position.x += this.unit.speed.x;
+        this.unit.position.y += this.unit.speed.y;
+
+        if (this.unit.position.x < 0) {
+            this.unit.position.x = 0;
+            this.unit.speed.angle += Math.PI;
+            this.changeAngle();
+        } else if (this.unit.position.x > 1920 - 20) {
+            this.unit.position.x = 1900;
+            this.unit.speed.angle += Math.PI;
+            this.changeAngle();
+        }
+
+        if (this.unit.position.y < 0) {
+            this.unit.position.y = 0;
+            this.unit.speed.angle += Math.PI;
+            this.changeAngle();
+        } else if (this.unit.position.y > 900) {
+            this.unit.position.y = 900;
+            this.unit.speed.angle += Math.PI;
+            this.changeAngle();
+        }
+    }
+
+    protected changeAngle() {
+        this.unit.speed.angle = Math.atan(this.unit.speed.y / this.unit.speed.x);
+
+        if (this.unit.speed.x < 0)
+            this.unit.speed.angle += Math.PI;
+    }
+
 }
 
 new MelodyPlayerWorker();

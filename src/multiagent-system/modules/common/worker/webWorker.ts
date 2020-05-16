@@ -52,47 +52,4 @@ export abstract class WebWorker<T extends Unit> {
             this.nearestUnits.push(nearestUnit);
         });
     }
-
-
-    protected step() {
-        this.unit.position.x += this.unit.speed.x;
-        this.unit.position.y += this.unit.speed.y;
-
-        // if (this.unit.velocity > this.unit.radius / 2) {
-        //     this.unit.velocity -= 0.5;
-        //     this.unit.speed.x = Math.cos(this, this.unit.angle) * this.unit.velocity;
-        //     this.unit.speed.y = Math.sin(this.unit.angle) * this.unit.velocity;
-        // }
-
-        if (this.unit.position.x < 0) {
-            this.unit.position.x = 0;
-            this.unit.speed.angle += Math.PI;
-            this.changeAngle();
-        } else if (this.unit.position.x > 1920 - 20) {
-            this.unit.position.x = 1900;
-            this.unit.speed.angle += Math.PI;
-            this.changeAngle();
-        }
-
-        if (this.unit.position.y < 0) {
-            this.unit.position.y = 0;
-            this.unit.speed.angle += Math.PI;
-            this.changeAngle();
-        } else if (this.unit.position.y > 900) {
-            this.unit.position.y = 900;
-            this.unit.speed.angle += Math.PI;
-            this.changeAngle();
-        }
-    }
-
-    protected changeAngle() {
-        this.unit.speed.angle = Math.atan(this.unit.speed.y / this.unit.speed.x);
-
-        if (this.unit.speed.x < 0)
-            this.unit.speed.angle += Math.PI;
-        // if (this.unit.speed.x !== 0)
-        //     this.unit.speed = this.unit.speed.x / Math.cos(this.unit.angle);
-        // else
-        //     this.unit.velocity = this.unit.speed.y / Math.sin(this.unit.angle);
-    }
 }
