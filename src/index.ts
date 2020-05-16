@@ -12,7 +12,7 @@ import { Midi } from '@tonejs/midi';
 import { Melody } from './multiagent-system/modules/melody-player/models/melody';
 import { MelodyPlayerWorkerData } from './multiagent-system/modules/melody-player/models/messages/melodyPlayerWorkerData';
 import { UnitTexture } from './multiagent-system/modules/common/models/units/unitTexture';
-
+import { PianoPlayer } from './ui/pianoPlayer';
 
 const ballTextureUrl = require('./ui/asserts/ball.png').default;
 const blackTones = ['C#', 'D#', 'F#', 'G#', 'A#'];
@@ -120,13 +120,15 @@ function playMelody(melody: Melody) {
     const whiteKeys = getWhiteKeys();
     const blackKeys = getBlackKeys();
     const pianoKeys = whiteKeys.concat(blackKeys);
-    const renderer = new MelodyRenderer(canvans, window.innerWidth, window.innerHeight, backgroundColor, whiteKeys, blackKeys);
+    const pianoPlayer = new PianoPlayer();
+    const renderer = new MelodyRenderer(canvans, window.innerWidth, window.innerHeight, backgroundColor, whiteKeys, blackKeys, pianoPlayer);
     const melodyPlayerWorkerData: MelodyPlayerWorkerData = {
         melody: melody.notes,
         pianoKeys: pianoKeys,
         startTime: Date.now(),
     };
-    const agents = [...new Array(4)].map((a, index) => {
+
+    const agents = [...new Array(10)].map((a, index) => {
         melodyBallInitData.id = index;
         melodyBallInitData.position.x = Math.random() * window.innerWidth;
         melodyBallInitData.position.y= Math.random() * window.innerHeight;

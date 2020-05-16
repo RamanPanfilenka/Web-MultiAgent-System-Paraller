@@ -5,6 +5,7 @@ import { PianoKey } from '@/multiagent-system/modules/melody-player/models/primi
 import { MelodyBall } from '@/multiagent-system/modules/melody-player/models/units/melodyBall';
 import { Point } from '@/multiagent-system/modules/common/models/primitives/point';
 import { UnitTexture } from '@/multiagent-system/modules/common/models/units/unitTexture';
+import { PianoPlayer } from './pianoPlayer';
 
 const pianoKeyUncheckedUrl = require('./asserts/piano-key.png').default;
 const pianoKeyBlackUncheckedUrl = require('./asserts/piano-key-black.png').default;
@@ -19,11 +20,13 @@ export default class MelodyRenderer extends Renderer {
     unchekedWhiteKeysContainer:  PIXI.Container = new PIXI.Container();
     unchekedBlackKeysContainer:  PIXI.Container = new PIXI.Container();
     playedNotes: Array<number> = [];
+    pianoPlayer: PianoPlayer;
 
-    constructor(canvans: any, width: number, height: number, backgroundColor: number ,whiteKeys: Array<PianoKey>, blackKeys: Array<PianoKey>) {
+    constructor(canvans: any, width: number, height: number, backgroundColor: number ,whiteKeys: Array<PianoKey>, blackKeys: Array<PianoKey>, pianoPlayer: PianoPlayer) {
         super(canvans, width, height, backgroundColor);
         this.whiteKeys = whiteKeys;
         this.blackKeys = blackKeys;
+        this.pianoPlayer = pianoPlayer;
         this.app.stage.addChild(this.unchekedWhiteKeysContainer);
         this.app.stage.addChild(this.checkedWhiteKeysContainer);
         this.app.stage.addChild(this.unchekedBlackKeysContainer);
@@ -80,9 +83,11 @@ export default class MelodyRenderer extends Renderer {
             ? this.checkedBlackKeysContainer.getChildByName(tone)
             : this.checkedWhiteKeysContainer.getChildByName(tone);
         checkedKeySprite.visible = true;
+        this.pianoPlayer.play(tone, noteDuration);
+
         setInterval(() =>{
             checkedKeySprite.visible = false;
         },
-        noteDuration* 1000);
+        noteDuration * 2000);
     }
 }
