@@ -1,6 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { Unit } from '@/multiagent-system/modules/common/models/units/unit';
-import { AgentsEnvironment } from '@/multiagent-system/modules/common/environment/agentsEnvironment';
 import { Agent } from '@/multiagent-system/modules/common/agent/agent';
 import { UnitTexture } from '@/multiagent-system/modules/common/models/units/unitTexture';
 

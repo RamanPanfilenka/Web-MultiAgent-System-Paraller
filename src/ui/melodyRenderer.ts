@@ -2,7 +2,6 @@ import * as PIXI from 'pixi.js';
 import Renderer from './renderer';
 import { Agent } from '@/multiagent-system/modules/common/agent/agent';
 import { PianoKey } from '@/multiagent-system/modules/melody-player/models/primitives/pianoKey';
-import { Melody } from '@/multiagent-system/modules/melody-player/models/melody';
 import { MelodyBall } from '@/multiagent-system/modules/melody-player/models/units/melodyBall';
 import { Point } from '@/multiagent-system/modules/common/models/primitives/point';
 import { UnitTexture } from '@/multiagent-system/modules/common/models/units/unitTexture';
