@@ -5,6 +5,7 @@ import { Melody } from './multiagent-system/modules/melody-player/models/melody'
 import { MelodyPlayerFactory } from './multiagent-system/modules/melody-player/factory/melodyPlayerFactory';
 import { Point } from 'pixi.js';
 import { RendererOps } from './ui/renderer';
+import { StatisticRenderer } from './ui/statisticsRenderer';
 
 const ballTextureUrl = require('./ui/asserts/ball.png').default;
 const backgroundColor = 0xffffff;
@@ -32,16 +33,22 @@ async function playMelody(melody: Melody) {
             width: 40,
             height: 40,
             textureUrl: ballTextureUrl,
+            statistics: {
+                distanceTraveled: 20,
+            },
         };
         return melodyBallInitData;
     });
-    const melodyFactory = new MelodyPlayerFactory();
-    const enviroment = melodyFactory.getEnviroment(angentsInitData,rendererOps, melody);
-    const startTime = Date.now();
-    const lastNoteTime = melody.notes[melody.notes.length - 1].playTime;
-    while ((Date.now() - startTime) / 600  < lastNoteTime) {
-        await enviroment.run();
-    }
+    const stat = angentsInitData.map(elem => elem.statistics);
+    const t = new StatisticRenderer(canvans);
+    t.render(stat);
+    // const melodyFactory = new MelodyPlayerFactory();
+    // const enviroment = melodyFactory.getEnviroment(angentsInitData,rendererOps, melody);
+    // const startTime = Date.now();
+    // const lastNoteTime = melody.notes[melody.notes.length - 1].playTime;
+    // while ((Date.now() - startTime) / 600  < lastNoteTime) {
+    //     await enviroment.run();
+    // }
 
 }
 

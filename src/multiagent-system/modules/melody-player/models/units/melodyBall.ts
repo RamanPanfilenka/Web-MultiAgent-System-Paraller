@@ -12,6 +12,7 @@ export class MelodyBall extends Ball {
     targetNote?: Note;
     targetKey?: PianoKey;
 
+
     constructor(melodyBall: MelodyBallScheme) {
         super(melodyBall);
         if (melodyBall.targetNote) {

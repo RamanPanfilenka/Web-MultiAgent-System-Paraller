@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js';
 import { Agent } from '@/multiagent-system/modules/common/agent/agent';
-import { UnitTexture } from '@/multiagent-system/modules/common/models/units/unitTexture';
 
 export interface RendererOps{
     canvans: any;
@@ -41,5 +40,9 @@ export class Renderer {
             const unit = agents[i].unit;
             this.unitSprites[i].position.set(unit.position.x - unit.width / 2, unit.position.y - unit.height / 2);
         }
+    }
+
+    clear() {
+        this.app.destroy();
     }
 }

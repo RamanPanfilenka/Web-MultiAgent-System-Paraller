@@ -1,5 +1,6 @@
 import { Point, PointScheme } from '../primitives/point';
 import { Speed, SpeedScheme} from '../primitives/speed';
+import { Statistics } from '../primitives/statistics';
 
 export interface UnitPackage {
     constructor: string;
@@ -14,6 +15,7 @@ export interface UnitScheme {
     width: number;
     height: number;
     textureUrl: string;
+    statistics: Statistics;
 }
 
 export class Unit {
@@ -24,6 +26,7 @@ export class Unit {
     width: number;
     height: number;
     textureUrl: string;
+    statistics: Statistics;
 
     constructor(unit: UnitScheme) {
         this.id = unit.id;
@@ -33,6 +36,7 @@ export class Unit {
         this.width = unit.width;
         this.height = unit.height;
         this.textureUrl = unit.textureUrl;
+        this.statistics = unit.statistics;
     }
 
     isInRange(unit: Unit): boolean {

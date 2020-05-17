@@ -104,11 +104,6 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
         this.unit.position.x += this.unit.speed.x;
         this.unit.position.y += this.unit.speed.y;
     }
-
-    protected changeAngle() {
-        this.unit.speed.angle = Math.atan(this.unit.speed.y / this.unit.speed.x);
-    }
-
 }
 
 new MelodyPlayerWorker();

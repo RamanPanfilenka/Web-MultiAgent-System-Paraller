@@ -1,6 +1,7 @@
 import { Agent } from '@mas/modules/common/agent/agent';
 import { Unit } from '@mas/modules/common/models/units/unit';
 import { Renderer } from '@/ui/renderer';
+import { Statistics } from '../models/primitives/statistics';
 
 export class AgentsEnvironment {
     public agents: Array<Agent>;
@@ -31,5 +32,9 @@ export class AgentsEnvironment {
             .map(agent => agent.unit)
             .filter(unit => unit.isInRange(targetUnit) && unit.id != targetUnit.id);
         return nearestUnits;
+    }
+
+    getStatistics(): Array<Statistics> {
+        return this.agents.map(agent => agent.unit.statistics);
     }
 }
