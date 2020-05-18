@@ -1,13 +1,13 @@
 import { Factory } from '../../common/factory/factory';
 import { Agent } from '../../common/agent/agent';
-import { Unit, UnitScheme } from '../../common/models/units/unit';
+import { UnitScheme } from '../../common/models/units/unit';
 import { MelodyBall, MelodyBallScheme } from '../models/units/melodyBall';
 import MelodyPlayerWorker from '../worker/melodyPlayer.worker';
 import { MelodyPlayerWorkerData } from '../models/messages/melodyPlayerWorkerData';
 import { PianoKeyScheme, PianoKey } from '../models/primitives/pianoKey';
-import { RendererOps, Renderer } from '@/ui/renderer';
-import { MelodyRendererOps, MelodyRenderer } from '@/ui/melodyRenderer';
-import { PianoPlayer } from '@/ui/pianoPlayer';
+import { MelodyRendererOps, MelodyRenderer } from '@/ui/modules/melodyPlayer/renderers/melodyRenderer';
+import { PianoPlayer } from '@/multiagent-system/modules/melody-player/utils/pianoPlayer';
+import { RendererOps, Renderer } from '@/ui/modules/common/renderers/renderer';
 
 export class MelodyPlayerFactory extends Factory {
     blackTones = ['C#', 'D#', 'F#', 'G#', 'A#'];

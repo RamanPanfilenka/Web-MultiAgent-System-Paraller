@@ -1,8 +1,8 @@
 import { AgentsEnvironment } from '../environment/agentsEnvironment';
 import { Agent } from '../agent/agent';
 import { Process } from '../agent/process';
-import { Renderer, RendererOps } from '@/ui/renderer';
 import { Unit, UnitScheme } from '../models/units/unit';
+import { RendererOps, Renderer } from '@/ui/modules/common/renderers/renderer';
 
 export abstract class Factory {
     getEnviroment(agentsInitData: Array<UnitScheme>, renderOptions: RendererOps, initData?: any): AgentsEnvironment {

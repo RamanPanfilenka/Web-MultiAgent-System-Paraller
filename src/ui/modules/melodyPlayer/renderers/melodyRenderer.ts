@@ -1,10 +1,11 @@
 import * as PIXI from 'pixi.js';
-import { Renderer, RendererOps } from './renderer';
 import { Agent } from '@/multiagent-system/modules/common/agent/agent';
 import { PianoKey } from '@/multiagent-system/modules/melody-player/models/primitives/pianoKey';
 import { MelodyBall } from '@/multiagent-system/modules/melody-player/models/units/melodyBall';
 import { Point } from '@/multiagent-system/modules/common/models/primitives/point';
-import { PianoPlayer } from './pianoPlayer';
+import { PianoPlayer } from '../../../../multiagent-system/modules/melody-player/utils/pianoPlayer';
+import { RendererOps, Renderer } from '../../common/renderers/renderer';
+import { MelodyStatistics } from '@/multiagent-system/modules/melody-player/models/primitives/melodyStatistics';
 
 
 export interface MelodyRendererOps extends RendererOps{
@@ -13,10 +14,10 @@ export interface MelodyRendererOps extends RendererOps{
     pianoPlayer: PianoPlayer;
 }
 
-const pianoKeyUncheckedUrl = require('./asserts/piano-key.png').default;
-const pianoKeyBlackUncheckedUrl = require('./asserts/piano-key-black.png').default;
-const pianoKeyCheckedUrl = require('./asserts/piano-key-checked.png').default;
-const pianoKeyBlackCheckedUrl = require('./asserts/pinao-key-black-checked.png').default;
+const pianoKeyUncheckedUrl = require('@/ui/asserts/img/piano-key.png').default;
+const pianoKeyBlackUncheckedUrl = require('@/ui/asserts/img/piano-key-black.png').default;
+const pianoKeyCheckedUrl = require('@/ui/asserts/img/piano-key-checked.png').default;
+const pianoKeyBlackCheckedUrl = require('@/ui/asserts/img/pinao-key-black-checked.png').default;
 
 export class MelodyRenderer extends Renderer {
     whiteKeys: Array<PianoKey>;

@@ -4,6 +4,7 @@ import { PianoKeyboard } from '../models/pianoKeyboard';
 import { Melody } from '../models/melody';
 import { MelodyPlayerWorkerData } from '../models/messages/melodyPlayerWorkerData';
 import { PianoKey } from '../models/primitives/pianoKey';
+import { MelodyStatistics } from '../models/primitives/melodyStatistics';
 
 export default {} as typeof Worker & (new () => Worker);
 
@@ -12,6 +13,9 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
     pianoKeyboard: PianoKeyboard;
     currentTime: number;
     startTime: number;
+    lastPlayedNote = 0;
+    prevPlayedNote = 0;
+    melodyLength: number;
 
     constructor() {
         super();
@@ -25,6 +29,7 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
         this.melody = new Melody(initialData.melody);
         this.pianoKeyboard = new PianoKeyboard(initialData.pianoKeys);
         this.startTime = initialData.startTime;
+        this.melodyLength = this.melody.notes.length;
     }
 
     runPondering(): void {
@@ -36,6 +41,9 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
         }
 
         if (this.unit.isNotePlayed(this.currentTime) || !this.unit.targetNote) {
+            if (this.unit.targetNote) {
+                this.lastPlayedNote = this.unit.targetNote.orderNumber;
+            }
             this.unit.resetTargetNote();
             this.chooseNote();
         }
@@ -89,6 +97,7 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
     private move() {
         this.correctDirection();
         this.step();
+        this.isMoved = true;
     }
 
     private correctDirection() {
@@ -104,6 +113,15 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
         this.unit.position.x += this.unit.speed.x;
         this.unit.position.y += this.unit.speed.y;
     }
+
+    protected setStatistics() {
+        super.setStatistics();
+        if (this.prevPlayedNote != this.lastPlayedNote) {
+            (this.unit.statistics as MelodyStatistics).playedNotesPercent = 1 / this.melodyLength;
+            this.prevPlayedNote = this.lastPlayedNote;
+        }
+    }
+
 }
 
 new MelodyPlayerWorker();

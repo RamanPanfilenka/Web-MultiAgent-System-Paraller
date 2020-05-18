@@ -10,7 +10,7 @@ const DIST_DIR = path.resolve(__dirname, 'dist');
 const SRC_DIR = path.resolve(__dirname, 'src');
 
 module.exports = {
-    entry: path.resolve(SRC_DIR, 'index.ts'),
+    entry: path.resolve(SRC_DIR, 'index.tsx'),
     devtool: 'inline-source-map',
     output: {
         path: DIST_DIR,
@@ -67,6 +67,13 @@ module.exports = {
                 test: /\.(png|svg|jpg|gif|mp3)$/,
                 use: [
                     'file-loader'
+                ],
+            },
+            {
+                test: /\.(css)$/,
+                use: [
+                    'style-loader', 
+                    'css-loader',
                 ],
             },
         ],

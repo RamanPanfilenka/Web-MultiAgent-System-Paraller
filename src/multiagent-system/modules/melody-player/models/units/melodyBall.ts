@@ -48,6 +48,9 @@ export class MelodyBall extends Ball {
     }
 
     hasSameTargetNoteWith(otherBall: MelodyBall): boolean {
+        if (!otherBall) {
+            return false;
+        }
         return this.targetNote.equals(otherBall.targetNote);
     }
 

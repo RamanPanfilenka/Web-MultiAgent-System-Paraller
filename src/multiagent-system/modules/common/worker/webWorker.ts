@@ -10,6 +10,7 @@ export abstract class WebWorker<T extends Unit> {
     unit: T;
     nearestUnits: Array<Unit> = [];
     mappers: UnitMapperList = new UnitMapperList();
+    isMoved: boolean;
 
     constructor() {
         this.initMessageHandler();
@@ -53,12 +54,15 @@ export abstract class WebWorker<T extends Unit> {
             const nearestUnit = this.mappers.map(unitPackage);
             this.nearestUnits.push(nearestUnit);
         });
+        this.isMoved = false;
     }
 
     protected setStatistics() {
-        const dx = this.unit.speed.x;
-        const dy = this.unit.speed.y;
-        const distance = new Distance(dx, dy);
-        this.unit.statistics.distanceTraveled += distance.value;
+        if (this.isMoved) {
+            const dx = this.unit.speed.x;
+            const dy = this.unit.speed.y;
+            const distance = new Distance(dx, dy);
+            this.unit.statistics.distanceTraveled += distance.value;
+        }
     }
 }

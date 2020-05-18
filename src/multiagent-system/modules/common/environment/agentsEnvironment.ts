@@ -1,7 +1,7 @@
 import { Agent } from '@mas/modules/common/agent/agent';
 import { Unit } from '@mas/modules/common/models/units/unit';
-import { Renderer } from '@/ui/renderer';
 import { Statistics } from '../models/primitives/statistics';
+import { Renderer } from '@/ui/modules/common/renderers/renderer';
 
 export class AgentsEnvironment {
     public agents: Array<Agent>;
@@ -16,6 +16,12 @@ export class AgentsEnvironment {
     async run(): Promise<void> {
         await this.ponderAgents();
         this.renderer.render(this.agents);
+    }
+
+    terminate() {
+        this.agents.forEach(agent => {
+            agent.terminate();
+        });
     }
 
     private async ponderAgents(): Promise<PromiseSettledResult<void>[]> {
