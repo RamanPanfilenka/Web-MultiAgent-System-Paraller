@@ -11,6 +11,8 @@
         "paths": {
             "@/*": ["./src/*"],
             "@mas/*": ["./src/multiagent-system/*"]
-        }
+        },
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
     }
 }

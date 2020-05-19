@@ -19,6 +19,9 @@ export class Note {
     }
 
     equals(otherNote: Note): boolean {
-        return this.orderNumber == otherNote.orderNumber;
+        if (!otherNote) {
+            return false;
+        }
+        return this.tone == otherNote.tone;
     }
 }

@@ -8,6 +8,6 @@ export class Melody {
     }
 
     removePlayedNotes(currentTime: number) {
-        this.notes = this.notes.filter(note => note.playTime < currentTime);
+        this.notes = this.notes.filter(note => note.playTime > currentTime);
     }
 }

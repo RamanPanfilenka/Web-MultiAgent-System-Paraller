@@ -1,0 +1,50 @@
+html {
+    height: 100%;
+  }
+
+  body {
+    height: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .title {
+    text-align: center;
+  }
+
+  .settings-container {
+    height: inherit;
+    justify-content: center;
+  }
+
+  .settings {
+    width: 400px;
+    height: 400px;
+  }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+  }
+
+  .from-settings {
+    height: inherit;
+    width: inherit;
+  }
+
+  #view{
+    display: none;
+  }
+
+  .chars { 
+    display: none;
+    width: 1200px;
+    height: 700px;
+  }
+
+  .chars-container {
+    width: 100%;
+    display: flex;
+  }
