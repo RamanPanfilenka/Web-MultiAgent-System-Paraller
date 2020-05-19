@@ -8,8 +8,8 @@ import { MelodyStatistics } from '../models/primitives/melodyStatistics';
 import { Melody } from '../models/melody';
 
 export class MelodyPlayerRunner extends Runner<MelodyPlayerProps> {
-    lastNoteTime = 0;
-    startTime = 0;
+    private lastNoteTime = 0;
+    private startTime = 0;
 
     constructor(renderOps: RendererOps) {
         super();

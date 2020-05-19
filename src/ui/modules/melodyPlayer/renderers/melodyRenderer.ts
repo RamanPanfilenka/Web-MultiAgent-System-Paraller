@@ -5,7 +5,6 @@ import { MelodyBall } from '@/multiagent-system/modules/melody-player/models/uni
 import { Point } from '@/multiagent-system/modules/common/models/primitives/point';
 import { PianoPlayer } from '../../../../multiagent-system/modules/melody-player/utils/pianoPlayer';
 import { RendererOps, Renderer } from '../../common/renderers/renderer';
-import { MelodyStatistics } from '@/multiagent-system/modules/melody-player/models/primitives/melodyStatistics';
 
 
 export interface MelodyRendererOps extends RendererOps{
@@ -20,14 +19,14 @@ const pianoKeyCheckedUrl = require('@/ui/asserts/img/piano-key-checked.png').def
 const pianoKeyBlackCheckedUrl = require('@/ui/asserts/img/pinao-key-black-checked.png').default;
 
 export class MelodyRenderer extends Renderer {
-    whiteKeys: Array<PianoKey>;
-    blackKeys: Array<PianoKey>;
-    checkedBlackKeysContainer: PIXI.Container = new PIXI.Container();
-    checkedWhiteKeysContainer:  PIXI.Container = new PIXI.Container();
-    unchekedWhiteKeysContainer:  PIXI.Container = new PIXI.Container();
-    unchekedBlackKeysContainer:  PIXI.Container = new PIXI.Container();
-    playedNotes: Array<number> = [];
-    pianoPlayer: PianoPlayer;
+    private whiteKeys: Array<PianoKey>;
+    private blackKeys: Array<PianoKey>;
+    private checkedBlackKeysContainer: PIXI.Container = new PIXI.Container();
+    private checkedWhiteKeysContainer:  PIXI.Container = new PIXI.Container();
+    private unchekedWhiteKeysContainer:  PIXI.Container = new PIXI.Container();
+    private unchekedBlackKeysContainer:  PIXI.Container = new PIXI.Container();
+    private playedNotes: Array<number> = [];
+    private pianoPlayer: PianoPlayer;
 
     constructor(options: MelodyRendererOps) {
         super(options);
@@ -40,7 +39,7 @@ export class MelodyRenderer extends Renderer {
         this.app.stage.addChild(this.checkedBlackKeysContainer);
     }
 
-    init(agents: Array<Agent>) {
+    protected init(agents: Array<Agent>) {
         this.rederKeys(this.whiteKeys, pianoKeyUncheckedUrl, pianoKeyCheckedUrl, this.unchekedWhiteKeysContainer, this.checkedWhiteKeysContainer, false);
         this.rederKeys(this.blackKeys, pianoKeyBlackUncheckedUrl, pianoKeyBlackCheckedUrl, this.unchekedBlackKeysContainer, this.checkedBlackKeysContainer, false);
 
@@ -71,6 +70,11 @@ export class MelodyRenderer extends Renderer {
     }
 
     render(agents: Array<Agent>) {
+        if (this.unitSprites.length == 0) {
+            this.init(agents);
+            return;
+        }
+
         for (let i = 0; i < agents.length; i++) {
             const unit = <MelodyBall>agents[i].unit;
             this.unitSprites[i].position.set(unit.position.x - 2 * unit.radius, unit.position.y - 2 * unit.radius);

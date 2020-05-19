@@ -10,7 +10,6 @@ export abstract class Runner <T extends ProcessProps> {
 
     async run(): Promise<Array<Statistics>> {
         const renderer = this.factory.getRenderer();
-        renderer.init(this.enviroment.agents);
         while (this.stopPredicate()) {
             const agents = await this.enviroment.run();
             renderer.render(agents);
