@@ -5,19 +5,24 @@ import { Unit, UnitScheme } from '../models/units/unit';
 import { RendererOps, Renderer } from '@/ui/modules/common/renderers/renderer';
 
 export abstract class Factory {
-    getEnviroment(agentsInitData: Array<UnitScheme>, renderOptions: RendererOps, initData?: any): AgentsEnvironment {
-        const renderer = this.getRenderer(renderOptions);
+    renderOps: RendererOps;
+
+    constructor(renderOps: RendererOps) {
+        this.renderOps = renderOps;
+    }
+
+    getEnviroment(agentsInitData: Array<UnitScheme>, initData?: any): AgentsEnvironment {
         const agents = this.getAgents(agentsInitData.length, agentsInitData, initData);
-        const agentsEnvironment = this.getEnviromentInstance(agents, renderer);
+        const agentsEnvironment = this.getEnviromentInstance(agents);
         return agentsEnvironment;
     }
 
-    protected getEnviromentInstance(agents: Array<Agent>, renderer: Renderer): AgentsEnvironment {
-        return new AgentsEnvironment(agents, renderer);
+    protected getEnviromentInstance(agents: Array<Agent>): AgentsEnvironment {
+        return new AgentsEnvironment(agents);
     }
 
-    protected getRenderer(renderOptions: RendererOps): Renderer {
-        return new Renderer(renderOptions);
+    public getRenderer(): Renderer {
+        return new Renderer(this.renderOps);
     }
 
     protected getProcess(worker: Worker, workerInitData?: any): Process {

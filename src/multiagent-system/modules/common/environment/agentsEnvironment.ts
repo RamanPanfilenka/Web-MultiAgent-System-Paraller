@@ -5,17 +5,14 @@ import { Renderer } from '@/ui/modules/common/renderers/renderer';
 
 export class AgentsEnvironment {
     public agents: Array<Agent>;
-    private renderer: Renderer
 
-    constructor(agents: Array<Agent>, renderer: Renderer) {
+    constructor(agents: Array<Agent>) {
         this.agents = agents;
-        this.renderer = renderer;
-        this.renderer.init(agents);
     }
 
-    async run(): Promise<void> {
+    async run(): Promise<Array<Agent>> {
         await this.ponderAgents();
-        this.renderer.render(this.agents);
+        return this.agents;
     }
 
     terminate() {

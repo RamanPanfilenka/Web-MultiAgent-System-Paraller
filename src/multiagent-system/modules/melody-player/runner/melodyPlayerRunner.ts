@@ -5,16 +5,22 @@ import { Point } from '../../common/models/primitives/point';
 import { MelodyPlayerFactory } from '../factory/melodyPlayerFactory';
 import { RendererOps } from '@/ui/modules/common/renderers/renderer';
 import { MelodyStatistics } from '../models/primitives/melodyStatistics';
+import { Melody } from '../models/melody';
 
 export class MelodyPlayerRunner extends Runner<MelodyPlayerProps> {
+    lastNoteTime = 0;
+    startTime = 0;
 
-    constructor(rendererOps: RendererOps) {
-        super(rendererOps);
+    constructor(renderOps: RendererOps) {
+        super();
+        this.factory = new MelodyPlayerFactory(renderOps);
     }
 
-    async run(props: MelodyPlayerProps) {
+    setUp(props: MelodyPlayerProps) {
         const agentsCount = props.unitNumber;
         const melody = props.melody;
+        this.lastNoteTime = melody.notes[melody.notes.length - 1].playTime;
+        this.startTime = Date.now();
         const angentsInitData = [...new Array(agentsCount)].map((a, index) =>{
             const position = new Point({x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight});
             const statistics: MelodyStatistics = {
@@ -37,13 +43,13 @@ export class MelodyPlayerRunner extends Runner<MelodyPlayerProps> {
             };
             return melodyBallInitData;
         });
-        const melodyFactory = new MelodyPlayerFactory();
-        const enviroment = melodyFactory.getEnviroment(angentsInitData, this.rendererOps, melody);
-        const startTime = Date.now();
-        const lastNoteTime = melody.notes[melody.notes.length - 1].playTime;
-        while ((Date.now() - startTime) / 600  < lastNoteTime) {
-            await enviroment.run();
+        this.enviroment = this.factory.getEnviroment(angentsInitData, melody);
+    }
+
+    stopPredicate(): boolean {
+        if ((Date.now() - this.startTime) / 600 > this.lastNoteTime) {
+            return false;
         }
-        return enviroment.getStatistics();
+        return true;
     }
 }

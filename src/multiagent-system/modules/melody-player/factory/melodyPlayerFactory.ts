@@ -20,8 +20,8 @@ export class MelodyPlayerFactory extends Factory {
     blackKeys: Array<PianoKey>;
     whiteKeys: Array<PianoKey>;
 
-    constructor() {
-        super();
+    constructor(renderOps: RendererOps) {
+        super(renderOps);
         this.blackKeys = this.getBlackKeys();
         this.whiteKeys = this.getWhiteKeys();
     }
@@ -56,8 +56,8 @@ export class MelodyPlayerFactory extends Factory {
         return melodyRendererOps;
     }
 
-    protected getRenderer(renderOptions: RendererOps): Renderer {
-        const updateRendererOps = this.updateRendererOps(renderOptions);
+    public getRenderer(): Renderer {
+        const updateRendererOps = this.updateRendererOps(this.renderOps);
         return new MelodyRenderer(updateRendererOps);
     }
 
