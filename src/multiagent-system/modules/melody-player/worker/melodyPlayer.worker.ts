@@ -95,7 +95,9 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
     }
 
     private move() {
-        this.correctDirection();
+        if (this.unit.targetNote) {
+            this.correctDirection();
+        }
         this.step();
         this.isMoved = true;
     }

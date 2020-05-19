@@ -75,7 +75,7 @@ export class MelodyRenderer extends Renderer {
             const unit = <MelodyBall>agents[i].unit;
             this.unitSprites[i].position.set(unit.position.x - 2 * unit.radius, unit.position.y - 2 * unit.radius);
             const pianoKey = unit.targetKey;
-            if (pianoKey.isPressed && !this.playedNotes.includes(unit.targetNote.orderNumber)) {
+            if (pianoKey && pianoKey.isPressed && !this.playedNotes.includes(unit.targetNote.orderNumber)) {
                 console.log(unit.targetNote.orderNumber);
                 this.renderPressedSprite(pianoKey.tone, unit.targetNote.duration);
                 unit.targetKey.isPressed = false;
