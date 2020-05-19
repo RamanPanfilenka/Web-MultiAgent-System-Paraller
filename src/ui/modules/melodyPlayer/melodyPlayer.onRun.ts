@@ -12,11 +12,13 @@ export function onMelodyPlayerRun(runner: Runner<ProcessProps>, callback: any) {
     parseMidi(file, async (melody: Melody) => {
         const unitNumber = Number($('#unit-count').val());
         const speed = Number($('#speed').val());
+        const connectionRange = Number($('#connection-range'));
         const props: MelodyPlayerProps = {
             unitNumber: unitNumber,
             unitSpeed: speed,
             melody: melody,
             ballTexture: ballTextureUrl,
+            connectionRange:connectionRange,
         };
         $('.settings ').hide();
         $('#view').show();

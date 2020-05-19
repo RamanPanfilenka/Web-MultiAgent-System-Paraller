@@ -119,7 +119,7 @@ class MelodyPlayerWorker extends WebWorker<MelodyBall> {
     protected setStatistics() {
         super.setStatistics();
         if (this.prevPlayedNote != this.lastPlayedNote) {
-            (this.unit.statistics as MelodyStatistics).playedNotesPercent = 1 / this.melodyLength;
+            (this.unit.statistics as MelodyStatistics).playedNotesPercent += 1 / this.melodyLength;
             this.prevPlayedNote = this.lastPlayedNote;
         }
     }
