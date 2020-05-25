@@ -1,13 +1,25 @@
 import { Statistics } from '../models/primitives/statistics';
 import { ProcessProps } from '@/ui/modules/common/primitives/processProps';
-import { RendererOps } from '@/ui/modules/common/renderers/renderer';
+import { RendererOps, Renderer } from '@/ui/modules/common/renderers/renderer';
+import { AgentsEnvironment } from '../environment/agentsEnvironment';
+import { Factory } from '../factory/factory';
 
 export abstract class Runner <T extends ProcessProps> {
-    rendererOps: RendererOps;
+    enviroment: AgentsEnvironment;
+    factory: Factory;
 
-    constructor(rendererOps: RendererOps) {
-        this.rendererOps = rendererOps;
+    async run(): Promise<Array<Statistics>> {
+        const renderer = this.factory.getRenderer();
+        while (this.stopPredicate()) {
+            const agents = await this.enviroment.run();
+            renderer.render(agents);
+        }
+        const statistics = this.enviroment.getStatistics();
+        this.enviroment.terminate();
+        return statistics;
     }
 
-    abstract async run(props: T): Promise<Array<Statistics>>;
+    abstract setUp(props: T): void;
+
+    abstract stopPredicate(): boolean;
 }

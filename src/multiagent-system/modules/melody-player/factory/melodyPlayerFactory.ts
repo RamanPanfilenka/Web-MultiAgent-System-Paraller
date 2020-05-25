@@ -10,18 +10,18 @@ import { PianoPlayer } from '@/multiagent-system/modules/melody-player/utils/pia
 import { RendererOps, Renderer } from '@/ui/modules/common/renderers/renderer';
 
 export class MelodyPlayerFactory extends Factory {
-    blackTones = ['C#', 'D#', 'F#', 'G#', 'A#'];
-    whiteTones = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-    whiteKeysCount = 50;
-    blackKeysCount = 35;
-    keyWidht = 75;
-    keyHeight = 300;
-    blackKeyHeight = this.keyHeight / 2.2;
-    blackKeys: Array<PianoKey>;
-    whiteKeys: Array<PianoKey>;
+    private blackTones = ['C#', 'D#', 'F#', 'G#', 'A#'];
+    private whiteTones = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+    private whiteKeysCount = 50;
+    private blackKeysCount = 35;
+    private keyWidht = 75;
+    private keyHeight = 300;
+    private blackKeyHeight = this.keyHeight / 2.2;
+    private blackKeys: Array<PianoKey>;
+    private whiteKeys: Array<PianoKey>;
 
-    constructor() {
-        super();
+    constructor(renderOps: RendererOps) {
+        super(renderOps);
         this.blackKeys = this.getBlackKeys();
         this.whiteKeys = this.getWhiteKeys();
     }
@@ -56,8 +56,8 @@ export class MelodyPlayerFactory extends Factory {
         return melodyRendererOps;
     }
 
-    protected getRenderer(renderOptions: RendererOps): Renderer {
-        const updateRendererOps = this.updateRendererOps(renderOptions);
+    public getRenderer(): Renderer {
+        const updateRendererOps = this.updateRendererOps(this.renderOps);
         return new MelodyRenderer(updateRendererOps);
     }
 

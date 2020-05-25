@@ -9,8 +9,8 @@ export interface RendererOps{
 }
 
 export class Renderer {
-    app: PIXI.Application;
-    unitSprites: Array<PIXI.Sprite> = [];
+    protected app: PIXI.Application;
+    protected unitSprites: Array<PIXI.Sprite> = [];
 
     constructor(options: RendererOps) {
         this.app = new PIXI.Application({
@@ -21,7 +21,7 @@ export class Renderer {
         });
     }
 
-    init(agents: Array<Agent>) {
+    protected init(agents: Array<Agent>) {
         const unitContainer = new PIXI.Container();
         agents.forEach(agent => {
             const unit = agent.unit;
@@ -36,13 +36,13 @@ export class Renderer {
     }
 
     render(agents: Array<Agent>) {
+        if (this.unitSprites.length == 0) {
+            this.init(agents);
+            return;
+        }
         for (let i = 0; i < agents.length; i++) {
             const unit = agents[i].unit;
             this.unitSprites[i].position.set(unit.position.x - unit.width / 2, unit.position.y - unit.height / 2);
         }
-    }
-
-    clear() {
-        this.app.destroy();
     }
 }

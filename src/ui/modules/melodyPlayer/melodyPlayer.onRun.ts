@@ -4,25 +4,37 @@ import { Melody } from '@/multiagent-system/modules/melody-player/models/melody'
 import { MelodyPlayerProps } from './primitives/melodyPlayerProps';
 import { Runner } from '@/multiagent-system/modules/common/runner/runner';
 import { ProcessProps } from '../common/primitives/processProps';
+import { RendererOps } from '../common/renderers/renderer';
+
+
+function showCanvans() {
+    $('.settings ').hide();
+    $('#view').show();
+}
+
+function getProps(melody: Melody) {
+    const ballTextureUrl = require('@/ui/asserts/img/ball.png').default;
+    const unitNumber = Number($('#unit-count').val());
+    const speed = Number($('#speed').val());
+    const connectionRange = Number($('#connection-range'));
+    const props: MelodyPlayerProps = {
+        unitNumber: unitNumber,
+        unitSpeed: speed,
+        melody: melody,
+        ballTexture: ballTextureUrl,
+        connectionRange:connectionRange,
+    };
+    return props;
+}
 
 export function onMelodyPlayerRun(runner: Runner<ProcessProps>, callback: any) {
-    const ballTextureUrl = require('@/ui/asserts/img/ball.png').default;
     const filereader: any = document.querySelector('#filereader input');
     const file = filereader.files[0];
     parseMidi(file, async (melody: Melody) => {
-        const unitNumber = Number($('#unit-count').val());
-        const speed = Number($('#speed').val());
-        const connectionRange = Number($('#connection-range'));
-        const props: MelodyPlayerProps = {
-            unitNumber: unitNumber,
-            unitSpeed: speed,
-            melody: melody,
-            ballTexture: ballTextureUrl,
-            connectionRange:connectionRange,
-        };
-        $('.settings ').hide();
-        $('#view').show();
-        const statistics = await runner.run(props);
+        showCanvans();
+        const props = getProps(melody);
+        runner.setUp(props);
+        const statistics = await runner.run();
         callback(statistics);
     });
 }

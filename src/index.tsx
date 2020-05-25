@@ -26,11 +26,10 @@ function getRenderOps() {
 }
 
 function getModuleData(type: string): ModuleData<ProcessProps> {
-    const renderProps = getRenderOps();
     const melodyModuleData: ModuleData<MelodyPlayerProps> = {
         uiRenderer: new MelodyUiRederer(),
         onRun: onMelodyPlayerRun,
-        runner: new MelodyPlayerRunner(renderProps),
+        runner: new MelodyPlayerRunner(getRenderOps()),
     };
     return melodyModuleData;
 }

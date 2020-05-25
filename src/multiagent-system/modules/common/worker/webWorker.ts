@@ -7,10 +7,10 @@ import { Distance } from '../models/primitives/distance';
 const globalSelf: Worker = self as any;
 
 export abstract class WebWorker<T extends Unit> {
-    unit: T;
-    nearestUnits: Array<Unit> = [];
-    mappers: UnitMapperList = new UnitMapperList();
-    isMoved: boolean;
+    protected unit: T;
+    protected nearestUnits: Array<Unit> = [];
+    protected mappers: UnitMapperList = new UnitMapperList();
+    protected isMoved: boolean;
 
     constructor() {
         this.initMessageHandler();
