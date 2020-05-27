@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "noImplicitAny": true,
+        "allowJs": true,
+        "sourceMap": true,
+        "module": "ES2020",
+        "target": "ES2020",
+        "jsx": "react",
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"],
+            "@mas/*": ["./src/multiagent-system/*"]
+        },
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+    }
+}

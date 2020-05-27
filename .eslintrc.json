@@ -1,0 +1,57 @@
+{
+    "env": {
+        "es6": true,
+        "browser": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint/eslint-plugin"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "rules": {
+        "no-var": "error",
+        "no-trailing-spaces": "error",
+        "prefer-exponentiation-operator": "error",
+        "linebreak-style": [ "error", "windows" ],
+        "semi": [ "error", "always" ],
+        "eol-last": [ "error", "always" ],
+        "quotes": [ "error", "single" ],
+        "comma-dangle": [ "error", "always-multiline" ],
+        "camelcase": [
+            "error",
+            {
+                "properties": "always",
+                "ignoreDestructuring": true
+            }
+        ],
+        "padding-line-between-statements": [
+            "error",
+            { "blankLine": "never", "prev": "*", "next": "return" }
+        ],
+        "indent": [
+            "error", 4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "space-before-blocks": [
+            "error",
+            {
+                "functions": "always",
+                "keywords": "always",
+                "classes": "always"
+            }
+        ],
+        "keyword-spacing": [
+            "error",
+            {
+                "before": true,
+                "after": true
+            }
+        ],
+        "@typescript-eslint/interface-name-prefix": ["off"],
+        "@typescript-eslint/consistent-type-assertions": ["off"]
+    }
+}

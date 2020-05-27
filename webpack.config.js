@@ -1,55 +1,78 @@
+const os = require('os');
 const path = require('path');
 const chalk = require('chalk');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const { HotModuleReplacementPlugin } = require('webpack');
 const ErrorOverlayWebpackPlugin = require('error-overlay-webpack-plugin');
 
+const DIST_DIR = path.resolve(__dirname, 'dist');
+const SRC_DIR = path.resolve(__dirname, 'src');
+
 module.exports = {
-    entry: './src/index.js',
-    devtool: 'source-map',
+    entry: path.resolve(SRC_DIR, 'index.tsx'),
+    devtool: 'inline-source-map',
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: DIST_DIR,
         filename: 'bundle.js',
     },
     devServer: {
-        contentBase: path.join(__dirname, 'dist'),
+        contentBase: DIST_DIR,
         compress: true,
         quiet: true,
         hot: true,
         port: 9000,
     },
     resolve: {
-        extensions: ['.js'],
+        extensions: ['.ts', '.tsx', '.js'],
         modules: [
-            path.resolve(__dirname, 'src'),
+            SRC_DIR,
             'node_modules',
         ],
         alias: {
-            "@": path.resolve(__dirname, 'src'),
+            "@": SRC_DIR,
+            "@mas": path.resolve(SRC_DIR, 'multiagent-system'),
         },
     },
     module: {
         rules: [
             {
-                test: /\.worker\.js$/,
+                test: /\.worker\.ts$/,
                 exclude: /node_modules/,
                 use: [
                     'worker-loader',
+                    'ts-loader',
                 ],
             },
             {
-                test: /\.js$/,
+                test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
                 use: [
-                    'babel-loader',
+                    {
+                        loader: 'thread-loader',
+                        options: {
+                            workers: os.cpus().length - 1,
+                            poolRespawn: false,
+                        }
+                    },
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            happyPackMode: true,
+                        },
+                    }
                 ],
             },
             {
-                test: /\.css$/,
+                test: /\.(png|svg|jpg|gif|mp3)$/,
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    'file-loader'
+                ],
+            },
+            {
+                test: /\.(css)$/,
+                use: [
+                    'style-loader', 
                     'css-loader',
                 ],
             },
@@ -63,9 +86,6 @@ module.exports = {
             compilationSuccessInfo: {
                 messages: [`You application is running here ${chalk.blue.bold('http://localhost:9000')}`]
             }
-        }),
-        new MiniCssExtractPlugin({
-            filename: 'main.css',
         }),
         new HtmlWebpackPlugin({
             template: './src/index.html',
